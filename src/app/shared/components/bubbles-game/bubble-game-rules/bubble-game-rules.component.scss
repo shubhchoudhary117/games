@@ -1,0 +1,372 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap');
+
+$cyan:       #00e0ff;
+$mid-blue:   #12258d;
+$orange:     #ff6600;
+$orange-lit: #ff9900;
+
+// ── Keyframes ─────────────────────────────────────────────
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalPop {
+  0%   { transform: translateY(40px) scale(0.96); opacity: 0; }
+  60%  { transform: translateY(-6px) scale(1.01); opacity: 1; }
+  100% { transform: translateY(0)    scale(1);    opacity: 1; }
+}
+
+@keyframes tabSlide {
+  from { transform: translateX(12px); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+// ── Overlay ───────────────────────────────────────────────
+.rules-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(4, 14, 80, 0.72);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: overlayIn 0.25s ease forwards;
+  font-family: 'Nunito', sans-serif;
+}
+
+// ── Modal Shell ───────────────────────────────────────────
+.rules-modal {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  max-height: 88dvh;
+  display: flex;
+  flex-direction: column;
+  border-radius: 28px;
+  overflow: hidden;
+  animation: modalPop 0.45s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+
+  // Layered background matching game card style
+  background:
+    linear-gradient(160deg, rgba(90, 190, 255, 0.12) 0%, transparent 50%),
+    linear-gradient(180deg, #1740cc 0%, #0d2490 40%, #091870 100%);
+  border: 2px solid rgba(0, 220, 255, 0.35);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.06),
+    0 24px 64px rgba(0, 20, 120, 0.7),
+    0 0 80px rgba(0, 100, 255, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    inset 0 -2px 0 rgba(0, 40, 160, 0.5);
+
+  // Glossy top shine
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 16px; right: 16px;
+    height: 44%;
+    border-radius: 0 0 60% 60%;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.1) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  // ── Header ─────────────────────────────────────────────
+  &__header {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 52px 16px;
+    flex-shrink: 0;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+  }
+
+  &__game-logo {
+    width: 180px;
+    height: 42px;
+    background-image: url("../../../../../../public/assets/bubbles-game/game-logo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    margin-bottom: 10px;
+
+    // Fallback text if image missing
+    &:empty::after {
+      content: 'Bubbles';
+      display: block;
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: 2px;
+      background: linear-gradient(180deg, #fff 0%, #a0d8ff 40%, #3ab8f0 70%, #1565c0 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 3px 8px rgba(0,153,255,0.5));
+    }
+  }
+
+  &__tagline {
+    font-size: 0.82rem;
+    color: rgba(180, 220, 255, 0.8);
+    text-align: center;
+    line-height: 1.5;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(0, 200, 255, 0.35);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    backdrop-filter: blur(4px);
+
+    &:hover {
+      background: rgba(255, 80, 80, 0.35);
+      border-color: rgba(255, 100, 100, 0.5);
+      transform: scale(1.1) rotate(90deg);
+    }
+  }
+
+  // ── Tab Navigation ──────────────────────────────────────
+  &__tabs {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: stretch;
+    overflow-x: auto;
+    padding: 10px 12px 0;
+    gap: 4px;
+    flex-shrink: 0;
+    scrollbar-width: none;
+    &::-webkit-scrollbar { display: none; }
+  }
+
+  &__tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 8px 12px 10px;
+    border-radius: 14px 14px 0 0;
+    border: 1.5px solid transparent;
+    border-bottom: none;
+    background: rgba(0, 30, 120, 0.4);
+    color: rgba(160, 200, 255, 0.7);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    flex-shrink: 0;
+
+    &:hover:not(.active) {
+      background: rgba(0, 60, 180, 0.5);
+      color: #fff;
+    }
+
+    &.active {
+      background: rgba(18, 37, 141, 0.85);
+      border-color: rgba(0, 200, 255, 0.3);
+      color: $cyan;
+      box-shadow: 0 -2px 12px rgba(0, 200, 255, 0.12);
+    }
+  }
+
+  &__tab-icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  &__tab-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2px;
+  }
+
+  // ── Scrollable Body ─────────────────────────────────────
+  &__body {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    overflow-y: auto;
+    background: rgba(18, 37, 141, 0.85);
+    border: 1.5px solid rgba(0, 200, 255, 0.2);
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 200, 255, 0.3) transparent;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 200, 255, 0.3);
+      border-radius: 4px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  }
+
+  // ── Section ─────────────────────────────────────────────
+  &__section {
+    display: none;
+    padding: 24px 28px 20px;
+    animation: tabSlide 0.2s ease forwards;
+
+    &.visible {
+      display: block;
+    }
+  }
+
+  &__section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+  }
+
+  &__section-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+  }
+
+  &__section-title {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0, 150, 255, 0.4);
+  }
+
+  // ── Inner content typography ────────────────────────────
+  &__content {
+    color: rgba(200, 225, 255, 0.88);
+    font-size: 0.875rem;
+    line-height: 1.7;
+    font-weight: 600;
+
+    p {
+      margin: 0 0 12px;
+
+      &:last-child { margin-bottom: 0; }
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: $cyan;
+      margin: 18px 0 6px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      font-size: 0.78rem;
+
+      &:first-child { margin-top: 0; }
+    }
+
+    ul {
+      margin: 0 0 12px;
+      padding-left: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    li {
+      position: relative;
+      padding-left: 22px;
+      color: rgba(200, 225, 255, 0.88);
+
+      &::before {
+        content: '🫧';
+        position: absolute;
+        left: 0;
+        top: 0;
+        font-size: 0.85rem;
+        line-height: 1.7;
+      }
+    }
+
+    strong {
+      color: #fff;
+      font-weight: 900;
+    }
+  }
+
+  // ── Footer ──────────────────────────────────────────────
+  &__footer {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: rgba(120, 170, 255, 0.6);
+    background: rgba(5, 14, 80, 0.5);
+    border-top: 1px solid rgba(0, 150, 255, 0.12);
+    flex-shrink: 0;
+    letter-spacing: 0.3px;
+  }
+
+  &__footer-dot {
+    color: rgba(0, 200, 255, 0.4);
+  }
+}
+
+// ── Mobile ────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .rules-modal {
+    max-width: 100%;
+    max-height: 92dvh;
+    border-radius: 22px;
+
+    &__header {
+      padding: 22px 44px 12px;
+    }
+
+    &__tagline {
+      font-size: 0.75rem;
+    }
+
+    &__tab {
+      padding: 6px 10px 8px;
+    }
+
+    &__section {
+      padding: 18px 18px 16px;
+    }
+
+    &__section-title {
+      font-size: 1.05rem;
+    }
+
+    &__content {
+      font-size: 0.82rem;
+    }
+  }
+}

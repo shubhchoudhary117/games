@@ -1,0 +1,110 @@
+<div class="dx-men-card">
+    <div class="dx-men-card__profile">
+        <div class="dx-men-card__profile-left">
+            <div class="dx-men-card__avatar">
+                <img src="https://i.pravatar.cc/100?img=12" alt="avatar" />
+            </div>
+            <div class="dx-men-card__user-name">
+                Gold Sporti...
+            </div>
+        </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="dx-men-card__section">
+        <!-- SOUND -->
+        <div class="dx-men-card__item" (click)="toggleSound()">
+
+            <div class="dx-men-card__item-left">
+
+                <div class="dx-men-card__icon">
+                    🔊
+                </div>
+
+                <div class="dx-men-card__label">
+                    Sound
+                </div>
+
+            </div>
+
+            <div class="dx-men-card__switch" [class.dx-men-card__switch--off]="
+      !(dxMenuService.soundEnabled$ | async)
+    ">
+            </div>
+
+        </div>
+
+        <!-- MUSIC -->
+        <div class="dx-men-card__item" (click)="toggleMusic()">
+
+            <div class="dx-men-card__item-left">
+
+                <div class="dx-men-card__icon">
+                    🎵
+                </div>
+
+                <div class="dx-men-card__label">
+                    Music
+                </div>
+
+            </div>
+
+            <div class="dx-men-card__switch" [class.dx-men-card__switch--off]="
+      !(dxMenuService.musicEnabled$ | async)
+    ">
+            </div>
+
+        </div>
+    </div>
+
+    <div class="dx-men-card__divider"></div>
+    <div class="dx-men-card__section">
+        <div class="dx-men-card__item" (click)="openGameRulesModal()">
+            <div class="dx-men-card__item-left">
+                <div class="dx-men-card__icon">
+                    📄
+                </div>
+                <div class="dx-men-card__label">
+                    Game rules
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BET HISTORY -->
+        <div class="dx-men-card__item" (click)="openBetHistoryModal()">
+            <div class="dx-men-card__item-left">
+                <div class="dx-men-card__icon">
+                    🕘
+                </div>
+                <div class="dx-men-card__label">
+                    My bet history
+                </div>
+            </div>
+        </div>
+
+        <!-- HOW TO PLAY -->
+        <div class="dx-men-card__item" (click)="openHowToPlayModal()">
+            <div class="dx-men-card__item-left">
+                <div class="dx-men-card__icon">
+                    ❓
+                </div>
+                <div class="dx-men-card__label">
+                    How to play
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dx-men-card__divider"></div>
+    <div class="dx-men-card__footer">
+        <div class="dx-men-card__powered">
+            <span>Powered by</span>
+            <div class="dx-men-card__brand">
+                GURU <span>GAMES</span>
+            </div>
+        </div>
+    </div>
+
+</div>

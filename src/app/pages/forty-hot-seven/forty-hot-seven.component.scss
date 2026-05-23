@@ -1,0 +1,358 @@
+.hs {
+    font-family: 'Oswald', sans-serif;
+    background: #0a0000;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    // ── BG ──────────────────────────────────────────────────────────────────
+    &__bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        background: radial-gradient(ellipse 80% 60% at 50% 100%, #6b1a00 0%, #3a0800 40%, #0a0000 100%);
+
+        &::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 40% 30% at 20% 80%, #ff4500 0%, transparent 60%),
+                radial-gradient(ellipse 30% 25% at 80% 85%, #ff6b00 0%, transparent 55%),
+                radial-gradient(ellipse 20% 15% at 50% 90%, #ff8c00 0%, transparent 50%);
+            animation: lavaGlow 3s ease-in-out infinite alternate;
+        }
+
+        &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 35%;
+            background:
+                repeating-linear-gradient(90deg, transparent 0px, transparent 40px, rgba(255, 80, 0, 0.08) 40px, rgba(255, 80, 0, 0.08) 42px),
+                repeating-linear-gradient(0deg, transparent 0px, transparent 20px, rgba(255, 100, 0, 0.06) 20px, rgba(255, 100, 0, 0.06) 22px);
+        }
+    }
+
+    // ── MOUNTAINS ────────────────────────────────────────────────────────────
+    &__mountains {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 45%;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    &__mountain {
+        position: absolute;
+        bottom: 0;
+        background: linear-gradient(160deg, #1a0500, #0d0200);
+        clip-path: polygon(0% 100%, 50% 0%, 100% 100%);
+
+        &--1 {
+            width: 35%;
+            height: 70%;
+            left: -5%;
+        }
+
+        &--2 {
+            width: 40%;
+            height: 85%;
+            left: 15%;
+        }
+
+        &--3 {
+            width: 35%;
+            height: 60%;
+            left: 45%;
+        }
+
+        &--4 {
+            width: 40%;
+            height: 75%;
+            left: 65%;
+        }
+
+        &--5 {
+            width: 30%;
+            height: 55%;
+            left: 80%;
+        }
+    }
+
+    // ── SMOKE ────────────────────────────────────────────────────────────────
+    &__smoke-container {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        overflow: hidden;
+    }
+
+    &__smoke {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(255, 120, 0, 0.4);
+        bottom: 30%;
+        animation: floatUp 4s ease-out infinite;
+    }
+
+    // ── OVERLAYS ─────────────────────────────────────────────────────────────
+    &__win-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s;
+
+        &--show {
+            opacity: 1;
+        }
+    }
+
+    &__win-big {
+        font-family: 'Cinzel Decorative', serif;
+        font-size: clamp(32px, 6vw, 72px);
+        font-weight: 900;
+        color: #f5c842;
+        text-shadow:
+            0 0 20px rgba(255, 200, 0, 1),
+            0 0 60px rgba(255, 150, 0, 0.8),
+            0 0 100px rgba(255, 80, 0, 0.5),
+            4px 4px 0 #3a1a00;
+        animation: winPop 0.4s cubic-bezier(0.36, 1.4, 0.6, 1) both;
+        text-align: center;
+    }
+
+    &__clock {
+        position: fixed;
+        bottom: 8px;
+        left: 12px;
+        font-size: 11px;
+        color: rgba(255, 200, 100, 0.4);
+        z-index: 20;
+        letter-spacing: 1px;
+    }
+
+    // ── WRAPPER ───────────────────────────────────────────────────────────────
+    &__wrapper {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        max-width: 900px;
+        width: 100%;
+        padding: 0 8px;
+    }
+
+    // ── TITLE ─────────────────────────────────────────────────────────────────
+    &__title {
+        font-family: 'Cinzel Decorative', serif;
+        font-size: clamp(20px, 3.5vw, 38px);
+        font-weight: 900;
+        color: #f5c842;
+        text-shadow:
+            0 0 20px rgba(255, 200, 0, 0.8),
+            0 0 40px rgba(255, 150, 0, 0.5),
+            2px 2px 0 #5a2d00,
+            4px 4px 0 #3a1a00;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        padding: 8px 32px;
+        background: linear-gradient(180deg, rgba(80, 20, 0, 0.9), rgba(40, 8, 0, 0.9));
+        border: 2px solid #c9922a;
+        border-radius: 6px;
+        position: relative;
+
+
+        &::before {
+            left: 10px;
+        }
+
+        &::after {
+            right: 10px;
+        }
+    }
+
+    // ── FRAME ─────────────────────────────────────────────────────────────────
+    &__frame {
+        position: relative;
+        background: linear-gradient(180deg, #2a0d00, #1a0600, #2a0d00);
+        border: 3px solid #c9922a;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow:
+            0 0 0 1px #5a2d00,
+            0 0 30px rgba(255, 100, 0, 0.3),
+            inset 0 0 40px rgba(0, 0, 0, 0.8);
+
+        &::before,
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 12px;
+            background: repeating-linear-gradient(180deg, #3a2000 0px, #4a2800 8px, #2a1400 8px, #2a1400 16px);
+            border: 1px solid #5a3000;
+        }
+
+        &::before {
+            left: -14px;
+            border-radius: 4px 0 0 4px;
+        }
+
+        &::after {
+            right: -14px;
+            border-radius: 0 4px 4px 0;
+        }
+    }
+
+    // ── WIN DISPLAY ────────────────────────────────────────────────────────────
+    &__win-display {
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Cinzel Decorative', serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: #f5c842;
+        text-shadow: 0 0 20px rgba(255, 200, 0, 0.8), 0 0 40px rgba(255, 150, 0, 0.5);
+        letter-spacing: 2px;
+        opacity: 0;
+        transition: opacity 0.4s;
+
+        &--visible {
+            opacity: 1;
+        }
+    }
+}
+
+// ── GLOBAL COINS ────────────────────────────────────────────────────────────
+:global(.hs-coin) {
+    position: fixed;
+    font-size: 20px;
+    pointer-events: none;
+    z-index: 999;
+    animation: coinBurst 1.2s ease-out forwards;
+}
+
+// ── KEYFRAMES ────────────────────────────────────────────────────────────────
+@keyframes lavaGlow {
+    0% {
+        opacity: 0.7;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translateY(-200px) scale(4);
+        opacity: 0;
+    }
+}
+
+@keyframes winPop {
+    0% {
+        transform: scale(0.3);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes coinBurst {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.3);
+        opacity: 0;
+    }
+}
+
+@media screen and (max-width: 768px) {
+  .hs {
+    position: fixed;        
+    inset: 0;              
+    display: flex;          
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;       
+    padding-top: 0;        
+
+    &__wrapper {
+      max-width: 98%;
+      width: 100%;
+      padding: 0 8px;
+      gap: 4px;             
+    }
+
+    &__title {
+        width: 70%;
+      font-size: clamp(14px, 4vw, 24px);  
+      padding: 5px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__frame {
+      padding: 3px;
+    }
+
+    &__win-display {
+      height: 23px;
+      font-size: 14px;
+    }
+    &__win-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &__clock {
+      position: fixed;
+      bottom: 8px;
+      left: 12px;
+      font-size: 11px;
+    }
+  }
+}

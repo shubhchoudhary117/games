@@ -1,0 +1,319 @@
+<div class="pk-menu__overlay" [class.open]="menuOpen" (click)="closeMenu()"></div>
+<div class="pk-menu__drawer" [class.open]="menuOpen">
+  <div class="pk-menu__profile">
+    <div class="pk-menu__avatar">
+      <img [src]="avatarSrc" alt="avatar" class="pk-menu__avatar-img" />
+      <div class="pk-menu__avatar-ring"></div>
+      <div class="pk-menu__avatar-badge">{{ playerLevel }}</div>
+    </div>
+    <div class="pk-menu__user-info">
+      <div class="pk-menu__username">{{ username }}</div>
+      <div class="pk-menu__user-sub">
+        <span class="pk-menu__coins-ico">💰</span>
+        <span class="pk-menu__user-coins">{{ coins }}</span>
+      </div>
+    </div>
+    <button class="pk-menu__close-btn" (click)="closeMenu()">✕</button>
+  </div>
+
+  <!-- Sound Toggle -->
+  <div class="pk-menu__sound-row">
+    <div class="pk-menu__sound-label">
+      <span class="pk-menu__sound-ico">{{ soundOn ? '🔊' : '🔇' }}</span>
+      <span>Sound</span>
+    </div>
+    <button class="pk-menu__toggle" [class.on]="soundOn" (click)="toggleSound()">
+      <span class="pk-menu__toggle-knob"></span>
+    </button>
+  </div>
+
+  <!-- Divider -->
+  <div class="pk-menu__sep"></div>
+
+  <!-- Menu Items -->
+  <nav class="pk-menu__nav">
+    <button class="pk-menu__item" (click)="openModal('how-to-play')">
+      <span class="pk-menu__item-icon">🃏</span>
+      <span class="pk-menu__item-label">How to Play</span>
+      <span class="pk-menu__item-arrow">›</span>
+    </button>
+    <button class="pk-menu__item" (click)="openModal('game-rules')">
+      <span class="pk-menu__item-icon">📜</span>
+      <span class="pk-menu__item-label">Game Rules</span>
+      <span class="pk-menu__item-arrow">›</span>
+    </button>
+    <button class="pk-menu__item" (click)="openModal('bet-history')">
+      <span class="pk-menu__item-icon">📊</span>
+      <span class="pk-menu__item-label">Bet History</span>
+      <span class="pk-menu__item-arrow">›</span>
+      <span class="pk-menu__item-badge" *ngIf="betHistory.length > 0">{{ betHistory.length }}</span>
+    </button>
+  </nav>
+
+  <!-- Footer -->
+  <div class="pk-menu__footer">
+    <span class="pk-menu__version">Patto King v1.0</span>
+    <span class="pk-menu__suits">♠ ♥ ♦ ♣</span>
+  </div>
+
+</div>
+
+<!-- ══ MODALS ════════════════════════════════════════════════ -->
+
+<!-- Backdrop -->
+<div class="pk-modal__backdrop"
+     [class.open]="activeModal !== null"
+     (click)="closeModal()">
+</div>
+
+<!-- ── How to Play Modal ─────────────────────────────────── -->
+<div class="pk-modal" [class.open]="activeModal === 'how-to-play'">
+  <div class="pk-modal__header">
+    <span class="pk-modal__header-icon">🃏</span>
+    <h2 class="pk-modal__title">How to Play</h2>
+    <button class="pk-modal__close" (click)="closeModal()">✕</button>
+  </div>
+  <div class="pk-modal__body">
+
+    <!-- Steps -->
+    <div class="pk-modal__step">
+      <div class="pk-modal__step-num">1</div>
+      <div class="pk-modal__step-content">
+        <div class="pk-modal__step-title">💰 Set Your Coins</div>
+        <div class="pk-modal__step-desc">
+          Use the <strong>− / +</strong> buttons in the footer to choose your bet amount.
+          Minimum <strong>10 coins</strong>, maximum <strong>500 coins</strong> per deal.
+        </div>
+      </div>
+    </div>
+
+    <div class="pk-modal__step">
+      <div class="pk-modal__step-num">2</div>
+      <div class="pk-modal__step-content">
+        <div class="pk-modal__step-title">🃏 Deal Cards</div>
+        <div class="pk-modal__step-desc">
+          Press the <strong>DEAL CARDS</strong> button. You will play <strong>5 rounds</strong> at once —
+          each round deals <strong>3 cards</strong> from a freshly shuffled deck.
+        </div>
+      </div>
+    </div>
+
+    <div class="pk-modal__step">
+      <div class="pk-modal__step-num">3</div>
+      <div class="pk-modal__step-content">
+        <div class="pk-modal__step-title">👀 Watch the Cards</div>
+        <div class="pk-modal__step-desc">
+          Cards flip one by one. If two or three cards share the same rank,
+          they will be highlighted with a <span class="pk-modal__step-highlight">green glow</span>.
+        </div>
+      </div>
+    </div>
+
+    <div class="pk-modal__step">
+      <div class="pk-modal__step-num">4</div>
+      <div class="pk-modal__step-content">
+        <div class="pk-modal__step-title">🔥 Teen Patti — Jackpot!</div>
+        <div class="pk-modal__step-desc">
+          If all three cards share the same rank — e.g. <em>K♠ K♥ K♦</em> — you hit
+          <strong class="pk-modal__step-teen">Teen Patti</strong>
+          and win <strong>5× your bet</strong> for that round!
+        </div>
+      </div>
+    </div>
+
+    <div class="pk-modal__step">
+      <div class="pk-modal__step-num">5</div>
+      <div class="pk-modal__step-content">
+        <div class="pk-modal__step-title">⚡ Do Patti — Double Win!</div>
+        <div class="pk-modal__step-desc">
+          If any two cards share the same rank — e.g. <em>A♠ A♥ 7♦</em> — you hit
+          <strong class="pk-modal__step-do">Do Patti</strong>
+          and win <strong>2× your bet</strong>.
+        </div>
+      </div>
+    </div>
+
+    <div class="pk-modal__step">
+      <div class="pk-modal__step-num">6</div>
+      <div class="pk-modal__step-content">
+        <div class="pk-modal__step-title">📊 Add Up Your Total</div>
+        <div class="pk-modal__step-desc">
+          All winnings from Teen Patti and Do Patti across 5 rounds are added together
+          and credited to your coins. Multiple wins in a single deal are possible!
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Reference -->
+    <div class="pk-modal__htp-ref">
+      <div class="pk-modal__htp-ref-title">⚡ Quick Reference</div>
+      <div class="pk-modal__htp-ref-row pk-modal__htp-ref-row--teen">
+        <span>🔥 Teen Patti (3 of a kind)</span>
+        <strong>Bet × 5</strong>
+      </div>
+      <div class="pk-modal__htp-ref-row pk-modal__htp-ref-row--do">
+        <span>⚡ Do Patti (2 of a kind)</span>
+        <strong>Bet × 2</strong>
+      </div>
+      <div class="pk-modal__htp-ref-row pk-modal__htp-ref-row--loss">
+        <span>✗ No Match</span>
+        <strong>0</strong>
+      </div>
+    </div>
+
+    <!-- Tip box -->
+    <div class="pk-modal__tip">
+      <span class="pk-modal__tip-icon">💡</span>
+      <span><strong>Pro Tip:</strong> Each deal has 5 rounds — win more rounds, earn more! Teen Patti is rare but pays the most.</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Game Rules Modal ──────────────────────────────────── -->
+<div class="pk-modal" [class.open]="activeModal === 'game-rules'">
+  <div class="pk-modal__header">
+    <span class="pk-modal__header-icon">📜</span>
+    <h2 class="pk-modal__title">Game Rules</h2>
+    <button class="pk-modal__close" (click)="closeModal()">✕</button>
+  </div>
+  <div class="pk-modal__body">
+    <div class="pk-modal__rule-card pk-modal__rule-card--teen">
+      <div class="pk-modal__rule-badge">5×</div>
+      <div class="pk-modal__rule-info">
+        <div class="pk-modal__rule-name">🔥 Teen Patti</div>
+        <div class="pk-modal__rule-desc">All three cards have the same rank — biggest win!</div>
+        <div class="pk-modal__rule-example">e.g. K♠ K♥ K♦</div>
+      </div>
+    </div>
+
+    <div class="pk-modal__rule-card pk-modal__rule-card--do">
+      <div class="pk-modal__rule-badge">2×</div>
+      <div class="pk-modal__rule-info">
+        <div class="pk-modal__rule-name">⚡ Do Patti</div>
+        <div class="pk-modal__rule-desc">Any two cards share the same rank.</div>
+        <div class="pk-modal__rule-example">e.g. A♠ A♥ 7♦</div>
+      </div>
+    </div>
+
+    <div class="pk-modal__rule-card pk-modal__rule-card--loss">
+      <div class="pk-modal__rule-badge pk-modal__rule-badge--loss">✗</div>
+      <div class="pk-modal__rule-info">
+        <div class="pk-modal__rule-name">No Match</div>
+        <div class="pk-modal__rule-desc">No two cards match — bet is lost.</div>
+        <div class="pk-modal__rule-example">e.g. 2♠ 7♥ J♦</div>
+      </div>
+    </div>
+
+    <div class="pk-modal__info-box">
+      <div class="pk-modal__info-row">
+        <span class="pk-modal__info-key">Rounds per Deal</span>
+        <span class="pk-modal__info-val">5</span>
+      </div>
+      <div class="pk-modal__info-row">
+        <span class="pk-modal__info-key">Min Bet</span>
+        <span class="pk-modal__info-val">10 coins</span>
+      </div>
+      <div class="pk-modal__info-row">
+        <span class="pk-modal__info-key">Max Bet</span>
+        <span class="pk-modal__info-val">500 coins</span>
+      </div>
+      <div class="pk-modal__info-row">
+        <span class="pk-modal__info-key">Deck</span>
+        <span class="pk-modal__info-val">52 cards</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Bet History Modal ──────────────────────────────────── -->
+<div class="pk-modal" [class.open]="activeModal === 'bet-history'">
+  <div class="pk-modal__header">
+    <span class="pk-modal__header-icon">📊</span>
+    <h2 class="pk-modal__title">Bet History</h2>
+    <button class="pk-modal__close" (click)="closeModal()">✕</button>
+  </div>
+  <div class="pk-modal__body">
+
+    <!-- Stats row -->
+    <div class="pk-modal__stats">
+      <div class="pk-modal__stat">
+        <div class="pk-modal__stat-val">{{ betHistory.length }}</div>
+        <div class="pk-modal__stat-label">Total Deals</div>
+      </div>
+      <div class="pk-modal__stat">
+        <div class="pk-modal__stat-val pk-modal__stat-val--green">{{ totalWins }}</div>
+        <div class="pk-modal__stat-label">Wins</div>
+      </div>
+      <div class="pk-modal__stat">
+        <div class="pk-modal__stat-val"
+             [class.pk-modal__stat-val--green]="netProfit >= 0"
+             [class.pk-modal__stat-val--red]="netProfit < 0">
+          {{ netProfit >= 0 ? '+' : '' }}{{ netProfit }}
+        </div>
+        <div class="pk-modal__stat-label">Net P&L</div>
+      </div>
+    </div>
+
+    <div class="pk-modal__empty" *ngIf="betHistory.length === 0">
+      <span class="pk-modal__empty-icon">🃏</span>
+      <span>No bets placed yet — Deal to get started!</span>
+    </div>
+
+    <div class="pk-modal__table-wrap" *ngIf="betHistory.length > 0">
+      <table class="pk-hist-table">
+        <thead>
+          <tr>
+            <th class="pk-hist-table__th">#</th>
+            <th class="pk-hist-table__th">Bet</th>
+            <th class="pk-hist-table__th">Result</th>
+            <th class="pk-hist-table__th pk-hist-table__th--right">P&L</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="pk-hist-table__row"
+              *ngFor="let entry of betHistoryReversed; let i = index"
+              [class.pk-hist-table__row--win]="entry.netGain > 0"
+              [class.pk-hist-table__row--loss]="entry.netGain <= 0">
+
+            <!-- Deal number -->
+            <td class="pk-hist-table__td pk-hist-table__td--num">
+              {{ betHistory.length - i }}
+            </td>
+
+            <!-- Bet amount -->
+            <td class="pk-hist-table__td pk-hist-table__td--bet">
+              {{ entry.bet }}
+            </td>
+
+            <!-- Result tags -->
+            <td class="pk-hist-table__td pk-hist-table__td--result">
+              <div class="pk-hist-table__tags">
+                <span *ngIf="entry.teenPatti > 0"
+                      class="pk-hist-table__tag pk-hist-table__tag--teen">
+                  🔥 {{ entry.teenPatti }}×TP
+                </span>
+                <span *ngIf="entry.doPatti > 0"
+                      class="pk-hist-table__tag pk-hist-table__tag--do">
+                  ⚡ {{ entry.doPatti }}×DP
+                </span>
+                <span *ngIf="entry.teenPatti === 0 && entry.doPatti === 0"
+                      class="pk-hist-table__tag pk-hist-table__tag--loss">
+                  ✗ None
+                </span>
+              </div>
+            </td>
+
+            <td class="pk-hist-table__td pk-hist-table__td--gain"
+                [class.pk-hist-table__td--pos]="entry.netGain > 0"
+                [class.pk-hist-table__td--neg]="entry.netGain <= 0">
+              {{ entry.netGain > 0 ? '+' : '' }}{{ entry.netGain }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,237 @@
+$color-controls-bg:     #b52d26;
+$color-controls-border: #991f1a;
+$color-bet-border:      #eca823;
+$color-spin-bg:         #25d160;
+$color-spin-hover:      #b0ff7c;
+$shadow-controls:       inset 0px 0px 60px 4px #000;
+$shadow-spin:           inset 0px 0px 14px 1px #000;
+
+.slots {
+  width: 100%;
+  background: #3e0907;
+  min-height: 100dvh;
+
+  
+  &__intro {
+    position: fixed;
+    inset: 0;
+    background: #3e0907;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 300;
+    animation: intro-fade 0.4s ease both;
+  }
+
+  &__intro-card {
+    width: 320px;
+    background: #1a0505;
+    border: 3px solid $color-bet-border;
+    border-radius: 18px;
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: 0 0 0 6px #aa1520, 0 0 0 9px $color-bet-border;
+  }
+
+  &__intro-header {
+    margin-bottom: 20px;
+  }
+
+  &__intro-eyebrow {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #d4b07a;
+    margin: 0 0 4px;
+  }
+
+  &__intro-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: $color-bet-border;
+    margin: 0 0 6px;
+    letter-spacing: 4px;
+  }
+
+  &__intro-sub {
+    font-size: 12px;
+    color: #8a6a4a;
+    margin: 0;
+  }
+
+  &__intro-paytable {
+    background: #2e0808;
+    border: 1px solid rgba($color-bet-border, 0.3);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+  }
+
+  &__intro-pt-title {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #8a6a4a;
+    margin-bottom: 10px;
+  }
+
+  &__intro-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 3px 0;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba($color-bet-border, 0.1);
+    }
+  }
+
+  &__intro-sym {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+  }
+
+  &__intro-label {
+    flex: 1;
+    text-align: left;
+    font-size: 13px;
+    color: #d4b07a;
+  }
+
+  &__intro-mult {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffdd66;
+  }
+
+  &__intro-btn {
+    width: 100%;
+    background: linear-gradient(180deg, #ffdd66 0%, $color-bet-border 100%);
+    border: none;
+    border-radius: 999px;
+    color: #3a1a00;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 14px 0;
+    cursor: pointer;
+    box-shadow: 0 4px 0 #854f0b;
+    transition: transform 0.1s, box-shadow 0.1s;
+
+    &:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #854f0b;
+    }
+  }
+
+  // ── Game ───────────────────────────────────────────────
+  &__container {
+    width: 100%;
+  }
+
+  &__panel {
+    width: 450px;
+    margin: auto;
+    padding-bottom: 0.25rem;
+
+    @media (min-width: 768px) {
+      padding: 1rem;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    background-color: $color-controls-bg;
+    border-top: 4px solid $color-controls-border;
+    gap: 1rem;
+    box-shadow: $shadow-controls;
+  }
+
+  &__values {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  &__bet-btn {
+    width: 1.5rem;
+    height: 2.5rem;
+    background: transparent;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: 4px solid $color-bet-border;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.125rem;
+    line-height: 1;
+    transition: border-color 0.2s ease;
+
+    &:hover {
+      border-color: lighten($color-bet-border, 12%);
+    }
+
+    &:active {
+      transform: scale(0.95);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+
+  &__spin-btn {
+    background-color: $color-spin-bg;
+    width: 4rem;
+    height: 4rem;
+    color: #ffffff;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: 4px solid $color-bet-border;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: $shadow-spin;
+    transition: background-color 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background-color: $color-spin-hover;
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.96);
+    }
+
+    &--disabled,
+    &:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+  }
+}
+
+@keyframes intro-fade {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}

@@ -1,0 +1,88 @@
+<div class="my-bets-modal-overlay" [class.show]="isVisible" (click)="onClose()">
+  <div class="my-bets-modal" (click)="$event.stopPropagation()">
+
+   
+    <div class="my-bets-modal__header">
+      <span class="my-bets-modal__title">MY BET HISTORY</span>
+      <button class="my-bets-modal__close-btn" (click)="onClose()" aria-label="Close">
+        &#x2715;
+      </button>
+    </div>
+
+    <div class="my-bets-modal__table">
+
+     
+      <div class="my-bets-modal__thead">
+        <div class="my-bets-modal__th my-bets-modal__th--date">Date</div>
+        <div class="my-bets-modal__th my-bets-modal__th--bet">Bet USD</div>
+        <div class="my-bets-modal__th my-bets-modal__th--x">X</div>
+        <div class="my-bets-modal__th my-bets-modal__th--cashout">Cash out USD</div>
+      </div>
+
+     
+      <div class="my-bets-modal__tbody">
+        <div
+          class="my-bets-modal__tr"
+          [class.my-bets-modal__tr--won]="isWon(bet)"
+          *ngFor="let bet of bets"
+        >
+          
+          <div class="my-bets-modal__td my-bets-modal__td--date">
+            <span class="my-bets-modal__time">{{ bet.time }}</span>
+            <span class="my-bets-modal__date">{{ bet.date }}</span>
+          </div>
+
+         
+          <div class="my-bets-modal__td my-bets-modal__td--bet">
+            {{ bet.betUsd | number:'1.2-2' }}
+          </div>
+
+          
+          <div class="my-bets-modal__td my-bets-modal__td--x">
+            <span
+              class="my-bets-modal__badge"
+              [class.my-bets-modal__badge--high]="isHighMultiplier(bet)"
+              [class.my-bets-modal__badge--low]="!isHighMultiplier(bet)"
+            >
+              {{ bet.multiplier | number:'1.2-2' }}x
+            </span>
+          </div>
+
+         
+          <div class="my-bets-modal__td my-bets-modal__td--cashout">
+            <span *ngIf="isWon(bet)" class="my-bets-modal__cashout-value">
+              {{ bet.cashOutUsd | number:'1.2-2' }}
+            </span>
+            <div class="my-bets-modal__actions">
+             
+              <button class="my-bets-modal__action-btn" aria-label="Verify">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M8 1.5L2 4v4c0 3.3 2.5 5.7 6 6.5 3.5-.8 6-3.2 6-6.5V4L8 1.5z"
+                    stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                  <path d="M5.5 8l1.5 1.5 3-3"
+                    stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              
+              <button class="my-bets-modal__action-btn" aria-label="Comment">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+                  <path d="M14 8c0 3.3-2.7 6-6 6a6.1 6.1 0 01-3-.8L2 14l.8-3A5.9 5.9 0 012 8c0-3.3 2.7-6 6-6s6 2.7 6 6z"
+                    stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+   
+    <div class="my-bets-modal__footer">
+      <button class="my-bets-modal__load-more" (click)="loadMore()">
+        Load more
+      </button>
+    </div>
+
+  </div>
+</div>

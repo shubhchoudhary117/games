@@ -1,0 +1,139 @@
+<audio #mineAudio src="/assets/audios/mines/Mine_Click_Audio.mp3"></audio>
+<audio #dimondAudio src="/assets/audios/mines/Dimond_Audio.mp3"></audio>
+
+<div class="game-screen-section">
+  <app-mines-header></app-mines-header>
+  <main class="game-screen-main">
+    <div class="game-screen-main-container">
+      <div class="mines-and-multipliers-section">
+
+        <div class="game-multipliers-container" #multipliersContainer>
+          <div *ngFor="let m of multipliers; let i = index" class="mine-multiplier"
+            [class.fill_]="multiplierCrossed[i] && gameIsStart">
+            {{ m }}x
+          </div>
+        </div>
+
+        <div class="mines-container">
+          <button *ngFor="let item of minesProfiles; let i = index"
+            [disabled]="item?.isBomb || item?.isDimond || !gameIsStart || showMineProgress.action" class="mine-box"
+            (click)="handleMineClick(item, i)">
+
+            <!-- Loading spinner -->
+            <div *ngIf="showMineProgress.action && showMineProgress.id === item.mineId" class="progress-wrapper">
+              <img src="assets/mines/game-icons/Progress_Mine_Loader.svg" class="mine-loader">
+            </div>
+
+            <div *ngIf="!(showMineProgress.action && showMineProgress.id == item.mineId)" class="mine-box-inner_"
+              [ngClass]="{
+                'is_Bomb':   item?.isBomb,
+                'is_Dimond': item?.isDimond
+              }">
+            </div>
+
+          </button>
+
+          <div *ngIf="showWinBox" class="mines-wining-box" [ngClass]="{ 'game-over_': showGameOverBox }">
+            <div class="wining-box-header" [ngClass]="{ 'game-over_': showGameOverBox }">
+              {{ showGameOverBox ? 'Game Over' : 'You Win' }}
+            </div>
+            <div class="game-win-amount" [ngClass]="{ 'game-over_': showGameOverBox }">
+              ₹ {{ showGameOverBox ? '0.00' : (winingAmount | number:'1.2-2') }}
+            </div>
+            <div class="win-box-footer" [ngClass]="{ 'game-over_': showGameOverBox }">
+              <div class="win-multiplier-h" [ngClass]="{ 'game-over_': showGameOverBox }">
+                Multiplier
+              </div>
+              <div class="win-multiplier-v" [ngClass]="{ 'game-over_': showGameOverBox }">
+                {{ showGameOverBox ? '0.00x' : (multipliers[currentMineIndex] + 'x') }}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="game-controllers-and-details_">
+        <div class="game-actions-container">
+          <div class="game-start-button">
+            <button *ngIf="!gameIsStart" (click)="gameStartHandler()" class="start-btn start">
+              Start
+            </button>
+
+            <button *ngIf="gameIsStart && gemsFound === 0" (click)="gameCancelHandler()" class="start-btn cancel">
+              Cancel
+            </button>
+
+            <button *ngIf="gameIsStart && gemsFound > 0" (click)="cashOut()" class="cashout-btn">
+              Cash Out
+              <br />
+              <span>₹{{ betAmount * multiplier | number:'1.0-0' }}</span>
+            </button>
+
+          </div>
+
+          <div class="bet-amount-controllers">
+            <button class="bet-action-button" [disabled]="gameIsStart" (click)="betAmount = 10">min</button>
+            <button class="bet-action-button" [disabled]="gameIsStart" (click)="handleBetAmount(1)">+</button>
+
+            <div class="bet-amount-group">
+              <div class="bet-amount-label">Bet Amount ⓘ</div>
+              <input type="number" class="bet-amount-input" [(ngModel)]="betAmount" [disabled]="gameIsStart" />
+            </div>
+
+            <button class="bet-action-button" [disabled]="gameIsStart" (click)="handleBetAmount(-1)">-</button>
+            <button class="bet-action-button" [disabled]="gameIsStart" (click)="betAmount = 10000">max</button>
+          </div>
+
+          <div class="bet-amount-controllers mines">
+            <div class="bet-action-button" [class.disabled]="gameIsStart" (click)="!gameIsStart && (mines = 3)">3</div>
+            <div class="bet-action-button" [class.disabled]="gameIsStart" (click)="!gameIsStart && (mines = 5)">5</div>
+
+            <button class="bet-action-button mines" [disabled]="gameIsStart" (click)="mines = mines + 1">+</button>
+
+            <div class="bet-amount-group mines">
+              <div class="bet-amount-label mines">Mines</div>
+              <input class="bet-amount-input mines" [(ngModel)]="mines" [disabled]="gameIsStart">
+            </div>
+
+            <button class="bet-action-button mines" [disabled]="gameIsStart" (click)="mines = mines - 1">-</button>
+
+            <div class="bet-action-button" [class.disabled]="gameIsStart" (click)="!gameIsStart && (mines = 10)">10
+            </div>
+            <div class="bet-action-button" [class.disabled]="gameIsStart" (click)="!gameIsStart && (mines = 20)">20
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mines-details-box">
+          <div class="details-box-header">
+            <div class="details-heading">Game Details</div>
+          </div>
+
+          <div class="mines-game-details-rows_">
+            <div class="game-details-row_">
+              <div class="details_icon dimond"></div>
+              <div class="details_value">{{ gameIsStart ? gemPercent : 0 }}%</div>
+            </div>
+
+            <div class="game-details-row_">
+              <div class="details_icon bomb"></div>
+              <div class="details_value">{{ gameIsStart ? bombPercent : 0 }}%</div>
+            </div>
+
+            <div class="game-details-row_">
+              <div class="details_icon tiles"></div>
+              <div class="details_value">{{ tilesRevealed }}/25</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bet-histories-section">
+      <app-mines-bethistory></app-mines-bethistory>
+    </div>
+  </main>
+</div>

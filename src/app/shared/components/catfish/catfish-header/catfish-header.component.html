@@ -1,0 +1,85 @@
+<header class="game-header">
+  <nav class="game-header-nav">
+
+    <div class="gamename-with-logo">
+      <img src="assets/catfish/gameLogo.svg" class="gamelogo-img" />
+      <div class="gamename">Swilnder</div>
+    </div>
+
+    <div class="wallet-and-settings">
+      <div class="wallet-balance-box">
+        <div class="wallet-balance">
+          {{ user?.coin ? (user.coin | number:'1.2-2') : '0.00' }}
+        </div>
+        <i class="fas fa-wallet wallet-icon"></i>
+      </div>
+
+      <button class="settings">
+        <i class="fas fa-cog setting-icon" (click)="showProfileModal = true"></i>
+      </button>
+    </div>
+
+  </nav>
+</header>
+
+
+
+<div class="profile-modal" [ngClass]="showProfileModal ? 'active' : 'close'">
+
+  <div class="profile-header">
+    <div class="profile-details">
+      <img src="assets/catfish/profileIcon.jpeg" class="profile-img" />
+      <div class="profile-username">Coder 111 </div>
+    </div>
+
+    <i class="fas fa-times profile-close-icon"
+       (click)="showProfileModal = false"></i>
+  </div>
+
+  <div class="profile-settings-list"
+       [ngClass]="User.Settings.Color_Mode === 'LIGHT' ? 'LIGHT' : ''">
+
+    <!-- Sound -->
+    <div class="profile-setting"
+         [ngClass]="User.Settings.Color_Mode === 'LIGHT' ? 'LIGHT' : ''">
+
+      <div class="setting-name">Sound</div>
+
+      <i class="profile-setting-icon"
+         [ngClass]="User.Settings.Sound_On ? 'fas fa-volume-up' : 'fas fa-volume-mute'"
+         (click)="handleSoundSetting()">
+      </i>
+    </div>
+
+    
+    <div class="profile-setting"
+         [ngClass]="User.Settings.Color_Mode === 'LIGHT' ? 'LIGHT' : ''">
+
+      <div class="setting-name">Game Rules</div>
+
+      <i class="fas fa-bars profile-setting-icon"
+         (click)="showRulesModal = true">
+      </i>
+    </div>
+
+    
+    <div class="profile-setting"
+         [ngClass]="User.Settings.Color_Mode === 'LIGHT' ? 'LIGHT' : ''">
+      <div class="setting-name">Mode</div>
+      <i class="profile-setting-icon"
+         [ngClass]="colorMode === 'DARK' ? 'fas fa-moon' : 'fas fa-sun'"
+         (click)="handleMode(colorMode === 'DARK' ? 'LIGHT' : 'DARK')">
+      </i>
+    </div>
+
+  </div>
+</div>
+
+
+
+<app-catfish-rules-modal
+  *ngIf="showRulesModal"
+  [User]="User"
+  [showRulesModal]="showRulesModal"
+  (close)="showRulesModal = false">
+</app-catfish-rules-modal>

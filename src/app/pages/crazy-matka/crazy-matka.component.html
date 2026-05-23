@@ -1,0 +1,77 @@
+<section class="game-main-screen_">
+    <div class="game-main-screen-container_">
+        <div class="wheel-section_" [class.active-wheel]="wheelStart">
+            
+            <div class="wheel-section-wheel-wrapper_">
+                <app-crazy-matka-wheel [stopOnNumber]="selectedWheelNumber"></app-crazy-matka-wheel>
+            </div>
+        </div>
+        <div class="game-place-bets-section_" [class.active-wheel]="wheelStart">
+
+            <div class="game-place-bets-chips-section-container_">
+                <div class="wheel-beting-number-chips-container_" [class.active-wheel]="wheelStart">
+                    <img *ngFor="let chip of wheelBettingChips" (click)="selectedWheelNumber = chip.number"
+                        [src]="chip.img" class="wheel-beting-number-chip_">
+                </div>
+
+                <div class="single-chip_" [class.active-wheel]="wheelStart">
+                    <img src="assets/crazy-wheel/other-bet-numbers/10xImage.png" class="single-chip-image">
+                </div>
+
+                <div class="bet-money-cards_" [class.active-wheel]="wheelStart">
+                    <div *ngFor="let item of moneyCardsData; let i = index" class="bet-money-card_"
+                        [style.--card-index]="i">
+                        <img [src]="item.img" class="bet-money-card-image_">
+                    </div>
+                </div>
+
+
+                <div class="single-chip_ bonus_" [class.active-wheel]="wheelStart">
+                    <img src="assets/crazy-wheel/other-bet-numbers/CrazyMatkaBonusImage.png" class="single-chip-image">
+                </div>
+
+
+                <div class="odds-event-betson-all-container_" [class.active-wheel]="wheelStart">
+                    <div *ngFor="let item of oddEventData" class="odd-even-all-chip-wrapper_">
+                        <img [src]="item.img" class="odd-even-all-chip-img_">
+                    </div>
+                </div>
+
+
+                <div class="undo-redo--2x-menu-section_" [class.active-wheel]="wheelStart">
+                    <div class="undo-redo-2x-menu-section-container_">
+
+                        <div class="undo-action-group_">
+                            <div class="undo-action-label_">Undo</div>
+                            <div class="undo-action-button_"></div>
+                        </div>
+
+                        <div class="circular-menu-container_">
+                        </div>
+
+                        <div class="undo-action-group_">
+                            <div class="undo-action-label_">2X</div>
+                            <div class="undo-action-button_"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                <div class="balance-and-total-bet-amount-section_">
+                    <div class="balance-group_">
+                        <div class="balance-label_">Balance :</div>
+                        <div class="balance-value_">INR 0</div>
+                    </div>
+
+                    <div class="total-bet-amount-group_">
+                        <div class="total-bet-amount-label_">Total Bet :</div>
+                        <div class="total-bet-amount-value_">0</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>

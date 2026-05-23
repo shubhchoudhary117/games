@@ -1,0 +1,16 @@
+<!-- src/app/components/timer/timer.component.html -->
+<div class="timer-container">
+  <svg class="timer-svg" width="68" height="68">
+    <circle cx="34" cy="34" r="28" fill="none" stroke="#2a2a2a" stroke-width="5"/>
+    <circle
+      cx="34" cy="34" r="28"
+      fill="none"
+      [attr.stroke]="arcColor()"
+      stroke-width="5"
+      stroke-linecap="round"
+      [attr.stroke-dasharray]="CIRC"
+      [attr.stroke-dashoffset]="dashOffset()"
+    />
+  </svg>
+  <span class="timer-text">{{ rs.timerVal() }}</span>
+</div>

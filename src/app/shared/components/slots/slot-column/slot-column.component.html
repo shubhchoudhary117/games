@@ -1,0 +1,42 @@
+
+<div class="slot-column">
+  <div #rouletteRef class="slot-column__reel">
+
+    <div
+      *ngFor="let symbol of rouletteItems; let i = index; trackBy: trackByIndex"
+      class="slot-column__cell"
+      [class.slot-column__cell--winning]="isWinningSymbol(i)"
+    >
+      <div
+        class="slot-column__inner"
+        [class.slot-column__inner--winning]="isWinningSymbol(i)"
+      >
+       
+        <div *ngIf="loading" class="slot-column__loader">
+          <div class="slot-column__spinner"></div>
+        </div>
+
+        <!-- Symbol image -->
+        <img
+          [src]="getSymbolImage(symbol)"
+          [alt]="symbol"
+          class="slot-column__image"
+          [class.slot-column__image--hidden]="loading"
+          (load)="handleImageLoad()"
+        />
+        <ng-container *ngIf="isWinningSymbol(i) && !isSpinning">
+          <div class="slot-column__win-overlay">
+            <div class="slot-column__glow"></div>
+            <div
+              *ngFor="let rotation of getLineRotations(i)"
+              class="slot-column__win-line"
+              [style.transform]="rotation"
+            ></div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+
+  </div>
+</div>

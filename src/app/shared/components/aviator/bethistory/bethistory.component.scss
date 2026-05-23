@@ -1,0 +1,373 @@
+.av-history {
+    height: calc(100vh - 40px);
+    width: 100%;
+    background: #1b1c1d;
+    border-radius: 20px;
+    padding: 8px 8px 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    position: relative;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    flex-grow: 0;
+
+
+    &__navigation {
+        width: 100%;
+        height: 32px;
+        min-height: 32px;
+        background: #141516;
+        border-radius: 64px;
+        border: solid 4px #141516;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    &__switch {
+        height: 100%;
+        flex: 1;
+        text-align: center;
+        background: none;
+        border-radius: 32px;
+        border: none;
+        padding: 0;
+        color: #a3a3a3;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: -.18px;
+        transition: all .25s ease-in;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.active {
+            background: #2c2d30;
+            color: #ebebeb;
+            cursor: default;
+        }
+    }
+
+    &__totalbets {
+        width: 100%;
+        background: #141516;
+        border-radius: 14px;
+        padding: 8px;
+        margin-top: 5px;
+    }
+
+    &__totalbets-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__totalbets-users {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    &__totalbets-usersimages {
+        display: flex;
+        align-items: center;
+
+        img {
+            width: 23px;
+            height: 23px;
+            object-fit: contain;
+            border: 1px solid green;
+            border-radius: 50%;
+
+            &:nth-child(2) {
+                transform: translateX(-10px);
+            }
+
+            &:nth-child(3) {
+                transform: translateX(-20px);
+            }
+        }
+    }
+
+    &__totalbets-count {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 100%;
+        vertical-align: middle;
+        color: #ccc;
+        font-feature-settings: lining-nums tabular-nums;
+        font-variant-numeric: lining-nums tabular-nums;
+        margin-top: 5px;
+
+        span {
+            padding-left: 4px;
+            font-size: 12px;
+            color: #7b7b7b;
+        }
+    }
+
+    &__totalbets-amounts {
+        .total-wins {
+            color: #ccc;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 18px;
+            vertical-align: middle;
+        }
+
+        .total-wins-label {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 100%;
+            vertical-align: middle;
+            color: #7b7b7b;
+            margin-top: 5px;
+        }
+    }
+
+    &__totalbets-progress {
+        width: 100%;
+        height: 5px;
+        border-radius: 8px;
+        background: green;
+        margin-top: 4px;
+    }
+
+    &__table {
+        width: 100%;
+        margin-top: 6px;
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__thead {
+        display: flex;
+        padding: 4px 4px 6px;
+        justify-content: center;
+        align-items: center;
+        color: #7b7b7b;
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: -.15px;
+        flex-shrink: 0;
+        background: #1b1c1d;
+        z-index: 10;
+    }
+
+    &__th {
+        flex: 1;
+        min-width: 72px;
+        margin-left: 4px;
+        padding: 0 4px;
+        text-align: right;
+        white-space: nowrap;
+
+        &.player {
+            flex: 1.35;
+            min-width: 92px;
+            margin-left: 0;
+            text-align: left;
+        }
+    }
+
+    &__tbody {
+        flex: 1;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 30px;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &__tr {
+        display: flex;
+        align-items: center;
+        height: 32px;
+        width: 100%;
+        padding: 4px;
+        margin-top: 4px;
+        border-radius: 32px;
+        background: #101112;
+        flex-shrink: 0;
+
+        &.cashout {
+            background: linear-gradient(0deg, rgba(66, 127, 0, .3) 0%, rgba(66, 127, 0, .3) 100%), #101112;
+        }
+    }
+
+    &__td {
+        flex: 1;
+        font-size: 12px;
+        color: #bbbfc5;
+        font-weight: 500;
+        text-align: right;
+        margin-left: 4px;
+        padding: 0 4px;
+        white-space: nowrap;
+
+        &.player {
+            display: flex;
+            align-items: center;
+            flex: 1.35;
+            min-width: 92px;
+            margin-left: 0;
+            padding: 0;
+        }
+
+        .player-img {
+            width: 24px;
+            height: 24px;
+            margin-right: 4px;
+            flex-shrink: 0;
+        }
+
+        .username {
+            padding: 0 4px;
+            flex: 1;
+            letter-spacing: -.18px;
+            text-align: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+
+
+    &__footer {
+        right: 4px;
+        width: 400px;
+        max-width: 400px;
+        background: #1b1c1d;
+        z-index: 100;
+        flex-shrink: 0;
+        display: flex;
+        padding: 0px 4px;
+        height: 20px;
+        justify-content: space-between;
+        align-items: center;
+        border-radius: 20px;
+    }
+
+    &__action {
+        display: flex;
+        align-items: center;
+        height: 12px;
+        color: #a3a3a3;
+        font-size: 10px;
+        font-weight: 500;
+        line-height: 12px;
+        padding: 0 4px;
+        background: transparent;
+        outline: none;
+        border: none;
+    }
+}
+
+
+@media screen and (max-width:768px) {
+    .av-history {
+       height: auto;
+
+        &__navigation {
+            width: 100%;
+            height: 32px;
+            
+        }
+
+        &__switch {
+            height: 100%;
+            
+        }
+
+        &__totalbets {
+            width: 100%;
+
+        }
+
+        &__totalbets-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &__totalbets-users {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        &__totalbets-usersimages {
+            display: flex;
+            align-items: center;
+        }
+
+        &__totalbets-count {
+            font-weight: 500;
+            font-size: 12px;
+
+            span {
+                padding-left: 4px;
+                font-size: 12px;
+            }
+        }
+
+        &__totalbets-amounts {
+            .total-wins {
+                font-size: 16px;
+                line-height: 18px;
+                vertical-align: middle;
+            }
+
+            .total-wins-label {
+                font-weight: 400;
+                font-size: 12px;
+            }
+        }
+
+        &__totalbets-progress {
+            width: 100%;
+            height: 5px;
+        }
+
+        &__table {
+            width: 100%;
+            margin-top: 6px;
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__thead {
+            display: flex;
+            padding: 4px 4px 6px;
+        }
+
+        &__th {
+            flex: 1;
+            min-width: 72px;
+            margin-left: 4px;
+            padding: 0 4px;
+            text-align: right;
+            white-space: nowrap;
+
+            &.player {
+                flex: 1.35;
+                min-width: 92px;
+                margin-left: 0;
+                text-align: left;
+            }
+        }
+
+     
+
+    }
+
+}

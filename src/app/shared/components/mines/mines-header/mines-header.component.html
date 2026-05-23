@@ -1,0 +1,60 @@
+<header class="game-header">
+  <nav class="game-header-nav">
+
+    <!-- Left -->
+    <div class="game-nav-left">
+      <div class="game-logo">
+        <img src="assets/mines/header-icons/Game_Nav_Logo.svg" class="game-logo-img" />
+      </div>
+    </div>
+
+    <div class="game-nav-right">
+      <div class="balance-wallet-box">
+        <div class="wallet-icon-wrapper">
+          <i class="fa-solid fa-indian-rupee-sign"></i>
+        </div>
+        <div class="wallet-balance">1000</div>
+      </div>
+      <div class="setting-icon-wrapper">
+        <i class="fas fa-cog setting-icon" (click)="showProfileModal = true"></i>
+      </div>
+
+    </div>
+  </nav>
+</header>
+
+<!-- Profile Modal -->
+<div class="profile-modal" [ngClass]="showProfileModal ? 'active' : 'close'">
+
+  <div class="profile-header">
+    <div class="profile-details">
+      <img src="assets/mines/avtars/profileAvatar.png" class="profile-avtar" />
+      <div class="profile-username">Shubham Choudhary</div>
+    </div>
+
+    <i class="fas fa-times profile-close-icon" (click)="showProfileModal = false"></i>
+  </div>
+
+  <div class="profile-settings-list">
+
+    <!-- Sound -->
+    <div class="profile-setting">
+      <div class="setting-name">Sound</div>
+
+      <i *ngIf="soundIsOn" class="fas fa-volume-up profile-setting-icon" (click)="handleSoundSetting()"></i>
+
+      <i *ngIf="!soundIsOn" class="fas fa-volume-mute profile-setting-icon" (click)="handleSoundSetting()"></i>
+    </div>
+
+    <!-- Rules -->
+    <div class="profile-setting">
+      <div class="setting-name">Game Rules</div>
+      <i class="fas fa-bars profile-setting-icon" (click)="showRulesModal = true"></i>
+    </div>
+
+  </div>
+</div>
+
+
+<app-mines-game-rules (close)="closeGameRules()" [showRulesModal]="showRulesModal">
+</app-mines-game-rules>

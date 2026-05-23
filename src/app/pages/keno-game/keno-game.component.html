@@ -1,0 +1,182 @@
+<audio #buttonsAuido src="assets/audios/keno/button-sound.m4a"></audio>
+<audio #betPlaceAudio src="assets/audios/keno/betplace-sound.m4a"></audio>
+<audio #gameEndAudio src="assets/audios/keno/keno-end.m4a"></audio>
+
+<section class="keno">
+    <main class="keno__container">
+        <div class="keno__gameviewport">
+            <div class="keno__game">
+
+                <!-- Decorative bg arrows -->
+                <img class="keno__bgimg-left" src="assets/keno/bg-img-left.svg" />
+                <img class="keno__bgimg-right" src="assets/keno/bg-img-right.svg" />
+
+                <div class="keno__game-header">
+                    <div class="keno__gameheader-left">
+                        <button class="keno__howtoplay-btn" (click)="openHowToPlay()">
+                            <i class="fa-regular fa-circle-question"></i> How to Play?
+                        </button>
+                    </div>
+
+                    <div class="keno__gameheader-mid">
+                        <div class="keno__funmode-mark">FUN MODE</div>
+                    </div>
+
+                    <div class="keno__gameheader__right">
+                        <div class="keno__winamount-block" *ngIf="shoWinAmount">+{{winBannerAmount | number:'1.2-2'}}
+                        </div>
+                        <div class="keno__balance">
+                            {{ balance | number:'1.2-2' }}
+                            <span>USD</span>
+                        </div>
+                        <div class="keno__menublock" (click)="toggleMenu()">&#9776;</div>
+
+                        <!-- Dropdown Menu -->
+
+                        <div class="game-menu" *ngIf="showMenu">
+                            <div class="game-menu__card">
+                                <div class="game-menu__header">
+                                    demo_30024
+                                </div>
+                                <div class="game-menu__list">
+                                    <div class="game-menu__sound-container">
+                                        <div class="game-menu__left">
+                                            <span class="game-menu__icon"><i class="fa-solid fa-volume-high"></i></span>
+                                            <span>Sound</span>
+                                        </div>
+                                        <label class="game-menu__switch">
+                                            <input type="checkbox">
+                                            <span class="game-menu__slider"></span>
+                                        </label>
+                                    </div>
+                                    <div class="game-menu__item" >
+                                        <span class="game-menu__icon"><i
+                                                class="fa-solid fa-clock-rotate-left"></i></span>
+                                        Bet History
+                                    </div>
+                                    <div class="game-menu__item" >
+                                        <span class="game-menu__icon"><i class="fa-solid fa-money-bill"></i></span>
+                                        Game Limits
+                                    </div>
+                                    <div class="game-menu__item" (click)="openHowToPlay()">
+                                        <span class="game-menu__icon"><i
+                                                class="fa-regular fa-circle-question"></i></span>
+                                        How to Play
+                                    </div>
+                                    <div class="game-menu__item" >
+                                        <span class="game-menu__icon"><i class="fa-solid fa-scroll"></i></span>
+                                        Game Rules
+                                    </div>
+                                </div>
+                                <div class="game-menu__footer">
+                                    <div class="game-menu__home">
+                                        <i class="fas fa-home"></i> Back to Home
+                                    </div>
+                                    <div class="game-menu__bottom">
+                                        <span class="game-menu__fair">🛡️ Provably Fair Game</span>
+                                        <span class="game-menu__brand">© GURUGAMES</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instruction badge -->
+                <div class="keno__instruction-badge" [style.color]="instructionColor">
+                    {{ instructionText }}
+                </div>
+
+                <!-- ── GAME BODY ────────────────────────────────────────────── -->
+                <div class="keno__gamebody">
+                    <div class="keno__game-container">
+                        <div class="keno__keno-wrapper">
+
+                            <!-- Numbers grid -->
+                            <div class="keno__game-canvas">
+                                <div class="keno__numbers">
+                                    @for (item of numbers; track item) {
+                                    <div class="keno__number-wrapper">
+                                        <div [class]="numberClass(item)" (click)="toggleNumber(item)">{{ item }}</div>
+                                    </div>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Multipliers box -->
+                            <div class="keno__winning-multipliers-box">
+                                @for (row of multiplierRows; track row.match) {
+                                <div class="keno__mult-row">
+                                    <span class="keno__mult-match" [class.keno__mult-match--active]="row.active">{{
+                                        row.match }}×</span>
+                                    <span class="keno__mult-val">{{ row.value | number:'1.2-2' }}x</span>
+                                </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Random / Clear -->
+                    <div class="keno__digits-actions">
+                        <button class="keno__digit-action-btn" (click)="randomPick()">RANDOM</button>
+                        <button class="keno__digit-action-btn" (click)="clearPick()">CLEAR</button>
+                    </div>
+
+                    <!-- Controllers -->
+                    <div class="keno__gamecontrollers">
+
+                        <!-- Bet amount input -->
+                        <div class="keno__controls-amount">
+                            <div class="keno__input-group">
+                                <div class="keno__input-label">Bet USD</div>
+                                <input type="number" class="keno__bet-input" [(ngModel)]="betAmount" min="0.10"
+                                    step="0.10" />
+                            </div>
+                            <div class="keno__amountactions">
+                                <button class="keno__amountaction-btn" (click)="adjustBet(-1)">−</button>
+                                <button class="keno__amountaction-btn keno__amountaction-btn--coin"
+                                    (click)="showStakes = !showStakes">⛃</button>
+                                <button class="keno__amountaction-btn" (click)="adjustBet(1)">+</button>
+                            </div>
+
+                            <!-- Stakes popup -->
+                            <div class="keno__betstakes-box" *ngIf="showStakes">
+                                <div class="keno__betstakes-heading">Bet USD</div>
+                                <div class="keno__betstakes-grid">
+                                    <div class="keno__betstake" *ngFor="let stake of amountStakes"
+                                        (click)="selectStake(stake)">{{ stake | number:'1.2-2' }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Auto-bet button -->
+                        <div class="keno__place-bet-actions">
+                            <button class="keno__auto-btn" title="Auto Bet">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+                                    <polyline points="23 4 23 10 17 10" />
+                                    <polyline points="1 20 1 14 7 14" />
+                                    <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15" />
+                                </svg>
+                            </button>
+
+                            <button class="keno__place-bet-btn" [disabled]="isRunning" (click)="placeBet()">
+                                <svg viewBox="0 0 24 24" fill="rgba(255,255,255,0.85)" width="18" height="18">
+                                    <polygon points="5,3 19,12 5,21" />
+                                </svg>
+                                <span class="keno__action-title">BET</span>
+                            </button>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</section>
+
+
+<app-keno-how-to-play *ngIf="showHowToPlay" (close)="closeHowToPlay()"></app-keno-how-to-play>

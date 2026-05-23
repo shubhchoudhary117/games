@@ -1,0 +1,59 @@
+
+<audio #winAudioPlayer src="assets/audios/forty-hot-seven/win.wav"></audio>
+<app-forty-hot-seven-loadingscreen
+  *ngIf="isGameLoading"
+  (loadingComplete)="onLoadingComplete()">
+</app-forty-hot-seven-loadingscreen>
+
+<div class="hs" *ngIf="!isGameLoading">
+  <div class="hs__bg"></div>
+  <div class="hs__mountains">
+    <div class="hs__mountain hs__mountain--1"></div>
+    <div class="hs__mountain hs__mountain--2"></div>
+    <div class="hs__mountain hs__mountain--3"></div>
+    <div class="hs__mountain hs__mountain--4"></div>
+    <div class="hs__mountain hs__mountain--5"></div>
+  </div>
+  <div class="hs__smoke-container">
+    <div
+      *ngFor="let p of smokeParticles"
+      class="hs__smoke"
+      [style.left]="p.left"
+      [style.animation-duration]="p.dur"
+      [style.animation-delay]="p.delay"
+    ></div>
+  </div>
+  <div class="hs__win-overlay" [class.hs__win-overlay--show]="showBigWin">
+    <div class="hs__win-big">Win {{ winAmount | number }} CLP</div>
+  </div>
+  <div class="hs__clock">{{ clock }}</div>
+  <div class="hs__wrapper">
+    <div class="hs__title">40 Hot Seven</div>
+
+    <div class="hs__frame">
+      <app-fory-hot-seven-grid
+        [grid]="grid"
+        [winCells]="winCells"
+        [spinningCols]="spinningCols"
+      ></app-fory-hot-seven-grid>
+    </div>
+
+    <div class="hs__win-display" [class.hs__win-display--visible]="showWin">
+      Win {{ winAmount | number }} CLP
+    </div>
+
+    <app-forty-hot-sevent-controls
+      [balance]="balance"
+      [currentBet]="currentBet"
+      [isSpinning]="isSpinning"
+      [autoplay]="autoplay"
+      [autoRounds]="autoRounds"
+      [gambleMode]="gambleMode"
+      (betChange)="onBetChange($event)"
+      (spinClick)="handleSpin()"
+      (autoToggle)="onAutoToggle()"
+      (gambleToggle)="onGambleToggle()"
+    ></app-forty-hot-sevent-controls>
+
+  </div>
+</div>

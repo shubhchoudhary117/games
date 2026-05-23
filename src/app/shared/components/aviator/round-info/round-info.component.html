@@ -1,0 +1,88 @@
+<div class="round-overlay" [class.show]="isVisible" (click)="onClose()">
+  <div class="round-modal" (click)="$event.stopPropagation()">
+
+    <div class="round-modal__header">
+      <div class="round-modal__header-left">
+        <span class="round-modal__title">ROUND {{ roundData.roundId }}</span>
+        <span class="round-modal__multiplier">{{ roundData.multiplier }}x</span>
+        <span class="round-modal__time">{{ roundData.time }}</span>
+      </div>
+      <span class="round-modal__close" (click)="onClose()">
+        <i class="fas fa-times"></i>
+      </span>
+    </div>
+
+    <div class="round-modal__body">
+
+      <div class="round-section">
+        <div class="round-section__heading">
+          <i class="fas fa-server round-section__icon"></i>
+          <div class="round-section__heading-text">
+            <span class="round-section__title">Server Seed:</span>
+            <span class="round-section__subtitle">Generated on our side</span>
+          </div>
+        </div>
+        <div class="round-hash-box">{{ roundData.serverSeed }}</div>
+      </div>
+
+      <div class="round-modal__divider"></div>
+
+      <div class="round-section">
+        <div class="round-section__heading">
+          <i class="fas fa-laptop round-section__icon"></i>
+          <div class="round-section__heading-text">
+            <span class="round-section__title">Client Seed:</span>
+            <span class="round-section__subtitle">Generated on players side</span>
+          </div>
+        </div>
+
+        <div class="round-players">
+          <div class="round-players__row" *ngFor="let player of roundData.players; let i = index">
+            <span class="round-players__label">Player N{{ i + 1 }}:</span>
+            <div class="round-players__identity">
+              <img class="round-players__avatar" [src]="player.avatar" [alt]="player.name" />
+              <span class="round-players__name">{{ player.name }}</span>
+            </div>
+            <span class="round-players__seed-label">Seed:</span>
+            <span class="round-players__seed-value">{{ player.seed }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="round-modal__divider"></div>
+
+      
+      <div class="round-section">
+        <div class="round-section__heading">
+          <i class="fas fa-shield-alt round-section__icon"></i>
+          <div class="round-section__heading-text">
+            <span class="round-section__title">Combined SHA512 Hash:</span>
+            <span class="round-section__subtitle">Above seeds combined and converted to SHA512 Hash. This is your game result</span>
+          </div>
+        </div>
+        <div class="round-hash-box round-hash-box--sha">{{ roundData.sha512Hash }}</div>
+
+        <div class="round-result-table">
+          <div class="round-result-table__header">
+            <span>Hex:</span>
+            <span>Decimal:</span>
+            <span>Result:</span>
+          </div>
+          <div class="round-result-table__row">
+            <span>{{ roundData.hex }}</span>
+            <span>{{ roundData.decimal }}</span>
+            <span class="round-result-table__result">{{ roundData.result }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="round-modal__footer">
+      <span class="round-modal__footer-text">
+        For instructions check <a class="round-modal__footer-link" href="#">What is Provably Fair</a>
+      </span>
+    </div>
+
+  </div>
+</div>

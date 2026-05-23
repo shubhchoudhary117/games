@@ -1,0 +1,33 @@
+<div class="game">
+  <img src="/assets/slots/ui/bottombar.webp" alt="bar"
+       class="game__bar game__bar--top" (load)="onImageLoad()" />
+
+  <div class="game__reel-row">
+    <img src="/assets/slots/ui/sidebar.webp" alt="sidebar"
+         class="game__sidebar game__sidebar--left" (load)="onImageLoad()" />
+
+    <div class="game__columns">
+      <div *ngFor="let reelLine of reelLines; let i = index; trackBy: trackByIndex"
+           class="game__column-wrapper">
+        <app-slot-column
+          [symbols]="getColumnSymbols(reelLine)"
+          [isSpinning]="isSpinning"
+          [position]="i"
+          [winningLines]="winningLines"
+        ></app-slot-column>
+        <img *ngIf="i !== 2" src="/assets/slots/ui/bar.webp" alt="bar"
+             class="game__divider" [class.game__divider--flipped]="i === 0" />
+      </div>
+    </div>
+
+    <img src="/assets/slots/ui/sidebar.webp" alt="sidebar"
+         class="game__sidebar game__sidebar--right" (load)="onImageLoad()" />
+  </div>
+
+  <img src="/assets/slots/ui/bottombar.webp" alt="bar"
+       class="game__bar game__bar--bottom" (load)="onImageLoad()" />
+
+  <!-- <div class="game__payout-strip">
+    <div class="game__payout-display">{{ getFormattedPayout() }}</div>
+  </div> -->
+</div>

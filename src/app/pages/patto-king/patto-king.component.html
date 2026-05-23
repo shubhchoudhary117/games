@@ -1,0 +1,192 @@
+<audio #cardFlipAudio src="assets/audios/patto-king/card-flip.mp3"></audio>
+<audio #winAudio src="assets/audios/patto-king/winAudio.wav"></audio>
+<audio #placeBetAudio src="assets/audios/patto-king/place-bet.mp3"></audio>
+
+<div class="pk">
+    <header class="pk__header">
+        <div class="pk__brand">
+            <span class="pk__brand-suits">♠ ♥</span>
+            <h1 class="pk__brand-name">PATTO KING</h1>
+            <span class="pk__brand-suits pk__brand-suits--r">♦ ♣</span>
+        </div>
+
+        <div class="pk__header-right">
+            <div class="pk__hud">
+                <div class="pk__hud-chip">
+                    <div class="pk__hud-icon">💰</div>
+                    <div>
+                        <div class="pk__hud-val pk__hud-val--gold">{{ coins }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Menu trigger button — same style as before but now calls openMenu() -->
+            <div class="pk__hud menu" (click)="openMenu()">
+                <div class="pk__hud-chip">
+                    <div class="pk__hud-icon"><i class="fas fa-bars"></i></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="pk__board">
+        <div class="pk__legend">
+            <div class="pk__legend-item pk__legend-item--teen">
+                🔥 Teen Patti <strong> 5×</strong>
+            </div>
+            <div class="pk__legend-item pk__legend-item--do">
+                ⚡ Do Patti <strong>2×</strong>
+            </div>
+            <div class="pk__legend-item pk__legend-item--loss">
+                ✗ No Match <strong> ×</strong>
+            </div>
+        </div>
+
+        <div class="pk__rounds">
+            <div class="pk__round" *ngFor="let round of rounds; let ri = index; trackBy: trackRound"
+                [class.pk__round--teen]="round.status === 'teen-patti'"
+                [class.pk__round--do]="round.status === 'do-patti'"
+                [class.pk__round--loss]="round.status === 'loss'">
+
+                <div class="pk__round-num">
+                    <span>{{ ri + 1 }}</span>
+                </div>
+
+                <div class="pk__cards">
+                    <div class="pk__card-wrap"
+                        *ngFor="let card of getCards(round); let ci = index; trackBy: trackCard"
+                        [class.pk__card-wrap--flipping]="round.flipping[ci]"
+                        [class.pk__card-wrap--revealed]="round.revealed[ci]"
+                        [class.pk__card-wrap--match]="round.matchIndices.includes(ci)"
+                        [class.pk__card-wrap--muted]="round.status === 'loss' && round.revealed[ci]">
+
+                        <div class="pk__face pk__face--back">
+                            <img [src]="BACK_IMG" alt="back" class="pk__img" draggable="false" />
+                        </div>
+
+                        <div class="pk__face pk__face--front">
+                            <img *ngIf="card" [src]="preloadedImages[card.imagePath].src"
+                                [alt]="card.rank + card.suitCode" class="pk__img" draggable="false" />
+                            <div class="pk__match-ring" *ngIf="round.matchIndices.includes(ci)"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="pk__round-result">
+                    <div class="pk__result-idle" *ngIf="round.status === 'idle'">
+                        <span class="pk__result-dot"></span>
+                        <span class="pk__result-dot"></span>
+                        <span class="pk__result-dot"></span>
+                    </div>
+                    <div class="pk__result-teen" *ngIf="round.status === 'teen-patti'">
+                        <div class="pk__result-mult"><span>X</span> 5</div>
+                    </div>
+                    <div class="pk__result-do" *ngIf="round.status === 'do-patti'">
+                        <div class="pk__result-mult"><span>X</span> 2</div>
+                    </div>
+                    <div class="pk__result-loss" *ngIf="round.status === 'loss'">
+                        <div class="pk__result-x">✗</div>
+                        <div class="pk__result-loss-txt">No Match</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer class="pk__footer">
+
+  <!-- Stakes Card Panel (toggles open above footer) -->
+  <div class="pk__stakes-panel" [class.open]="stakesOpen">
+    <div class="pk__stakes-header">
+      <span class="pk__stakes-title">Choose Stakes</span>
+      <button class="pk__stakes-close" (click)="toggleStakes()">✕</button>
+    </div>
+    <div class="pk__stakes-grid">
+      <button
+        *ngFor="let s of stakeOptions"
+        class="pk__stake-chip"
+        [class.active]="betAmount === s"
+        [disabled]="isDealing"
+        (click)="selectStake(s)">
+        {{ s }}
+      </button>
+    </div>
+    <div class="pk__stakes-hint">Min: 10 &nbsp;·&nbsp; Max: 500 coins</div>
+  </div>
+
+  <!-- Stakes Toggle Button -->
+  <button class="pk__stakes-btn" [class.active]="stakesOpen" (click)="toggleStakes()" [disabled]="isDealing">
+    <span class="pk__stakes-ico">$</span>
+  </button>
+
+  <!-- Bet Control -->
+  <div class="pk__bet">
+    <button class="pk__bet-btn" (click)="changeBet(-10)" [disabled]="isDealing">−</button>
+
+    <div class="pk__bet-mid">
+      <span class="pk__bet-label">BET</span>
+      <input
+        class="pk__bet-input"
+        type="number"
+        [value]="betAmount"
+        [disabled]="isDealing"
+        min="10"
+        max="500"
+        step="10"
+        (change)="onBetInput($event)"
+        (focus)="onBetFocus($event)"
+      />
+    </div>
+
+    <button class="pk__bet-btn" (click)="changeBet(10)" [disabled]="isDealing">+</button>
+  </div>
+
+  <!-- Deal Button -->
+  <button
+    class="pk__deal"
+    [class.pk__deal--dealing]="isDealing"
+    [disabled]="isDealing || coins < betAmount"
+    (click)="deal()">
+    <span class="pk__deal-loader" *ngIf="isDealing"></span>
+    <span class="pk__deal-icon" *ngIf="!isDealing">BET</span>
+    <span class="pk__deal-label" *ngIf="isDealing">{{ isDealing ? 'DEALING...' : '' }}</span>
+  </button>
+
+</footer>
+</div>
+
+<!-- Win Banner -->
+<div class="pk__win-banner" [class.show]="showWinCard" *ngIf="lastNetGain!==0">
+    <div class="pk__win-banner__left">
+        <span class="pk__win-banner__left-label">
+            <span *ngIf="teenPattiRounds.length > 0" class="pk__summary-teen">
+                {{ teenPattiRounds.length }}× Teen Patti
+            </span>
+            <span *ngIf="teenPattiRounds.length > 0 && doPattiRounds.length > 0"> + </span>
+            <span *ngIf="doPattiRounds.length > 0" class="pk__summary-do">
+                {{ doPattiRounds.length }}× Double Patti
+            </span>
+        </span>
+        <span class="pk__win-banner__left-val"></span>
+    </div>
+    <div class="pk__win-banner__divider"></div>
+    <div class="pk__win-banner__right">
+        <span class="pk__win-banner__star pk__win-banner__star--tl">★</span>
+        <span class="pk__win-banner__star pk__win-banner__star--tr">★</span>
+        <span class="pk__win-banner__star pk__win-banner__star--bl">☆</span>
+        <span class="pk__win-banner__star pk__win-banner__star--br">☆</span>
+        <span class="pk__win-banner__right-label">Win USD</span>
+        <span class="pk__win-banner__right-val">+{{ lastNetGain }}</span>
+    </div>
+</div>
+
+<!-- ══ MENU COMPONENT ═══════════════════════════════════════ -->
+<app-patto-king-menucard
+  [menuOpen]="menuOpen"
+  [coins]="coins"
+  [betHistory]="betHistory"
+  [totalWins]="totalWins"
+  (menuClose)="closeMenu()"
+  (soundChange)="onSoundChange($event)">
+</app-patto-king-menucard>

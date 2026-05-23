@@ -1,0 +1,55 @@
+
+<div class="bet-history">
+  <div class="bet-history__overlay"></div>
+
+  <div class="bet-history__modal">
+    <div class="bet-history__header">
+      <h2 class="bet-history__title">BET HISTORY</h2>
+      <button class="bet-history__close" (click)="closeBethistory()">✕</button>
+    </div>
+    <div class="bet-history__table bet-history__table--head">
+      <div>Time</div>
+      <div>Bet</div>
+      <div>Cash out</div>
+      <div>X</div>
+      <div></div>
+    </div>
+
+    <div class="bet-history__body">
+      <div class="bet-history__row" *ngFor="let item of history">
+        <div class="bet-history__cell bet-history__time">
+          {{ item.time }}
+        </div>
+
+        <div class="bet-history__cell">
+          {{ item.bet }} <span>USD</span>
+        </div>
+
+        <div 
+          class="bet-history__cell"
+          [ngClass]="{
+            'bet-history__green': item.cashout > 0
+          }"
+        >
+          {{ item.cashout > 0 ? '+' + item.cashout : '0.00' }} 
+          <span>USD</span>
+        </div>
+
+        <div 
+          class="bet-history__cell"
+          [ngClass]="{
+            'bet-history__green': item.multiplier > 0
+          }"
+        >
+          {{ item.multiplier > 0 ? item.multiplier + 'x' : '0x' }}
+        </div>
+
+        <div class="bet-history__cell bet-history__status">
+          ✔
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

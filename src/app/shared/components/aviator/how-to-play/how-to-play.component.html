@@ -1,0 +1,27 @@
+<div class="htp-overlay" [class.show]="isVisible" (click)="onClose()">
+  <div class="htp-modal">
+    <div class="htp-modal__header">
+      <div class="htp-modal__title">How to Play</div>
+      <div class="htp-modal__close"><i class="fas fa-close"></i></div>
+    </div>
+    <div class="htp-modal__body">
+        <div class="htp-modal__instructions">
+            <div class="htp-modal__instruction">
+                <span class="serial-no">01</span>
+               <img src="assets/aviator/rules/bet.svg" class="instruction-icon">
+                <p class="instruction-text">Make a bet, or event two at same time and wait for the round start</p>
+            </div>
+            <div class="htp-modal__instruction">
+                <span class="serial-no">02</span>
+                <img src="assets/aviator/rules/plane.svg" class="instruction-icon">
+                <p class="instruction-text">Look after the lucky plane. Your win is bet multiplied by a coefficient of lucky plane.</p>
+            </div>
+            <div class="htp-modal__instruction">
+                <span class="serial-no">03</span>
+                <img src="assets/aviator/rules/cashout.svg" class="instruction-icon">
+                <p class="instruction-text">Cash Out before plane flies away and money is yours.</p>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>

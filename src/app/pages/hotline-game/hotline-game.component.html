@@ -1,0 +1,180 @@
+<audio #placeBetAudio src="assets/audios/hotline/placebet.m4a"></audio>
+<audio #gameOverAudio src="assets/audios/hotline/gameover.m4a"></audio>
+
+<section class="hotline">
+  <div class="hotline__container" #wrapEl>
+    <div class="hotline__gameviewport">
+      <div class="hotline__game">
+        <div class="hotline__game-header">
+          <div class="hotline__gameheader-left">
+            <button class="hotline__howtoplay-btn" (click)="openHotToPlay()">
+              &#63; How to Play
+            </button>
+          </div>
+
+          <div class="hotline__gameheader-mid">
+            <div class="hotline__funmode-mark">FUN MODE</div>
+          </div>
+
+          <div class="hotline__gameheader__right">
+            <div class="hotline__winamount-block " *ngIf="showWinState() && winBannerData() as bd">{{bd.amt}}</div>
+            <div class="hotline__balance">
+              {{ balance() }}
+              <span>USD</span>
+            </div>
+            <div class="hotline__menublock" (click)="toggleMenu()">&#9776;</div>
+
+            <!-- Game Menu -->
+            <div class="game-menu" *ngIf="showMenu">
+              <div class="game-menu__card">
+                <div class="game-menu__header">demo_30024</div>
+                <div class="game-menu__list">
+                  <div class="game-menu__sound-container">
+                    <div class="game-menu__left">
+                      <span class="game-menu__icon">&#128266;</span>
+                      <span>Sound</span>
+                    </div>
+                    <label class="game-menu__switch">
+                      <input type="checkbox" />
+                      <span class="game-menu__slider"></span>
+                    </label>
+                  </div>
+                  <div class="game-menu__item">
+                    <span class="game-menu__icon">&#128336;</span> Bet History
+                  </div>
+                  <div class="game-menu__item">
+                    <span class="game-menu__icon">&#128181;</span> Game Limits
+                  </div>
+                  <div class="game-menu__item">
+                    <span class="game-menu__icon">&#63;</span> How to Play
+                  </div>
+                  <div class="game-menu__item">
+                    <span class="game-menu__icon">&#128220;</span> Game Rules
+                  </div>
+                </div>
+                <div class="game-menu__footer">
+                  <div class="game-menu__home">&#127968; Back to Home</div>
+                  <div class="game-menu__bottom">
+                    <span class="game-menu__fair">&#128737; Provably Fair Game</span>
+                    <span class="game-menu__brand">© GURUGAMES</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Rounds history ─────────────────────────────────── -->
+        <div class="hotline__rounds-history">
+          <div
+            class="hotline__round"
+            *ngFor="let h of game.history()"
+            [style.background]="h === 'yellow' ? '#f5a623' : h === 'red' ? '#c8253e' : '#243040'"
+            [style.border]="'1px solid ' + (h === 'black' ? '#4a6080' : 'rgba(255,255,255,.3)')"
+          ></div>
+        </div>
+
+        <!-- ── Arrow down ─────────────────────────────────────── -->
+        <!-- <div class="hotline__arrow-row">
+          <div class="hotline__arrow-down"></div>
+        </div> -->
+
+        <!-- ── Track / canvas ─────────────────────────────────── -->
+        <div class="hotline__track-area">
+          <div class="c-arr-top"></div>
+          <div class="c-arr-bot"></div>
+          <div class="c-frame"></div>
+          <canvas #gameCvs></canvas>
+        </div>
+
+        <!-- ── Arrow up ───────────────────────────────────────── -->
+        <!-- <div class="hotline__arrow-row">
+          <div class="hotline__arrow-up"></div>
+        </div> -->
+
+        <!-- ── Instruction badge ──────────────────────────────── -->
+        <div class="hotline__instruction-badge" [style.color]="instructColor()">
+          {{ instructText() }}
+        </div>
+
+        <!-- ── Game controllers ───────────────────────────────── -->
+        <div class="hotline__gamecontrollers">
+
+          <!-- Bet amount control -->
+          <div class="hotline__controls-amount">
+            <div class="hotline__input-group">
+              <div class="hotline__input-label">BET USD</div>
+              <input
+                type="number"
+                class="hotline__bet-input"
+                [(ngModel)]="betAmount"
+                (change)="onBetInputChange()"
+                min="0.10"
+                step="0.10"
+              />
+            </div>
+            <div class="hotline__amountactions">
+              <button class="hotline__amountaction-btn" (click)="adjustBet(-1)"><i class="fas fa-minus"></i></button>
+              <button
+                class="hotline__amountaction-btn hotline__amountaction-btn--coin"
+                (click)="showStakes = !showStakes"
+              ><i class="fas fa-database"></i></button>
+              <button class="hotline__amountaction-btn" (click)="adjustBet(1)"><i class="fas fa-plus"></i></button>
+            </div>
+
+            <!-- Stakes popup -->
+            <div class="hotline__betstakes-box" *ngIf="showStakes">
+              <div class="hotline__betstakes-heading">Bet USD</div>
+              <div class="hotline__betstakes-grid">
+                <div
+                  class="hotline__betstake"
+                  *ngFor="let stake of game.AMOUNT_STAKES"
+                  (click)="selectStake(stake)"
+                >{{ stake | number:'1.2-2' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Choice buttons -->
+          <div class="hotline__place-bet-actions">
+            <button
+              class="hotline__choice-btn red"
+              [class.selected]="isSelected('red')"
+              [disabled]="buttonsDisabled()"
+              (click)="choiceAndSpin('red')"
+            >
+              <span class="hotline__choice-label">RED</span>
+              <span class="hotline__choice-mult">{{ getRedMult() }}</span>
+            </button>
+
+            <button
+              class="hotline__choice-btn yellow"
+              [class.selected]="isSelected('yellow')"
+              [disabled]="buttonsDisabled()"
+              (click)="choiceAndSpin('yellow')"
+            >
+              <span class="hotline__choice-label">🔥</span>
+              <span class="hotline__choice-mult">{{ getYelMult() }}</span>
+            </button>
+
+            <button
+              class="hotline__choice-btn black"
+              [class.selected]="isSelected('black')"
+              [disabled]="buttonsDisabled()"
+              (click)="choiceAndSpin('black')"
+            >
+              <span class="hotline__choice-label">BLACK</span>
+              <span class="hotline__choice-mult">{{ getBlkMult() }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Toast ──────────────────────────────────────────── -->
+        <div class="toast" *ngIf="toastMsg()">{{ toastMsg() }}</div>
+
+      </div><!-- /.hotline__game -->
+    </div>
+  </div>
+</section>
+
+<app-hotline-how-to-play (close)="closeHowToPlay()" *ngIf="showHowToPlay"></app-hotline-how-to-play>

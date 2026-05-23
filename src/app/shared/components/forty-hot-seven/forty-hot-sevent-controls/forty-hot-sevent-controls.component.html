@@ -1,0 +1,117 @@
+<audio #audioPlayer src="assets/audios/forty-hot-seven/40HotSeven.m4a"></audio>
+<div class="controls">
+  <div class="balance-display">
+    <span class="balance-display__label">Balance</span>
+    <span class="balance-display__value">{{ balance | number }} CLP</span>
+  </div>
+
+  <div class="bet-buttons">
+    <button
+      *ngFor="let bet of betOptions"
+      class="bet-btn"
+      [class.active]="currentBet === bet"
+      [disabled]="isSpinning"
+      (click)="selectBet(bet)"
+    >{{ bet }} CLP</button>
+  </div>
+
+  <div class="right-controls">
+    <button
+      class="icon-btn"
+      [class.active]="gambleMode"
+      title="Gamble x2"
+      (click)="gambleToggle.emit()"
+    >x2</button>
+
+    <div class="spin-wrap">
+      <button
+        class="spin-btn"
+        [disabled]="isSpinning"
+        [class.spinning]="isSpinning"
+        (click)="handleSpin()"
+      ><i class="fa-solid fa-arrows-rotate"></i></button>
+      <div class="autoplay-counter">{{ autoplay && autoRounds > 0 ? autoRounds : '' }}</div>
+    </div>
+
+    <button
+      class="icon-btn"
+      [class.active]="autoplay"
+      title="Autoplay"
+      (click)="autoToggle.emit()"
+    >⟳</button>
+  </div>
+
+</div>
+<div class="controls-footer">
+
+  <!-- Sound toggle — LEFT -->
+  <button class="sound-btn"
+    [class.muted]="!soundOn"
+    (click)="toggleSound()"
+    title="Sound">
+    <i [class]="soundOn ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark'"></i>
+  </button>
+
+  <!-- Menu — RIGHT -->
+  <div class="menu-wrap">
+    <button class="menu-btn"
+      [class.active]="menuOpen"
+      (click)="menuOpen = !menuOpen"
+      title="Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <!-- Menu card -->
+    <div class="menu-card" [class.open]="menuOpen">
+      <div class="menu-card-header">Game Menu</div>
+
+      <div class="menu-tabs">
+        <button class="menu-tab"
+          [class.active]="activeMenuTab === 'rules'"
+          (click)="activeMenuTab = 'rules'">Game Rules</button>
+        <button class="menu-tab"
+          [class.active]="activeMenuTab === 'history'"
+          (click)="activeMenuTab = 'history'">Bet History</button>
+        <button class="menu-tab"
+          [class.active]="activeMenuTab === 'howto'"
+          (click)="activeMenuTab = 'howto'">How to Play</button>
+      </div>
+
+      <!-- Game Rules -->
+      <div class="menu-content" *ngIf="activeMenuTab === 'rules'">
+        <h4>Game Rules</h4>
+        <p>Match 3 or more symbols across active paylines to win.</p>
+        <ul>
+          <li>Min bet: 100 CLP</li>
+          <li>Max bet: 10,000 CLP</li>
+          <li>Max win: 500x bet</li>
+          <li>RTP: 96.5%</li>
+          <li>Paylines: 20 fixed</li>
+        </ul>
+      </div>
+
+      <!-- Bet History -->
+      <div class="menu-content" *ngIf="activeMenuTab === 'history'">
+        <h4>Recent Bets</h4>
+        <div class="hist-row" *ngFor="let h of betHistory">
+          <span>{{ h.bet | number }} CLP</span>
+          <span [class.hist-win]="h.profit > 0" [class.hist-lose]="h.profit <= 0">
+            {{ h.profit > 0 ? '+' : '' }}{{ h.profit | number }} CLP
+          </span>
+        </div>
+        <p *ngIf="!betHistory.length" style="color:#a07840">No bets yet</p>
+      </div>
+
+      <!-- How to Play -->
+      <div class="menu-content" *ngIf="activeMenuTab === 'howto'">
+        <h4>How to Play</h4>
+        <p>1. Select your bet amount from the options above.</p>
+        <p>2. Press the spin button to start the round.</p>
+        <p>3. Matching symbols on paylines pay out winnings.</p>
+        <p>4. Use x2 gamble to double any win.</p>
+        <p>5. Enable autoplay for consecutive automatic spins.</p>
+      </div>
+    </div>
+  </div>
+
+</div>

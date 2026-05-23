@@ -1,0 +1,51 @@
+<div class="rules-modal-overlay" (click)="onOverlayClick($event)">
+  <div class="rules-modal" role="dialog" aria-modal="true" aria-label="Game Rules">
+
+    <!-- Header -->
+    <div class="rules-modal__header">
+      <div class="rules-modal__header-logo">
+        <div class="rules-modal__game-logo"></div>
+      </div>
+      <p class="rules-modal__tagline">Find your lucky bubble ⭐️, claim the rewards,<br>and let the 🫧 bubbling fun 🫧 begin!</p>
+      <button class="rules-modal__close" (click)="close()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Tab Nav -->
+    <div class="rules-modal__tabs">
+      <button
+        *ngFor="let section of sections; let i = index"
+        class="rules-modal__tab"
+        [class.active]="activeTab === i"
+        (click)="activeTab = i">
+        <span class="rules-modal__tab-icon">{{ section.icon }}</span>
+        <span class="rules-modal__tab-label">{{ section.title }}</span>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="rules-modal__body">
+      <div class="rules-modal__section" *ngFor="let section of sections; let i = index"
+           [class.visible]="activeTab === i">
+
+        <div class="rules-modal__section-header">
+          <span class="rules-modal__section-icon">{{ section.icon }}</span>
+          <h2 class="rules-modal__section-title">{{ section.title }}</h2>
+        </div>
+
+        <div class="rules-modal__content" [innerHTML]="section.html"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="rules-modal__footer">
+      <span>Game v1.0.1</span>
+      <span class="rules-modal__footer-dot">•</span>
+      <span>RNG v2.0.0</span>
+      <span class="rules-modal__footer-dot">•</span>
+      <span>RTP 97.0%</span>
+    </div>
+
+  </div>
+</div>

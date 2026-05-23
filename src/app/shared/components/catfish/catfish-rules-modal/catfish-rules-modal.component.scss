@@ -1,0 +1,105 @@
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@mixin linier-gradient-main {
+    background: radial-gradient(58.03% 100% at 50% 0, #f0096b 0%, rgba(40, 45, 49, .11) 100%), linear-gradient(315.81deg, #17191c -42.75%, #32383e 123.05%);
+}
+
+@mixin border-of-linier-gradient-main {
+    border: 2px solid #f0096b;
+}
+
+.game-rules-modal {
+    width: 650px;
+    margin: auto;
+    background-color: #1b1c1e;
+    padding: 10px 10px 10px 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    position: absolute;
+    z-index: 9999;
+    left: 50%;
+    transform: translate(-50%);
+    opacity: 0;
+    transition: top 0.6s ease, opacity 0.6s ease;
+}
+
+.game-rules-modal.LIGHT {
+    background-color: #fff;
+    @include border-of-linier-gradient-main;
+}
+
+.game-rules-modal.show {
+    opacity: 1;
+    top: 52px;
+}
+
+.game-rules-modal.hide {
+    opacity: 0;
+    top: -100%;
+}
+
+.modal-close-icon {
+    float: right;
+
+    i {
+        font-size: 23px !important;
+        color: #fff;
+    }
+}
+
+.modal-close-icon.LIGHT {
+    i {
+        color: #000;
+    }
+}
+
+.game-rules-header {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.game-rules-list {
+    width: 100%;
+}
+
+.game-rule {
+    margin-top: 10px;
+}
+
+.rule-heading {
+    padding: 5px 10px;
+    max-width: 190px;
+    @include linier-gradient-main;
+    color: #fff;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.rule-step {
+    font-size: 12px;
+    color: #fff;
+    margin: 10px 0px 15px 0px;
+    font-weight: 500;
+}
+
+.rule-step.LIGHT {
+    color: #000;
+}
+
+@media screen and (max-width:768px) {
+   
+
+    .game-rules-modal {
+        width: 97%;
+        margin: auto;
+    }
+
+    
+
+}

@@ -1,0 +1,199 @@
+<audio #bgMusic src="assets/audios/double-x/dx-bg-music.m4a" loop></audio>
+<audio #cardsSound src="assets/audios/double-x/cards-sound.mp3" loop></audio>
+<audio #timerSound src="assets/audios/double-x/timer.mp3" loop></audio>
+
+<section class="dx">
+    <header class="dx__header">
+        <div class="dx__logo"><img src="assets/double-x/logo.png" alt=""></div>
+        <div class="dx__right">
+            <div class="dx__win-mark" [class.show]="showWinPopup">+{{winAmount}}</div>
+            <div class="dx__balance-box">
+                <i class="fa-solid fa-sack-dollar"></i>
+                <span class="value">{{balance}}</span>
+            </div>
+            <button (click)="toggleMenuCard()" class="dx__menu-btn"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="dx__container">
+        <div class="dx__viewport">
+            <div class="dx__multipliers">
+                <div class="dx__multipliers-list">
+                    @for (m of multipliers; track $index) {
+                    <div class="dx__multiplier" [class.red]="m === 'red'" [class.green]="m === 'green'"
+                        [class.gray]="m === 'gray'">
+                        {{betConfigs[m].multiplier}}
+                    </div>}
+                </div>
+                <button class="dx__all-multiplier-btn" (click)="toggleAllMultipliers()">
+                    <i class="fas fa-history"></i>
+                    <i class="fas fa-caret-down"></i></button>
+            </div>
+
+            <div class="dx__game-box">
+                <div class="dx__all-multipliers-box" [class.show]="showAllMultipliers">
+                    @for (m of multipliers; track $index) {
+                    <div class="dx__multiplier" [class.red]="m === 'red'" [class.green]="m === 'green'"
+                        [class.gray]="m === 'gray'">
+                        {{betConfigs[m].multiplier}}
+                    </div>}
+                </div>
+                <div class="dx__roundid">Round id :<span>77665544</span></div>
+                <div class="dx__game-box-inner">
+
+                    <div class="dx__next-round-animation">
+
+                        @if(!spinning){
+                        <div class="dx__next-round-title">
+                            Next round in : {{countdown}}
+                        </div>
+                        }
+
+                        @if(spinning){
+                        <div class="dx__next-round-title spinning">
+                            Rolling...
+                        </div>
+                        }
+
+                        <!-- FIX: showProgress flag se control hoga — spinning ya countdown 0 pe hide -->
+                        <div class="dx__progress-wrapper" [class.hide]="!showProgress">
+                            <div class="dx__progress-line" [style.width.%]="progress"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="dx__dx-cards-container" #cardsContainer>
+                        <div class="dx__card-win-box">
+                            <div class="dx__card-win-glow"></div>
+                            <img src="assets/double-x/win-arrow.svg" alt="arrow" class="dx__card-win-arrow">
+                        </div>
+
+                        <!-- Scrolling track -->
+                        <div class="dx__cards-track" #cardsTrack>
+                            @for(card of displayCards; track $index){
+                            <div class="dx__dx-card" [class.green]="card.color === 'green'"
+                                [class.gray]="card.color === 'gray'" [attr.data-x]="card.x"
+                                [attr.data-number]="card.number">
+                                <div class="dx__dx-card-x">{{card.x}}</div>
+                                <div class="dx__dx-card-number">{{card.number}}</div>
+                            </div>
+                            }
+                        </div>
+
+                    </div>
+
+                    <div class="dx__amount-controlls">
+
+                        <button class="dx__amountminmax-btn" (click)="setMaxAmount()">
+                            MAX
+                        </button>
+
+                        <button class="dx__amount-multiply-btn" (click)="halfAmount()">
+                            /2
+                        </button>
+
+                        <div class="dx__amount-input">
+                            <input type="number" min="1" [value]="betAmount" (input)="onAmountChange($event)">
+                        </div>
+
+                        <button class="dx__amount-multiply-btn" (click)="doubleAmount()">
+                            X2
+                        </button>
+
+                        <button class="dx__amountminmax-btn" (click)="setMinAmount()">
+                            MIN
+                        </button>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="dx__betcontrollers">
+
+                <button class="dx__betting-btn win2x" [class.active]="selectedBets.includes('red')"
+                    [class.disabled]="isDisabled('red')" (click)="placeBet('red')">
+                    <span class="label">Place Bet</span>
+                    <span class="win-x">Win 2x</span>
+                </button>
+
+                <button class="dx__betting-btn win14x" [class.active]="selectedBets.includes('green')"
+                    [class.disabled]="isDisabled('green')" (click)="placeBet('green')">
+                    <span class="label">Place Bet</span>
+                    <span class="win-x">win 14x</span>
+                </button>
+
+                <button class="dx__betting-btn win2x-gray" [class.active]="selectedBets.includes('gray')"
+                    [class.disabled]="isDisabled('gray')" (click)="placeBet('gray')">
+                    <span class="label">Place Bet</span>
+                    <span class="win-x">win 2x</span>
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="dx__wh-cards">
+
+            @for (card of betHistoryCards; track $index) {
+
+            <div class="dx__wh-card">
+
+                <div class="dx__wh-card-header">
+
+                    <div class="dx__wh-header-left">
+                        <div class="dx__wh-type" [class.red]="card.type === 'red'" [class.green]="card.type === 'green'"
+                            [class.gray]="card.type === 'gray'">
+                            {{card.multiplier}}
+                        </div>
+
+                        <div class="dx__total-bets">
+                            Total Bets : {{card.totalBets}}
+                        </div>
+                    </div>
+
+                    <div class="dx__total-bet-amt plus">
+                        ${{card.totalAmount}}
+                    </div>
+
+                </div>
+
+                <div class="dx__wh-histories">
+
+                    @for (history of card.histories; track $index) {
+
+                    <div class="dx__history-row">
+
+                        <div class="dx__h-userinfo">
+
+                            <img src="assets/double-x/history-avtar.png" alt="" class="dx__h-avtar">
+
+                            <div class="dx__h-username">
+                                {{history.userName}}
+                            </div>
+
+                        </div>
+
+                        <div class="dx__h-user-bet-amt">
+                            ${{history.amount}}
+                        </div>
+
+                    </div>
+
+                    }
+
+                </div>
+
+            </div>
+
+            }
+
+        </div>
+
+    </main>
+
+    <app-dx-menu-card *ngIf="showMenuCard" />
+    <app-dx-htp-modal *ngIf="dxMenuService.howToPlayModal$ | async" />
+    <app-dx-game-rules-modal *ngIf="dxMenuService.gameRulesModal$ | async" />
+    <app-dx-bet-history *ngIf="dxMenuService.betHistoryModal$ | async" />
+</section>

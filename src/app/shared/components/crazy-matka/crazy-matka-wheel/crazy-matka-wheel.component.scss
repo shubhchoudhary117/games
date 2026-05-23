@@ -1,0 +1,41 @@
+.wheel-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.center-clogo_ {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.ring-border {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 390px;
+  height: 390px;
+}
+
+.pointer-img {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 27px;
+  height: 40px;
+
+  &.isSpinning_ {
+    animation: wobble 0.15s infinite alternate;
+  }
+}
+
+@keyframes wobble {
+  0% { transform: translateX(-50%) rotate(15deg); }
+  100% { transform: translateX(-50%) rotate(30deg); }
+}

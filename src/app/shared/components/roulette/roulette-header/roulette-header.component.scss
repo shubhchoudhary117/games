@@ -1,0 +1,90 @@
+// src/app/components/topbar/topbar.component.scss
+.topbar {
+  background: linear-gradient(90deg, #111, #1a1a1a);
+  border-bottom: 2px solid var(--orange);
+  padding: 7px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 10px;
+
+  h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(13px, 3vw, 20px);
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+}
+
+.balance-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #1a1000, #2a1a00);
+  border: 1.5px solid var(--gold);
+  border-radius: 8px;
+  padding: 4px 14px;
+  flex-shrink: 0;
+}
+
+.balance-label {
+  font-size: 11px;
+  color: var(--gold);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1px;
+}
+
+.balance-amt {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(14px, 3vw, 20px);
+  font-weight: 700;
+  color: #f0d060;
+  text-shadow: 0 0 8px rgba(240, 208, 96, 0.4);
+  letter-spacing: 1px;
+  transition: color 0.3s;
+
+  &.broke {
+    color: #ee3322;
+    text-shadow: 0 0 8px rgba(238, 51, 34, 0.5);
+  }
+}
+
+.refill-btn {
+  background: linear-gradient(135deg, #e07820, #c05810);
+  border: none;
+  color: #fff;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.rules-btn {
+  background: #2a2a2a;
+  border: 1px solid #555;
+  color: #ccc;
+  padding: 5px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.15s;
+
+  &:hover { background: #3a3a3a; }
+}
+
+@media (max-width: 480px) {
+  .topbar h1 { font-size: 13px; letter-spacing: 1px; }
+  .balance-box { padding: 3px 8px; }
+  .balance-label { display: none; }
+}

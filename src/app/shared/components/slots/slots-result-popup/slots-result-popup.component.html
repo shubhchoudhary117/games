@@ -1,0 +1,25 @@
+<div class="rp-overlay">
+  <div class="rp" [class.rp--loss]="!isWin">
+
+    <div class="rp__badge">{{ isWin ? 'Lucky Spin' : 'Better Luck' }}</div>
+
+    <div class="rp__title">{{ isWin ? 'YOU WON!' : 'YOU LOST' }}</div>
+    <div class="rp__subtitle" *ngIf="isWin">{{ lineLabel }}</div>
+    <div class="rp__subtitle" *ngIf="!isWin">Don't give up, spin again!</div>
+
+    <div class="rp__amount-wrap">
+      <div class="rp__amount" *ngIf="isWin">K₽ {{ formattedAmount }}</div>
+      <div class="rp__amount rp__amount--loss" *ngIf="!isWin">- K₽ {{ betAmount | number }}</div>
+    </div>
+
+    <div class="rp__chips" *ngIf="isWin">
+      <span class="rp__chip" *ngFor="let line of winningLines">{{ line }}</span>
+    </div>
+
+    <button class="rp__primary-btn" (click)="onCollect()">
+      {{ isWin ? 'Collect Winnings' : 'OK' }}
+    </button>
+    <button class="rp__skip-btn" (click)="onPlayAgain()">Play again</button>
+
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div
+  #card
+  class="card"
+  (panstart)="onPanStart($event)"
+  (panmove)="onPanMove($event)"
+  (panend)="onPanEnd()"
+>
+  <img [src]="image" alt="card" />
+  <h3>{{ name }}</h3>
+</div>

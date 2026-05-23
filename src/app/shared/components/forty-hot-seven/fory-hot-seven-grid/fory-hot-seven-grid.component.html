@@ -1,0 +1,13 @@
+<div class="grid">
+  <ng-container *ngFor="let r of rows; trackBy: trackByIndex">
+    <div
+      *ngFor="let c of cols; trackBy: trackByIndex"
+      class="cell"
+      [class.winning]="isWin(r, c)"
+      [class.spinning]="isSpinning(c)"
+    >
+      <div class="cell__shine"></div>
+      <span class="symbol">{{ getEmoji(r, c) }}</span>
+    </div>
+  </ng-container>
+</div>

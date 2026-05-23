@@ -1,0 +1,154 @@
+.htp-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s,
+        visibility cubic-bezier(0.34, 1.56, 0.64, 1) ease;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+
+        .my-bets-modal {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .htp-modal {
+        width: 70%;
+        background: #f5a624;
+        border-radius: 12px;
+        padding-bottom: 30px;
+
+        &__header {
+            width: 100%;
+            height: 36px;
+            border-bottom: 1px solid;
+            border-color: #242424;
+            padding: 0 10px;
+            align-items: center;
+            line-height: 16px;
+            font-size: 16px;
+            background: #2c2d30;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            font-weight: 400 !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #e69308 !important;
+        }
+
+        &__title {
+            font-size: 17px;
+            color: #965419 !important;
+        }
+
+        &__close {
+            cursor: pointer;
+
+            i {
+                color: #965419;
+            }
+        }
+
+        &__body {
+            padding: 10px;
+        }
+
+        &__instructions {
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+        }
+
+        &__instruction {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+
+            .serial-no {
+                font-size: 18px;
+                font-weight: 600;
+                color: #5f3816;
+            }
+
+            .instruction-icon {
+                width: 50px;
+                height: 50px;
+                object-fit: contain;
+            }
+
+            .instruction-text {
+                font-size: 15px;
+                color: #5f3816;
+                font-weight: 400;
+                line-height: 22px;
+            }
+        }
+    }
+}
+
+
+@media screen and (max-width:768px) {
+    .htp-overlay {
+       
+
+        .htp-modal {
+            width: 97%;
+            padding-bottom: 30px;
+
+            &__header {
+                width: 100%;
+                height: 36px;
+                
+            }
+
+            &__title {
+                font-size: 17px;
+                
+            }
+
+           
+
+            &__body {
+                padding: 10px;
+            }
+
+            &__instructions {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+            }
+
+            &__instruction {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-top: 20px;
+
+                .serial-no {
+                    font-size: 18px;
+                }
+
+                .instruction-icon {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .instruction-text {
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+
+}

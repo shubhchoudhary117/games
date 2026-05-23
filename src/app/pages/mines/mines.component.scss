@@ -1,0 +1,699 @@
+@mixin DisplayFlexWithSpaceBetween {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin DisplayFlex {
+    display: flex;
+    align-items: center;
+}
+
+@mixin linier-gradient-for-history-table {
+    background-image: linear-gradient(309deg, #121416 0%, #353a40 100%), linear-gradient(131deg, rgba(172, 172, 172, .4) 0%, transparent 50%, rgba(0, 0, 0, .4) 100%);
+    border-radius: 10px;
+}
+
+.game-screen-section {
+    width: 100%;
+    padding-bottom: 20px;
+    height: 100vh;
+    background-color: #000;
+    background-image: linear-gradient(315deg, #16191d 0%, #252a2e 100%);
+    overflow-x: hidden;
+    outline: none;
+}
+
+.game-screen-main {
+    width: 100%;
+    margin: auto;
+}
+
+.game-screen-main-container {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 15px;
+    justify-content: center;
+}
+
+@media screen and (max-width:768px) {
+    .game-screen-section {
+        width: 100%;
+        padding-bottom: 20px;
+        height: 100%;
+        &::-webkit-scrollbar{
+            display: none;
+        }
+    }
+
+    .game-screen-main {
+        width: 100%;
+        margin: auto;
+    }
+
+    .game-screen-main-container {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .mines-and-multipliers-section {
+        width: 100%;
+    }
+}
+
+.mines-and-multipliers-section {
+    width: 57.8%;
+}
+
+.game-multipliers-container {
+    width: 57%;
+    margin: auto;
+    background: linear-gradient(324.43deg, #17191c -52.28%, #1c1e22 69.89%);
+    border-radius: 5px;
+    padding: 3.4px 2px 3.4px 2px;
+    box-shadow: inset 2px 1px 9px #070709;
+    @include DisplayFlex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+}
+
+.game-multipliers-container::-webkit-scrollbar {
+    display: none;
+}
+
+.mine-multiplier {
+    text-align: center;
+    box-sizing: border-box;
+    border: 1px solid #a35231;
+    border-radius: 4px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    min-width: 50px;
+    min-height: 23px;
+    margin-left: 1.5px;
+    margin-right: 1.5px;
+    color: #a35231;
+    box-shadow: -1px -1px 10px rgba(141, 68, 37, .2);
+    background-color: #070709;
+    font-size: 13px;
+
+    &.fill_ {
+        background-color: #a35231;
+        color: #fff;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .game-multipliers-container {
+        width: 100%;
+    }
+
+    .game-multipliers-container::-webkit-scrollbar {
+        display: none;
+    }
+     .mines-and-multipliers-section {
+        width: 100%;
+    }
+
+    .mine-multiplier {
+        font-size: 13px;
+        min-width: 15.8%;
+        margin-right: 1.5px;
+        margin-left: 1.5px;
+    }
+
+
+}
+
+// Mines section styling ---------------------------
+// .mines-game-section {
+//     width: 57%;
+//     margin: auto;
+//     margin-top: 10px;
+// }
+
+.mines-container {
+    width: 57%;
+    margin: auto;
+    grid-gap: 14px;
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    padding-bottom: 30px;
+    display: grid;
+    margin-top: 10px;
+    position: relative;
+}
+
+
+.mines-wining-box {
+    width: 200px;
+    height: 140px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    border-radius: 8px;
+    z-index: 111;
+    padding-bottom: 10px;
+    background-color: rgb(51 59 67 / 72%);
+    border: 1px solid #506470;
+}
+
+.wining-box-header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #22a5d7;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: capitalize;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+}
+
+.game-win-amount {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: rgb(179 236 253);
+    font-weight: bold;
+    z-index: 111;
+    margin-top: 15px;
+
+}
+
+.win-box-footer {
+    width: 80%;
+    margin: auto;
+    border-top: 1px solid rgba(96, 189, 209, 1);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.win-multiplier-h,
+.win-multiplier-v {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 500;
+}
+
+
+.win-box-body_ {
+    width: 100%;
+    height: 70px;
+    background-color: #2f383ed2;
+    margin-top: 15px;
+}
+
+.mine-box {
+    text-align: center;
+    aspect-ratio: 1;
+    border-radius: 13px;
+    position: relative;
+    font-size: 50px;
+    line-height: 100px;
+
+    position: relative;
+    background: linear-gradient(320.64deg, #17191c -42.09%, #32383e 167.71%);
+    box-shadow: 3px 3px 4px rgba(10, 9, 9, .4);
+    max-width: 70px;
+    max-height: 70px;
+    border: none;
+    outline: none;
+}
+
+.progress-wrapper {
+    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mine-loader {
+    width: 18px;
+    height: 18px;
+}
+
+.mine-box-inner_ {
+    width: 80%;
+    height: 80%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-position: bottom;
+}
+
+.is_Dimond {
+    background-image: url("../../../../public/assets/mines/game-icons/Dimond_Icon.svg");
+}
+
+.is_Bomb {
+    background-image: url("../../../../public/assets/mines/game-icons/Bomb_Icon.svg");
+}
+
+// Responsive code for mines container
+@media screen and (max-width:768px) {
+    .mines-container {
+        width: 93%;
+        margin: auto;
+        margin-top: 10px;
+    }
+}
+
+// game actions and other details view styling -------------
+.game-controllers-and-details_ {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.game-actions-container {
+    width: 100%;
+    margin: auto;
+}
+
+@media screen and (max-width:768px) {
+    .game-controllers-and-details_ {
+        width: 100%;
+    }
+
+    .game-actions-container {
+        width: 93%;
+        margin: auto;
+
+    }
+}
+
+.game-start-button {
+    width: 100%;
+    margin: auto;
+}
+
+.start-btn {
+    width: 100%;
+    height: 55px;
+    border: none;
+    outline: none;
+    color: #d6e1ef;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 1;
+
+}
+
+.cashout-btn {
+    width: 100%;
+    height: 55px;
+    border: none;
+    outline: none;
+    color: #d6e1ef;
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 8px;
+    cursor: pointer;
+    opacity: 1;
+    border: 1px solid #ff9838;
+    background-image: radial-gradient(48.81% 101.72% at 50% -10.34%, rgba(244, 157, 76, .243) 0%, rgba(255, 125, 5, .19) .01%, rgba(225, 155, 90, 0) 100%), linear-gradient(315.81deg, #17191c -42.75%, #32383e 123.05%);
+
+    span {
+        font-size: 12px;
+        margin-top: 3px;
+    }
+}
+
+
+
+.start-btn.start {
+    background-image: radial-gradient(50% 91.38% at 50% 0, rgba(82, 195, 243, .19) .01%, rgba(18, 194, 250, .54) .02%, rgba(40, 45, 49, .18) 100%), linear-gradient(315.81deg, #17191c -42.75%, #32383e 123.05%);
+    border: 1px solid #4e7faa;
+    transition: opacity 5s linear;
+}
+
+.start-btn.start:active {
+    opacity: .6;
+}
+
+.start-btn.cancel {
+    background: radial-gradient(58.03% 100% at 50% 0, rgba(255, 82, 92, .404) 0%, rgba(40, 45, 49, .11) 100%), linear-gradient(315.81deg, #17191c -42.75%, #32383e 123.05%);
+    box-shadow: -4px -2px 16px rgb(130 53 59), 4px 4px 18px rgba(0, 0, 0, .5);
+    border: 2px solid rgba(130, 52, 59, 1);
+    transition: opacity 5s linear;
+}
+
+.start-btn.cancel:active {
+    opacity: .6;
+}
+
+
+
+
+.bet-amount-controllers {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    background-color: transparent;
+    background-image: linear-gradient(135deg, #222326 0%, #222326 25%, #283034 100%);
+    border: 1px solid #202328;
+    border-radius: 10px;
+    outline: none;
+    padding: 0px 3px;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.14;
+    box-shadow: inset -2px -2px 10px rgba(255, 255, 255, .05), inset 2px 3px 10px #070709;
+}
+
+.bet-amount-controllers.mines {
+    background-color: #0c0c0e !important;
+    background-image: none;
+}
+
+.bet-action-button {
+    width: 12%;
+    height: 30px;
+    // background-image: linear-gradient(320.64deg, #17191c -42.09%, #32383e 167.71%);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #282c31 0%, #1e2125 100%);
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+    display: flex;
+    box-shadow: 3px 3px 4px rgba(10, 9, 9, .4);
+    outline: none;
+    color: #929496;
+    border: 1px solid #282c31;
+    font-size: 12px;
+    font-weight: 400;
+    transition: transform 0.04s ease-in;
+}
+
+.bet-action-button:active {
+    transform: scale(0.8);
+}
+
+.bet-action-button.mines {
+    background-color: rgba(209, 116, 72, .1);
+    background-image: none;
+    border: 1px solid #a35231;
+    box-shadow: -1px -1px 10px rgba(141, 68, 37, .15);
+}
+
+
+.bet-amount-group {
+    width: 45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.bet-amount-group.mines {
+    width: 20%;
+    color: #d26d3d;
+    background-image: none;
+    border: none;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+
+.bet-amount-input {
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    text-align: center;
+    font-size: 14px;
+    color: #d6e1ef;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.bet-amount-input::-webkit-inner-spin-button {
+    display: none;
+}
+
+.bet-amount-input.mines {
+    color: #d26d3d;
+}
+
+.bet-amount-label {
+    z-index: 1;
+    color: rgba(255, 255, 255, .5);
+    font-size: 11px;
+    line-height: .91;
+    font-weight: 400;
+}
+
+
+.bet-amount-label.mines {
+    color: #d26d3d;
+}
+
+@media screen and (max-width:768px) {
+
+    .bet-action-button {
+        width: 12%;
+        height: 44px;
+        font-size: 13px;
+        opacity: .6;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1.45;
+
+    }
+
+    .bet-action-button.mines {
+        background-color: rgba(209, 116, 72, .1);
+        background-image: none;
+        border: 1px solid #a35231;
+        box-shadow: -1px -1px 10px rgba(141, 68, 37, .15);
+    }
+
+
+    .bet-amount-group {
+        width: 45%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 10px;
+    }
+
+    .bet-amount-group.mines {
+        width: 20%;
+        color: #d26d3d;
+        background-image: none;
+        border: none;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+}
+
+// mines risk box
+.mines-details-box {
+    width: 100%;
+    min-height: 170px;
+    margin: auto;
+    border-radius: 10px;
+    padding: 2px;
+    box-shadow: inset 2px 1px 9px #070709;
+    margin-top: 10px;
+    background: #0c0c0e;
+    border: 1px solid #1e2122;
+    border-radius: 10px;
+    padding-bottom: 5px;
+}
+
+.details-box-header {
+    display: flex;
+    border-bottom: 1px solid #1d1b1b;
+    align-items: center;
+    height: 40px;
+    margin-bottom: 14px;
+    padding: 0 12px;
+    font-weight: 700;
+}
+
+.details-heading {
+    font-size: 14px;
+    font-weight: 450;
+    color: #d17448;
+}
+
+.mines-game-details-rows_ {
+    width: 100%;
+}
+
+.game-details-row_ {
+    width: 95%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    line-height: 35px;
+}
+
+.details_value {
+    color: #d17448;
+    font-size: 13px;
+}
+
+.details_icon {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.details_icon.dimond {
+    background-image: url("../../../../public/assets/mines/game-details-icons/dimondIcon.svg");
+}
+
+.details_icon.bomb {
+    background-image: url("../../../../public/assets/mines/game-details-icons/bomb.svg");
+}
+
+.details_icon.tiles {
+    background-image: url("../../../../public/assets/mines/game-details-icons/tiles.svg");
+}
+
+.bet-histories-section {
+    width: 78%;
+    margin: auto;
+    margin-top: 5px;
+}
+
+@media screen and (max-width:768px) {
+    .bet-histories-section {
+        width: 93%;
+    }
+
+    .mines-details-box {
+        width: 93%;
+
+    }
+}
+
+
+
+
+.mines-wining-box {
+    width: 200px;
+    height: 150px;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    border-radius: 8px;
+    z-index: 111;
+    padding-bottom: 10px;
+    background-color: rgb(51 59 67 / 72%);
+    border: 1px solid #506470;
+
+    &.game-over_ {
+        border: 1px solid #a35231;
+    }
+}
+
+.wining-box-header {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #22a5d7;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: capitalize;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+
+    &.game-over_ {
+        background-color: #a35231;
+    }
+
+}
+
+.game-win-amount {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: rgb(179 236 253);
+    font-weight: bold;
+    z-index: 111;
+    margin-top: 15px;
+
+    &.game-over_ {
+        color: #fff;
+    }
+}
+
+.win-box-footer {
+    width: 80%;
+    margin: auto;
+    border-top: 1px solid rgba(96, 189, 209, 1);
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    &.game-over_ {
+        border-top: 1px solid #fff;
+    }
+}
+
+.win-multiplier-h,
+.win-multiplier-v {
+    margin-top: 15px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 500;
+
+    &.game-over_ {
+        color: #fff;
+    }
+}
+
+
+.win-box-body_ {
+    width: 100%;
+    height: 70px;
+    background-color: #2f383ed2;
+    margin-top: 15px;
+}

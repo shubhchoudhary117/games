@@ -1,0 +1,176 @@
+<section class="limbo-game">
+
+  <!-- ═══════════════ TOP BAR ═══════════════ -->
+  <header class="top-bar">
+    <div class="logo">
+      LIMB<span class="logo-o">O</span>
+      <img class="logo-icon" src="" alt="" aria-hidden="true" />
+    </div>
+    <div class="top-bar__right">
+      <button class="how-btn">
+        <span class="how-btn__icon">ⓘ</span> How to play?
+      </button>
+      <div class="balance-box">
+        <span class="balance-amount">{{ formatBalance(balance) }}</span>
+        <span class="balance-icon">$</span>
+      </div>
+      <button class="icon-btn fullscreen-btn" aria-label="Fullscreen">⛶</button>
+      <button class="icon-btn menu-btn" aria-label="Menu">☰</button>
+    </div>
+  </header>
+
+  <!-- ═══════════════ HISTORY STRIP ═══════════════ -->
+  <div class="history-strip">
+    <button class="hist-nav hist-nav--left" (click)="scrollHistory(-1)">&#8249;</button>
+    <div class="history-inner" #historyInner>
+      @for (h of history; track $index) {
+        <span class="hist-chip" [class.hist-chip--hot]="h >= 2">x{{ h.toFixed(2) }}</span>
+      }
+    </div>
+    <button class="hist-nav hist-nav--right" (click)="scrollHistory(1)">&#8250;</button>
+  </div>
+
+  <!-- ═══════════════ GAME ARENA ═══════════════ -->
+  <div class="arena">
+
+    <!-- Stars background -->
+    <div class="stars">
+      @for (s of stars; track $index) {
+        <div class="star" [style.left.%]="s.x" [style.top.%]="s.y"
+             [style.width.px]="s.size" [style.height.px]="s.size"
+             [style.animationDelay]="s.delay"></div>
+      }
+    </div>
+
+    <!-- Multiplier display -->
+    <div class="multiplier-display" [class.multiplier-display--rising]="phase === 'rising'"
+         [class.multiplier-display--result]="phase === 'result'">
+      <span class="multiplier-value" [class.multiplier-value--win]="phase === 'result' && didWin"
+            [class.multiplier-value--lose]="phase === 'result' && !didWin">
+        x{{ currentMultiplier.toFixed(2) }}
+      </span>
+    </div>
+
+    <!-- UFO / character -->
+    <div class="ufo-wrapper" [class.ufo-wrapper--idle]="phase === 'idle'"
+         [class.ufo-wrapper--rising]="phase === 'rising'"
+         [class.ufo-wrapper--result]="phase === 'result'">
+      <div class="ufo-glow" [class.ufo-glow--active]="phase === 'rising'"></div>
+      <div class="ufo-body">
+        <!-- UFO SVG character -->
+        <svg class="ufo-svg" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+          <!-- Lights on top -->
+          <circle cx="80" cy="30" r="6" fill="#e05" opacity="0.9"/>
+          <circle cx="60" cy="38" r="5" fill="#e05" opacity="0.9"/>
+          <circle cx="100" cy="38" r="5" fill="#e05" opacity="0.9"/>
+          <circle cx="45" cy="50" r="4" fill="#e05" opacity="0.8"/>
+          <circle cx="115" cy="50" r="4" fill="#e05" opacity="0.8"/>
+          <!-- Cat body / dome -->
+          <ellipse cx="80" cy="68" rx="42" ry="36" fill="#2a3560"/>
+          <ellipse cx="80" cy="68" rx="38" ry="32" fill="#1e2a50"/>
+          <!-- Cat face -->
+          <circle cx="80" cy="62" r="22" fill="#c8a46a"/>
+          <!-- ears -->
+          <polygon points="62,46 55,32 70,44" fill="#c8a46a"/>
+          <polygon points="98,46 105,32 90,44" fill="#c8a46a"/>
+          <polygon points="63,44 58,35 69,43" fill="#f0c090"/>
+          <polygon points="97,44 102,35 91,43" fill="#f0c090"/>
+          <!-- eyes -->
+          <ellipse cx="72" cy="60" rx="5" ry="6" fill="#222"/>
+          <ellipse cx="88" cy="60" rx="5" ry="6" fill="#222"/>
+          <circle cx="74" cy="58" r="2" fill="#fff"/>
+          <circle cx="90" cy="58" r="2" fill="#fff"/>
+          <!-- nose -->
+          <ellipse cx="80" cy="67" rx="3" ry="2" fill="#d08060"/>
+          <!-- mouth -->
+          <path d="M75 71 Q80 76 85 71" stroke="#a06040" stroke-width="1.5" fill="none"/>
+          <!-- whiskers -->
+          <line x1="58" y1="66" x2="72" y2="68" stroke="#888" stroke-width="1"/>
+          <line x1="58" y1="70" x2="72" y2="70" stroke="#888" stroke-width="1"/>
+          <line x1="88" y1="68" x2="102" y2="66" stroke="#888" stroke-width="1"/>
+          <line x1="88" y1="70" x2="102" y2="70" stroke="#888" stroke-width="1"/>
+          <!-- tie -->
+          <polygon points="80,80 76,90 80,88 84,90" fill="#cc2222"/>
+          <rect x="77" y="78" width="6" height="5" rx="1" fill="#cc2222"/>
+          <!-- UFO saucer -->
+          <ellipse cx="80" cy="100" rx="58" ry="16" fill="#3a4a7a"/>
+          <ellipse cx="80" cy="98" rx="58" ry="14" fill="#4a5a9a"/>
+          <ellipse cx="80" cy="96" rx="55" ry="11" fill="#3a4a8a"/>
+          <!-- saucer rim glow -->
+          <ellipse cx="80" cy="96" rx="52" ry="8" fill="none" stroke="#6af" stroke-width="2" opacity="0.5"/>
+          <!-- thruster flame base -->
+          <ellipse cx="80" cy="112" rx="18" ry="6" fill="#2a3060"/>
+        </svg>
+        <!-- Flame / thruster -->
+        <div class="flame-wrapper" [class.flame-wrapper--active]="phase === 'rising'">
+          <div class="flame flame--outer"></div>
+          <div class="flame flame--inner"></div>
+          <div class="flame flame--core"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Horizontal line -->
+    <div class="horizon-line"></div>
+
+    <!-- Chance badge -->
+    <div class="chance-badge">
+      Chance: {{ chance.toFixed(2) }}%
+    </div>
+
+    <!-- Auto game toggle -->
+    <div class="auto-game-row">
+      <label class="toggle-switch">
+        <input type="checkbox" [(ngModel)]="autoGame" />
+        <span class="toggle-track"></span>
+        <span class="toggle-thumb"></span>
+      </label>
+      <span class="auto-game-label">Auto game</span>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════ CONTROLS ═══════════════ -->
+  <div class="controls-panel">
+
+    <!-- Left: Bet amount -->
+    <div class="control-group control-group--bet">
+      <div class="ctrl-row ctrl-row--top">
+        <button class="ctrl-btn" (click)="setBetMin()">MIN</button>
+        <div class="ctrl-value">{{ betAmount }}</div>
+        <button class="ctrl-btn" (click)="setBetMax()">MAX</button>
+      </div>
+      <div class="ctrl-row ctrl-row--bottom">
+        <button class="quick-btn" (click)="setBet(2)">2 <span class="qb-icon">$</span></button>
+        <button class="quick-btn" (click)="setBet(3)">3 <span class="qb-icon">$</span></button>
+        <button class="quick-btn" (click)="setBet(8)">8 <span class="qb-icon">$</span></button>
+        <button class="quick-btn" (click)="setBet(20)">20 <span class="qb-icon">$</span></button>
+      </div>
+    </div>
+
+    <!-- Middle: Target multiplier -->
+    <div class="control-group control-group--multi">
+      <div class="ctrl-row ctrl-row--top">
+        <button class="ctrl-btn ctrl-btn--icon" (click)="adjustMultiplier(-0.5)">−</button>
+        <div class="ctrl-value">{{ targetMultiplier }}x</div>
+        <button class="ctrl-btn ctrl-btn--icon" (click)="adjustMultiplier(0.5)">+</button>
+      </div>
+      <div class="ctrl-row ctrl-row--bottom">
+        <button class="quick-btn" (click)="setMultiplier(2)">2x</button>
+        <button class="quick-btn" (click)="setMultiplier(5)">5x</button>
+        <button class="quick-btn" (click)="setMultiplier(10)">10x</button>
+        <button class="quick-btn" (click)="setMultiplier(50)">50x</button>
+      </div>
+    </div>
+
+    <!-- Right: Play button -->
+    <button class="play-btn" (click)="play()"
+            [class.play-btn--disabled]="phase === 'rising'"
+            [disabled]="phase === 'rising'">
+      <span class="play-btn__cursor" aria-hidden="true">↖</span>
+      PLAY
+    </button>
+
+  </div>
+
+</section>

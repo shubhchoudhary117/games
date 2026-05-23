@@ -1,0 +1,158 @@
+$bg-modal: #1b1c1d;
+$bg-header: #2c2d30;
+$bg-row: #101112;
+$bg-row-won: #1a3a1a;
+$border-won: #2a5a2a;
+$border-modal: #2a2b2e;
+$transition-speed: 0.3s;
+$transition-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+$color-text: #ffffff;
+$color-muted: #7b7b7b;
+$color-date: #888888;
+$color-date-won: #88aa88;
+$color-cashout: #cce8cc;
+
+.game-limits-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s,
+        visibility cubic-bezier(0.34, 1.56, 0.64, 1) ease;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+
+        .my-bets-modal {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    .game-limits-modal {
+        width: 460px;
+        background: $bg-modal;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid $border-modal;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+        font-family: 'Barlow', 'Segoe UI', sans-serif;
+        transform: translateY(-40px) scale(0.97);
+        transition: opacity $transition-speed $transition-ease,
+            transform $transition-speed $transition-ease;
+
+
+        &__header {
+            background: $bg-header;
+            border-bottom: 1px solid #333;
+            padding: 0 14px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        &__title {
+            color: $color-text;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        &__close-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #97a4ae;
+            font-size: 15px;
+            line-height: 1;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: color 0.15s;
+
+            &:hover {
+                color: $color-text;
+            }
+        }
+
+        &__body {
+            width: 100%;
+            padding: 20px;
+        }
+
+        &__limits-box {
+            width: 100%;
+            margin: auto;
+
+        }
+
+        &__row {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, .1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            line-height: 14px;
+            height: 34px;
+            padding: 0px 5px 0px 10px;
+        }
+
+        &__limit-val {
+            background-color: #123405;
+            border: 1px solid #427f00;
+            font-size: 14px;
+            display: inline-block;
+            padding: 5px 10px;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+            border-radius: 32px;
+        }
+
+
+    }
+}
+
+
+@media screen and (max-width:768px) {
+
+    
+
+    .game-limits-modal-overlay {
+       
+
+        .game-limits-modal {
+           width: 97%;
+           margin: auto;
+
+
+            &__header {
+              
+                height: 44px;
+            }
+
+            &__title {
+                font-size: 13px;
+                
+            }
+
+            &__close-btn {
+                font-size: 15px;
+            }
+
+        }
+    }
+
+}

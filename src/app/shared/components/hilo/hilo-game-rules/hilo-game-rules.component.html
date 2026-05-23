@@ -1,0 +1,52 @@
+
+<div class="game-rules">
+  <div class="game-rules__overlay" (click)="closeGameRules()"></div>
+
+  <div class="game-rules__container">
+    <div class="game-rules__header">
+      <h2 class="game-rules__title">GAME RULES</h2>
+      <button class="game-rules__close" (click)="closeGameRules()">×</button>
+    </div>
+
+    <div class="game-rules__content">
+      <div class="game-rules__section">
+        <h3 class="game-rules__section-title game-rules__section-title--center">
+          <span class="game-rules__icon">🂡</span> HI LO
+        </h3>
+
+        <ul class="game-rules__list">
+          <li>In Hilo player is guessing will be the next card higher (or same) or lower (or same) than current one;
+          </li>
+          <li>Multiplier of each choise is shown on coressponding button;</li>
+          <li>With each correctly guessed card overal bet multiplier increases;</li>
+          <li>Player can cash out winnings at any time by clicking “Cash out” button;</li>
+          <li>The maximum winning odds for this game are unlimited. However, the maximum win is limited by the operator
+            and can be accessed from the “Game Limits” section in the menu.</li>
+        </ul>
+      </div>
+
+      <!-- INTERFACE -->
+      <div class="game-rules__section">
+        <h3 class="game-rules__section-title">GAME INTERFACE</h3>
+        <ul class="game-rules__list">
+          <li>Bets can be made from the bet panel, by selecting predefined bet amounts, or entering your own.</li>
+          <li>Player balance shows available funds to play;</li>
+          <li>Sound can be turned off and back on from the game menu;</li>
+          <li>Bet history can be accessed from the game menu;</li>
+          <li>Game information and rules can be accessed from the game menu;</li>
+          <li>Provably Fair settings can be accessed from the game menu;</li>
+        </ul>
+      </div>
+      <div class="game-rules__section">
+        <h3 class="game-rules__section-title">ADDITIONAL INFORMATION</h3>
+        <ul class="game-rules__list">
+          <li>In the event of a malfunction of the gaming hardware/software, all affected game bets and payouts are
+            rendered void and all affected bets are refunded.</li>
+          <li>If the internet connection is interrupted when the bet is active, the game will auto cash out with the
+            current multiplier.</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<!-- src/app/components/win-popup/win-popup.component.html -->
+<div class="win-popup" [class.show]="popup.visible" [class.win-state]="popup.win > 0" [class.lose-state]="popup.win === 0 && popup.visible">
+
+  <div class="popup-label">Winning Number</div>
+
+  <div class="win-num" [ngClass]="popup.color">{{ popup.num }}</div>
+
+  <div class="win-color">{{ colorEmoji }}</div>
+
+  <div class="win-result" [ngClass]="popup.win > 0 ? 'win' : 'lose'">
+    <div class="win-result-label" [ngClass]="popup.win > 0 ? 'win' : 'lose'">
+      {{ popup.win > 0 ? 'YOU WIN' : 'NO WIN' }}
+    </div>
+    <div class="win-result-amt" [ngClass]="popup.win > 0 ? 'win' : 'lose'">
+      <!-- {{ popup.win > 0 ? '+' + formatNum(popup.win) : '-' + formatNum(Math.abs(popup.net)) }} -->
+    </div>
+  </div>
+
+  <div class="win-bal-after">
+    BAL: <span class="win-bal-val">{{ formatNum(popup.balance) }}</span>
+  </div>
+</div>

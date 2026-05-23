@@ -1,0 +1,38 @@
+<div class="avatar-overlay" [class.show]="isVisible" (click)="onClose()">
+  <div class="avatar-modal" (click)="$event.stopPropagation()">
+
+    <div class="avatar-modal__header">
+      <span class="avatar-modal__title">CHANGE AVATAR</span>
+      <span class="avatar-modal__close" (click)="onClose()">
+        <i class="fas fa-times"></i>
+      </span>
+    </div>
+
+    <div class="avatar-modal__body">
+      <div class="avatar-grid">
+        <div
+          class="avatar-grid__item"
+          *ngFor="let avatar of avatarList"
+          [class.avatar-grid__item--selected]="isSelected(avatar)"
+          (click)="selectAvatar(avatar)"
+        >
+          <img
+          *ngIf="avatar"
+            class="avatar-grid__img"
+            [src]="avatar"
+            [alt]="avatar"
+            loading="lazy"
+          />
+          <div class="avatar-grid__check" *ngIf="isSelected(avatar)">
+            <i class="fas fa-check"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avatar-modal__footer">
+      <button class="avatar-modal__close-btn" (click)="onClose()">Close</button>
+    </div>
+
+  </div>
+</div>

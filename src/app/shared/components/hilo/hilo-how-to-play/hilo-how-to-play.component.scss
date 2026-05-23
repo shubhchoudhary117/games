@@ -1,0 +1,158 @@
+.htp-modal {
+  &__backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+    animation: overlayIn 0.2s ease;
+  }
+
+  &__card {
+    width: min(480px, 100%);
+    background: #212328;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
+    color: #fff;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 900;
+    letter-spacing: 1px;
+  }
+
+  &__close {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: #3a3f4a;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: #4a505c;
+    }
+  }
+
+  &__body {
+    padding: 20px 32px;
+    text-align: center;
+  }
+
+  &__text {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.82);
+
+    strong {
+      color: #fff;
+    }
+  }
+
+  &__brand {
+    font-size: 17px;
+    font-weight: 800;
+    color: #ffaa20;
+    margin-bottom: 20px;
+  }
+
+  &__demo {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  &__card-demo {
+    border-radius: 18px;
+    background: linear-gradient(135deg, #3ec4ef, #1d8eef);
+    border: 10px solid #f0f0f0;
+
+    &--big {
+      width: 60px;
+      height: 90px;
+    }
+
+    &--small {
+      width: 60px;
+      height: 70px;
+    }
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+  }
+
+  &__btn {
+    width: 150px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 900;
+
+    &--low {
+      background: #2d578f;
+      border-radius: 16px 0 0 16px;
+    }
+
+    &--high {
+      background: linear-gradient(90deg, #ff5d13, #ff8b2d);
+      border-radius: 0 16px 16px 0;
+    }
+  }
+
+  &__hand {
+    width: 50px;
+    height: 50px;
+    margin: 0 -16px;
+    border-radius: 50%;
+    background: #1f2430;
+    border: 5px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    z-index: 1;
+  }
+}
+
+
+
+@media screen and (max-width:768px) {
+
+  .htp-modal {
+
+
+
+    &__card {
+      width: 97%;
+      max-width: 98%;
+      margin: auto;
+    }
+  }
+}

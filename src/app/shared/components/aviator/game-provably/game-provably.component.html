@@ -1,0 +1,170 @@
+<div
+  class="pf-modal-overlay"
+  [class.pf-modal-overlay--visible]="isVisible"
+  (click)="onClose()"
+>
+  <div class="pf-modal" (click)="$event.stopPropagation()">
+    <div class="pf-modal__header">
+      <span class="pf-modal__title">PROVABLY FAIR SETTINGS</span>
+      <button
+        class="pf-modal__close-btn"
+        (click)="onClose()"
+        aria-label="Close"
+      >
+        &#x2715;
+      </button>
+    </div>
+
+   
+    <div class="pf-modal__description-row">
+      <p class="pf-modal__description">
+        This game uses Provably Fair technology to determine game result.
+        This tool gives you ability to change your seed and check fairness of the game.
+      </p>
+      <button class="pf-modal__info-link" (click)="openWhatIsProvablyFair()">
+        <span class="pf-modal__info-link-icon">&#x2753;</span>
+        What is Provably Fair
+      </button>
+    </div>
+
+    <div class="pf-modal__divider"></div>
+
+    
+    <div class="pf-modal__section">
+      <div class="pf-modal__section-header">
+        <div class="pf-modal__section-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="28" height="18" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+            <line x1="10" y1="28" x2="22" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="16" y1="22" x2="16" y2="28" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="pf-modal__section-title">Client (your) seed:</span>
+      </div>
+      <p class="pf-modal__section-subtitle">
+        Round result is determined form combination of server seed and first 3 bets of the round.
+      </p>
+
+    
+      <div class="pf-modal__seed-row">
+        <label class="pf-modal__radio-label">
+          <input
+            class="pf-modal__radio-input"
+            type="radio"
+            name="seedMode"
+            value="random"
+            [(ngModel)]="seedMode"
+          />
+          <span class="pf-modal__radio-custom"></span>
+          <span class="pf-modal__radio-text">Random on every new game</span>
+        </label>
+
+        <div class="pf-modal__seed-display">
+          <span class="pf-modal__seed-label">Current:</span>
+          <span class="pf-modal__seed-value">{{ clientSeedRandom }}</span>
+          <button
+            class="pf-modal__copy-btn"
+            [class.pf-modal__copy-btn--copied]="copiedRandom"
+            (click)="copyToClipboard(clientSeedRandom, 'random')"
+            [title]="copiedRandom ? 'Copied!' : 'Copy seed'"
+            aria-label="Copy seed"
+          >
+            <ng-container *ngIf="!copiedRandom">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8" fill="none"/>
+              </svg>
+            </ng-container>
+            <ng-container *ngIf="copiedRandom">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </ng-container>
+          </button>
+        </div>
+      </div>
+
+      <div class="pf-modal__seed-row">
+        <label class="pf-modal__radio-label">
+          <input
+            class="pf-modal__radio-input"
+            type="radio"
+            name="seedMode"
+            value="manual"
+            [(ngModel)]="seedMode"
+          />
+          <span class="pf-modal__radio-custom"></span>
+          <span class="pf-modal__radio-text">Enter manually</span>
+        </label>
+
+        <div class="pf-modal__seed-display pf-modal__seed-display--manual">
+          <span class="pf-modal__seed-label">Current:</span>
+          <input
+            *ngIf="seedMode === 'manual'"
+            class="pf-modal__seed-input"
+            type="text"
+            [(ngModel)]="manualSeedInput"
+            [placeholder]="clientSeedManual"
+          />
+          <span
+            *ngIf="seedMode !== 'manual'"
+            class="pf-modal__seed-value pf-modal__seed-value--dimmed"
+          >{{ clientSeedManual }}</span>
+          <button
+            class="pf-modal__copy-btn"
+            [class.pf-modal__copy-btn--copied]="copiedManual"
+            (click)="copyToClipboard(clientSeedManual, 'manual')"
+            [title]="copiedManual ? 'Copied!' : 'Copy seed'"
+            aria-label="Copy seed"
+          >
+            <ng-container *ngIf="!copiedManual">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.8" fill="none"/>
+              </svg>
+            </ng-container>
+            <ng-container *ngIf="copiedManual">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="20 6 9 17 4 12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </ng-container>
+          </button>
+          <button
+            class="pf-modal__change-btn"
+            [disabled]="seedMode !== 'manual'"
+            (click)="changeSeed()"
+          >
+            CHANGE
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="pf-modal__divider"></div>
+
+
+    <div class="pf-modal__section">
+      <div class="pf-modal__section-header">
+        <div class="pf-modal__section-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="4" width="28" height="8" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+            <rect x="2" y="16" width="28" height="8" rx="2" stroke="currentColor" stroke-width="1.8" fill="none"/>
+            <circle cx="25" cy="8" r="1.5" fill="currentColor"/>
+            <circle cx="25" cy="20" r="1.5" fill="currentColor"/>
+            <line x1="6" y1="8" x2="18" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="6" y1="20" x2="18" y2="20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="pf-modal__section-title">Server seed SHA256:</span>
+      </div>
+
+      <div class="pf-modal__server-seed-box">
+        <span class="pf-modal__server-seed-value">{{ serverSeedSHA256 }}</span>
+      </div>
+    </div>
+    <div class="pf-modal__footer">
+      <span class="pf-modal__footer-text">You can check fairness of each bet from bets history</span>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,144 @@
+<div class="game-rules-overlay" [class.show]="isVisible" (click)="onClose()">
+  <div class="game-rules-modal" (click)="$event.stopPropagation()">
+
+    <div class="game-rules-modal__header">
+      <span class="game-rules-modal__title">GAME RULES</span>
+      <span class="game-rules-modal__close" (click)="onClose()">
+        <i class="fas fa-times"></i>
+      </span>
+    </div>
+
+    <div class="game-rules-modal__body">
+
+      <p class="game-rules-modal__intro">
+        Aviator is a new generation of iGaming entertainment. You can win many times more, in seconds!
+        Aviator is built on a provably fair system, which is currently the only real guarantee of honesty
+        in the gambling industry.
+      </p>
+      <a class="game-rules-modal__provably-link" href="#">Read more about provably fair system</a>
+
+      <h2 class="game-rules-modal__section-title">HOW TO PLAY</h2>
+
+      <p class="game-rules-modal__how-subtitle">Aviator is as easy to play as 1-2-3:</p>
+
+      <div class="game-rules-steps">
+        <div class="game-rules-steps__item">
+          <div class="game-rules-steps__number">01</div>
+          <div class="game-rules-steps__image game-rules-steps__image--bet">
+            <div class="game-rules-steps__bet-panel">
+              <div class="game-rules-steps__bet-tabs">
+                <span class="game-rules-steps__bet-tab game-rules-steps__bet-tab--active">Bet</span>
+                <span class="game-rules-steps__bet-tab">Auto</span>
+              </div>
+              <div class="game-rules-steps__bet-controls">
+                <button class="game-rules-steps__bet-btn">-</button>
+                <span class="game-rules-steps__bet-value">0.1</span>
+                <button class="game-rules-steps__bet-btn">+</button>
+                <button class="game-rules-steps__bet-action">Bet<br><small>1.00 USD</small></button>
+              </div>
+              <div class="game-rules-steps__bet-presets">
+                <span>1</span><span>2</span><span>5</span><span>10</span>
+              </div>
+            </div>
+          </div>
+          <div class="game-rules-steps__label">
+            <img src="assets/aviator/rules/bet.svg" alt="" class="game-rules-steps__label-icon">
+            <span class="game-rules-steps__label-keyword">BET</span> before take-off
+          </div>
+        </div>
+
+        <div class="game-rules-steps__item">
+          <div class="game-rules-steps__number">02</div>
+          <div class="game-rules-steps__image game-rules-steps__image--watch">
+            <img src="assets/aviator/rules/watch.png" alt="">
+          </div>
+          <div class="game-rules-steps__label">
+            <span class="game-rules-steps__label-keyword">WATCH</span> as your Lucky Plane takes off and your winnings increase.
+          </div>
+        </div>
+
+        <div class="game-rules-steps__item">
+          <div class="game-rules-steps__number">03</div>
+          <div class="game-rules-steps__image game-rules-steps__image--cashout">
+            <img src="assets/aviator/rules/cashout.png" alt="">
+          </div>
+          <div class="game-rules-steps__label">
+            <span class="game-rules-steps__label-keyword">CASH OUT</span> before the plane disappears and wins X times more!
+          </div>
+        </div>
+      </div>
+
+      <p class="game-rules-modal__reminder">
+        But remember, if you did not have time to Cash Out before the Lucky Plane flies away, your bet will be lost.
+        Aviator is pure excitement! Risk and win. It's all in your hands!
+      </p>
+
+      <h3 class="game-rules-modal__sub-title">More details</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">The win multiplier starts at 1x and grows more and more as the Lucky Plane takes off.</li>
+        <li class="game-rules-list__item">Your winnings are calculated at the multiplier at which you made a Cash Out, multiplied by your bet.</li>
+        <li class="game-rules-list__item">Before the start of each round, our provably fair random number generator generates the multiplier at which the Lucky Plane will fly away. You can check the honesty of this generation by clicking on the icon in the Top tab.</li>
+      </ul>
+
+      <h2 class="game-rules-modal__section-title">GAME FUNCTIONS</h2>
+
+      <h3 class="game-rules-modal__sub-title">Bet &amp; Cash Out</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">Select an amount and press the "Bet" button to make a bet.</li>
+        <li class="game-rules-list__item">You can cancel the bet by pressing the "Cancel" button if the round has not yet started.</li>
+        <li class="game-rules-list__item">Adjust the bet size using the "+" and "-" buttons to change the bet amount. Alternatively, you can select the bet size using the preset values or enter a value manually.</li>
+        <li class="game-rules-list__item">You can make two bets simultaneously, by adding a second bet panel. To add a second bet panel, press the plus icon, which is located on the top right corner of the first bet panel.</li>
+        <li class="game-rules-list__item">Press the "Cash Out" button to cash out your winnings. Your win is your bet multiplied by the Cash Out multiplier.</li>
+        <li class="game-rules-list__item">Your bet is lost, if you didn't cash out before the plane flies away.</li>
+      </ul>
+
+      <h3 class="game-rules-modal__sub-title">Auto Play &amp; Auto Cash Out</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">Before starting Auto Play, select the bet size you want to play with. How to do this is described in the Bet &amp; cash out section.</li>
+        <li class="game-rules-list__item">Auto Play is activated from the "Auto" tab in the Bet Panel, by checking the "Auto Bet" checkbox. After activation, bets will be placed automatically, but for Cash Out, you should press the "Cash Out" button in each round. If you want the bet to cash out automatically, then use the "Auto Cash Out" option.</li>
+        <li class="game-rules-list__item">Auto Cash Out is available from the "Auto" tab on the Bet panel. After activation, your bet will be automatically cashed out when it reaches the multiplier entered.</li>
+      </ul>
+
+      <h3 class="game-rules-modal__sub-title">Live Bets &amp; Statistics</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">On the left side of the game interface (or under the Bet Panel on mobile), is located the Live Bets panel. Here you can see all bets that are being made in the current round.</li>
+        <li class="game-rules-list__item">In the "Top" panel, game statistics are located. You can browse wins by amount, or Cash Out multiplier, and see the biggest round multipliers.</li>
+      </ul>
+
+      <h3 class="game-rules-modal__sub-title">Free Bets</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">You can check the status of Free Bets, from the Game Menu > Free Bets. Free Bets are awarded by the operator, or by the Rain Feature.</li>
+      </ul>
+
+      <h3 class="game-rules-modal__sub-title">Rain Feature</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">The operator can drop Free Bets into the chat through the Rain feature. To claim these Free Bets, just press the "Claim" button when they appear in the chat.</li>
+      </ul>
+
+      <h3 class="game-rules-modal__sub-title">Randomisation</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">The multiplier for each round is generated by a "Provably Fair" algorithm and is completely transparent, and 100% fair. <a class="game-rules-modal__provably-link" href="#">Read more about provably fair system</a></li>
+        <li class="game-rules-list__item">You can check and modify the Provably Fair settings from the Game menu > Provably Fair settings.</li>
+        <li class="game-rules-list__item">You can check the fairness of each round by pressing the icon, opposite the results in the "My Bets" or inside "Top" tabs.</li>
+      </ul>
+
+      <h3 class="game-rules-modal__sub-title">Game Menu</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">Access the game menu by tapping the menu button in the top right corner of the screen.</li>
+        <li class="game-rules-list__item">Toggle the "Sound" switch to turn the game sounds on or off.</li>
+        <li class="game-rules-list__item">Toggle the "Music" switch to turn the background music on or off.</li>
+        <li class="game-rules-list__item">Toggle the "Animation" switch to turn the airplane animation on or off.</li>
+        <li class="game-rules-list__item">Press the "Limits" button to view the limits for minimum and maximum bets, as well as the maximum win limit.</li>
+        <li class="game-rules-list__item">Press the "My Bets History" button to view the history of your bets.</li>
+        <li class="game-rules-list__item">Open "Game Rules" to read detailed rules of the game.</li>
+      </ul>
+
+      <h3 class="game-rules-modal__sub-title">Other</h3>
+      <ul class="game-rules-list">
+        <li class="game-rules-list__item">If the internet connection is interrupted when the bet is active, the game will auto cash out with the current multiplier, and the winning amount will be added to your balance.</li>
+        <li class="game-rules-list__item">In the event of a malfunction of the gaming hardware/software, all affected game bets and payouts are rendered void and all affected bets are refunded.</li>
+      </ul>
+
+    </div>
+  </div>
+</div>

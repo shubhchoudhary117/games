@@ -1,0 +1,135 @@
+<audio #bubblesBlastAudio src="assets/audios/bubble-game/bubbles-blast-audio.m4a"></audio>
+<audio #gameWinAudio src="assets/audios/bubble-game/bubble-game-win.m4a"></audio>
+<section class="bubbles-game">
+    <app-bubbles-game-header></app-bubbles-game-header>
+    <main class="bubbles-game__container">
+        <div class="bubbles-game__left">
+            <div class="bubbles-game__bubbles-section">
+                <button class="bubbles-game__clear-bubbles" (click)="clearBubbles()" title="Clear selection">
+                    <i class="fas fa-trash"></i>
+                </button>
+
+                <div class="bubbles-game__bubbles-container" [style.grid-template-columns]="gridTemplateColumns">
+                    <button *ngFor="let bubble of bubbles; let i = index" class="bubbles-game__bubble-btn"
+                        [class.active]="selectedBubbles.includes(i) && getBubbleResult(i) === ''"
+                        [class.winner]="getBubbleResult(i) === 'winner'"
+                        [class.popped]="getBubbleResult(i) === 'popped'" [ngStyle]="getBubbleStyle(i)"
+                        [disabled]="isRevealing" (click)="toggleBubble(i)">
+
+                        <span *ngIf="getBubbleResult(i) === 'winner'" class="bubble-star">⭐</span>
+                        <ng-container *ngFor="let p of getParticlesForBubble(i)">
+                            <div [class.bubble-fire-particle]="p.type === 'fire'"
+                                [class.bubble-ember-particle]="p.type === 'ember'" [ngStyle]="getParticleStyle(p)">
+                            </div>
+                        </ng-container>
+
+                    </button>
+                </div>
+
+                <div class="bubbles-game__vertical-control">
+                    <span class="bubbles-game__ctrl-btn" (click)="increaseVertical()">+</span>
+                    <div class="bubbles-game__vslider-track">
+                        <input type="range" class="bubbles-game__vslider" [min]="1" [max]="6" [value]="rows"
+                            (input)="onVerticalSlider($event)" orient="vertical" />
+                        <div class="bubbles-game__vslider-thumb-overlay" [style.bottom.%]="((rows - 1) / 5) * 100">
+                        </div>
+                    </div>
+                    <span class="bubbles-game__ctrl-btn" (click)="decreaseVertical()">−</span>
+                </div>
+
+                <div class="bubbles-game__horizontal-control">
+                    <span class="bubbles-game__ctrl-btn" (click)="decreaseHorizontal()">−</span>
+                    <div class="bubbles-game__hslider-track">
+                        <input type="range" class="bubbles-game__hslider" [min]="1" [max]="10" [value]="cols"
+                            (input)="onHorizontalSlider($event)" />
+                        <div class="bubbles-game__hslider-thumb-overlay" [style.left.%]="((cols - 1) / 11) * 100"></div>
+                    </div>
+                    <span class="bubbles-game__ctrl-btn" (click)="increaseHorizontal()">+</span>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE: Controls -->
+        <div class="bubbles-game__right">
+            <div class="bubbles-game__card">
+                <div class="bubbles-game__game-logo"></div>
+                <div class="bubbles-game__payout-show">
+                    <span class="bubbles-game__payout-value">Find the winning bubble ⭐! </span>
+                </div>
+
+                <!-- Choose Randomly -->
+                <div class="bubbles-game__choose-randomly">
+                    <div class="bubbles-game__choose-randomly-label">Choose randomly</div>
+                    <div class="bubbles-game__choose-randomly-row">
+                        <span class="bubbles-game__slider-edge">{{ maxRandom }}</span>
+                        <input type="range" class="bubbles-game__slider" [min]="1" [max]="maxRandom"
+                            [(ngModel)]="randomCount" (input)="onRandomSliderChange(randomCount)" />
+                        <span class="bubbles-game__slider-edge">1</span>
+                        <button class="bubbles-game__refresh-btn" (click)="chooseRandomly()">
+                            <i class="fas fa-sync-alt"></i>
+                            <strong>{{ randomCount }}</strong>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bet Amount -->
+                <div class="bubbles-game__controllers-betbox">
+                    <div class="bubbles-game__bet-section">
+                        <div class="bubbles-game__bet-row">
+                            <button class="bubbles-game__bet-edge-btn" (click)="setBetMin()">Min</button>
+                            <button class="bubbles-game__bet-icon-btn" (click)="decreaseBet()">−</button>
+                            <div class="bubbles-game__bet-center">
+                                <span class="bubbles-game__bet-label">Bet Amount <i
+                                        class="fas fa-info-circle"></i></span>
+                                <span class="bubbles-game__bet-value">${{ betAmount }}</span>
+                            </div>
+                            <button class="bubbles-game__bet-icon-btn" (click)="increaseBet()">+</button>
+                            <button class="bubbles-game__bet-edge-btn" (click)="setBetMax()">Max</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="bubbles-game__actions">
+                        <button class="bubbles-game__auto-btn" title="Auto">
+                            <span class="bubbles-game__auto-icon">A</span>
+                            <span class="bubbles-game__auto-label">Auto</span>
+                        </button>
+
+                        <button class="bubbles-game__place-bet-btn" [class.disabled]="selectedBubbles.length==0" [class.loading]="isPlacingBet"
+                            [disabled]="selectedBubbles.length === 0 || isPlacingBet" (click)="placeBet()">
+                            <span *ngIf="!isPlacingBet && selectedBubbles.length>0">PLACE BET</span>
+                            <span *ngIf="selectedBubbles.length===0" class="choose-bubbles">Choose Bubbles</span>
+                            <span *ngIf="isPlacingBet" class="bubbles-game__spinner"></span>
+                        </button>
+
+                        <button class="bubbles-game__save-btn" title="Save pattern">
+                            <i class="fas fa-check"></i>
+                            <span class="bubbles-game__save-label">Save pattern</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bubbles-game__footer">
+        <span>Turbo Games · Bubbles</span>
+        <span>{{ today | date: 'd MMM, y | HH:mm:ss' }}</span>
+    </footer>
+
+
+    <!-- Win Card -->
+    <div class="bubbles-game__win-overlay" *ngIf="showWinCard" (click)="dismissWinCard()">
+        <div class="bubbles-game__win-card" (click)="$event.stopPropagation()">
+            <div class="bubbles-game__win-star">⭐</div>
+            <div class="bubbles-game__win-title">You WIN!</div>
+            <div class="bubbles-game__win-amount">${{ winAmount }}</div>
+        </div>
+    </div>
+
+    
+
+</section>
+

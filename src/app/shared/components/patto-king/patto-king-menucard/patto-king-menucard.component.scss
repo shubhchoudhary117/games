@@ -1,0 +1,889 @@
+// ── Palette (same as game) ────────────────────────────────
+$bg:       #07100c;
+$felt:     #0c3a1e;
+$felt-hi:  #104d27;
+$gold:     #c8932a;
+$gold-lt:  #f2c85a;
+$gold-dim: #6b4e10;
+$teen-clr: #ff5500;
+$do-clr:   #f5d800;
+$match-red: rgb(7, 235, 7);
+
+.pk-menu__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 200;
+  pointer-events: none;
+  transition: background 0.3s ease;
+
+  &.open {
+    background: rgba(0, 0, 0, 0.6);
+    pointer-events: all;
+  }
+}
+
+.pk-menu__drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 280px;
+  height: 100dvh;
+  background: linear-gradient(180deg, #061410 0%, #030d07 100%);
+  border-left: 1px solid rgba($gold, 0.2);
+  display: flex;
+  flex-direction: column;
+  z-index: 201;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.7);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -1px;
+    top: 10%;
+    bottom: 10%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, $gold-lt, transparent);
+  }
+
+  &.open {
+    transform: translateX(0);
+  }
+}
+
+// ─── Profile ─────────────────────────────────────────────
+.pk-menu__profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px 16px;
+  background: linear-gradient(135deg, rgba($gold, 0.06) 0%, transparent 100%);
+  border-bottom: 1px solid rgba($gold, 0.12);
+  position: relative;
+}
+
+.pk-menu__avatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+}
+
+.pk-menu__avatar-img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.pk-menu__avatar-ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid $gold;
+  background: transparent;
+}
+
+.pk-menu__avatar-badge {
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  background: $gold;
+  color: #1a0e00;
+  font-size: 9px;
+  font-weight: 900;
+  font-family: 'Cinzel', serif;
+  padding: 1px 5px;
+  border-radius: 10px;
+  border: 1px solid $bg;
+  letter-spacing: 0.5px;
+}
+
+.pk-menu__user-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pk-menu__username {
+  font-family: 'Cinzel', serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: $gold-lt;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pk-menu__user-sub {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.pk-menu__coins-ico { font-size: 0.75rem; }
+
+.pk-menu__user-coins {
+  font-size: 0.8rem;
+  color: rgba($gold-lt, 0.7);
+  font-weight: 600;
+}
+
+.pk-menu__close-btn {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.3);
+  }
+}
+
+// ─── Sound Toggle ─────────────────────────────────────────
+.pk-menu__sound-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.pk-menu__sound-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.5px;
+}
+
+.pk-menu__sound-ico { font-size: 1rem; }
+
+.pk-menu__toggle {
+  width: 46px;
+  height: 26px;
+  border-radius: 13px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.25s ease;
+  padding: 0;
+
+  &.on {
+    background: linear-gradient(135deg, #2a8a10, #3db518);
+    box-shadow: 0 0 10px rgba(61, 181, 24, 0.35);
+  }
+}
+
+.pk-menu__toggle-knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  .pk-menu__toggle.on & { transform: translateX(20px); }
+}
+
+// ─── Separator ───────────────────────────────────────────
+.pk-menu__sep {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba($gold, 0.15), transparent);
+  margin: 0 12px;
+}
+
+// ─── Nav Items ───────────────────────────────────────────
+.pk-menu__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  gap: 2px;
+}
+
+.pk-menu__item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  position: relative;
+  transition: background 0.15s;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 0 2px 2px 0;
+    background: $gold;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  &:hover {
+    background: rgba($gold, 0.06);
+    &::before { opacity: 1; }
+    .pk-menu__item-icon { transform: scale(1.15); }
+    .pk-menu__item-label { color: $gold-lt; }
+    .pk-menu__item-arrow { color: $gold; transform: translateX(3px); }
+  }
+
+  &:active { background: rgba($gold, 0.1); }
+}
+
+.pk-menu__item-icon {
+  font-size: 1.2rem;
+  width: 28px;
+  text-align: center;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.pk-menu__item-label {
+  flex: 1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.8);
+  letter-spacing: 0.5px;
+  transition: color 0.15s;
+}
+
+.pk-menu__item-arrow {
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.25);
+  transition: color 0.15s, transform 0.15s;
+}
+
+.pk-menu__item-badge {
+  background: $teen-clr;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  margin-right: 4px;
+}
+
+// ─── Footer ──────────────────────────────────────────────
+.pk-menu__footer {
+  padding: 16px 18px;
+  border-top: 1px solid rgba($gold, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.pk-menu__version {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.5px;
+}
+
+.pk-menu__suits {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.15);
+  letter-spacing: 3px;
+}
+
+
+// ═════════════════════════════════════════════════════════
+// MODAL BACKDROP
+// ═════════════════════════════════════════════════════════
+.pk-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0);
+  z-index: 300;
+  pointer-events: none;
+  transition: background 0.25s ease;
+
+  &.open {
+    background: rgba(0,0,0,0.65);
+    pointer-events: all;
+  }
+}
+
+// ═════════════════════════════════════════════════════════
+// MODAL BASE
+// ═════════════════════════════════════════════════════════
+.pk-modal {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-height: 80dvh;
+  background: linear-gradient(180deg, #0a1e12 0%, #050f09 100%);
+  border: 1px solid rgba($gold, 0.2);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  z-index: 301;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(100%);
+  transition: transform 0.4s cubic-bezier(0.34, 1.1, 0.64, 1);
+  box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, $gold, transparent);
+    border-radius: 1px;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+  }
+
+  &.open { transform: translateY(0); }
+}
+
+// ─── Modal Header ─────────────────────────────────────────
+.pk-modal__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 20px 14px;
+  border-bottom: 1px solid rgba($gold, 0.1);
+  flex-shrink: 0;
+}
+
+.pk-modal__header-icon { font-size: 1.2rem; }
+
+.pk-modal__title {
+  flex: 1;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: $gold-lt;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.pk-modal__close {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+  color: rgba(255,255,255,0.4);
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.12);
+    border-color: rgba(255,255,255,0.3);
+  }
+}
+
+// ─── Modal Body ───────────────────────────────────────────
+.pk-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 24px;
+
+  &::-webkit-scrollbar { width: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba($gold, 0.3);
+    border-radius: 2px;
+  }
+}
+
+// ─── How to Play Steps ────────────────────────────────────
+.pk-modal__step {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+
+  &:last-of-type { border-bottom: none; }
+}
+
+.pk-modal__step-num {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba($gold, 0.2), rgba($gold, 0.05));
+  border: 1px solid rgba($gold, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $gold-lt;
+}
+
+.pk-modal__step-content {
+  flex: 1;
+  padding-top: 3px;
+}
+
+.pk-modal__step-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 5px;
+  letter-spacing: 0.3px;
+}
+
+.pk-modal__step-desc {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.6;
+
+  strong { color: rgba(255,255,255,0.85); }
+  em {
+    font-style: normal;
+    font-family: 'Courier New', monospace;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    font-size: 0.75rem;
+  }
+}
+
+.pk-modal__step-highlight {
+  color: $match-red;
+  font-weight: 600;
+}
+
+.pk-modal__step-teen {
+  color: $teen-clr;
+  font-weight: 700;
+}
+
+.pk-modal__step-do {
+  color: $do-clr;
+  font-weight: 700;
+}
+
+// ── Quick Reference box ───────────────────────────────────
+.pk-modal__htp-ref {
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba($gold, 0.12);
+  border-radius: 12px;
+  padding: 14px;
+  margin-top: 14px;
+  margin-bottom: 12px;
+}
+
+.pk-modal__htp-ref-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 2px;
+  color: rgba($gold-lt, 0.5);
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.pk-modal__htp-ref-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 7px;
+  margin-bottom: 6px;
+  font-size: 0.78rem;
+
+  &:last-child { margin-bottom: 0; }
+
+  span { color: rgba(255,255,255,0.6); }
+
+  strong {
+    font-family: 'Cinzel', serif;
+    font-size: 0.85rem;
+  }
+
+  &--teen {
+    background: rgba($teen-clr, 0.08);
+    border: 1px solid rgba($teen-clr, 0.2);
+    strong { color: $teen-clr; }
+  }
+
+  &--do {
+    background: rgba($do-clr, 0.06);
+    border: 1px solid rgba($do-clr, 0.18);
+    strong { color: $do-clr; }
+  }
+
+  &--loss {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    strong { color: rgba(255,255,255,0.25); }
+  }
+}
+
+// ── Pro Tip box ───────────────────────────────────────────
+.pk-modal__tip {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: rgba($gold, 0.05);
+  border: 1px solid rgba($gold, 0.18);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.55;
+
+  strong { color: $gold-lt; }
+}
+
+.pk-modal__tip-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+// ─── Game Rules Cards ─────────────────────────────────────
+.pk-modal__rule-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  border: 1px solid transparent;
+
+  &--teen {
+    background: rgba($teen-clr, 0.07);
+    border-color: rgba($teen-clr, 0.25);
+  }
+  &--do {
+    background: rgba($do-clr, 0.06);
+    border-color: rgba($do-clr, 0.2);
+  }
+  &--loss {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+  }
+}
+
+.pk-modal__rule-badge {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba($gold, 0.15);
+  border: 1px solid rgba($gold, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 900;
+  color: $gold-lt;
+
+  .pk-modal__rule-card--teen & {
+    background: rgba($teen-clr, 0.15);
+    border-color: rgba($teen-clr, 0.4);
+    color: $teen-clr;
+    font-size: 1.1rem;
+  }
+  .pk-modal__rule-card--do & {
+    background: rgba($do-clr, 0.12);
+    border-color: rgba($do-clr, 0.35);
+    color: $do-clr;
+    font-size: 1.1rem;
+  }
+  &--loss {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.35);
+    font-size: 1.1rem;
+  }
+}
+
+.pk-modal__rule-name {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 3px;
+}
+.pk-modal__rule-desc {
+  font-size: 0.76rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+.pk-modal__rule-example {
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 1px;
+}
+
+.pk-modal__info-box {
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba($gold, 0.1);
+  border-radius: 10px;
+  padding: 4px 0;
+  margin-top: 14px;
+}
+
+.pk-modal__info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+
+  &:last-child { border-bottom: none; }
+}
+
+.pk-modal__info-key {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+}
+.pk-modal__info-val {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: $gold-lt;
+  font-family: 'Cinzel', serif;
+}
+
+// ─── Bet History Stats ────────────────────────────────────
+.pk-modal__stats {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.pk-modal__stat {
+  flex: 1;
+  background: rgba(0,0,0,0.25);
+  border: 1px solid rgba($gold, 0.1);
+  border-radius: 10px;
+  padding: 10px 8px;
+  text-align: center;
+}
+
+.pk-modal__stat-val {
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: $gold-lt;
+  line-height: 1;
+  margin-bottom: 4px;
+
+  &--green { color: #50e080; }
+  &--red   { color: #ff5555; }
+}
+
+.pk-modal__stat-label {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.pk-modal__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 40px 20px;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.pk-modal__empty-icon {
+  font-size: 2.5rem;
+  opacity: 0.4;
+}
+
+// ═════════════════════════════════════════════════════════
+// BET HISTORY TABLE
+// ═════════════════════════════════════════════════════════
+
+.pk-modal__table-wrap {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba($gold, 0.12);
+  background: rgba(0,0,0,0.2);
+
+  // Scrollbar
+  &::-webkit-scrollbar { height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba($gold, 0.25);
+    border-radius: 2px;
+  }
+}
+
+.pk-hist-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 280px;
+
+  // ── Header ───────────────────────────────────────────
+  &__th {
+    padding: 10px 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: rgba($gold-lt, 0.55);
+    text-align: left;
+    border-bottom: 1px solid rgba($gold, 0.15);
+    background: rgba(0,0,0,0.25);
+    white-space: nowrap;
+
+    &--right { text-align: right; }
+  }
+
+  // ── Body Rows ─────────────────────────────────────────
+  &__row {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.12s;
+
+    &:last-child { border-bottom: none; }
+
+    &:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    &--win {
+      background: rgba(0, 200, 80, 0.04);
+
+      &:hover { background: rgba(0, 200, 80, 0.07); }
+    }
+
+    &--loss {
+      background: rgba(255,60,60,0.03);
+      opacity: 0.75;
+
+      &:hover { background: rgba(255,60,60,0.05); opacity: 1; }
+    }
+  }
+
+  // ── Cells ─────────────────────────────────────────────
+  &__td {
+    padding: 10px 12px;
+    font-size: 0.78rem;
+    vertical-align: middle;
+
+    // Deal number
+    &--num {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.22);
+      font-weight: 600;
+      width: 28px;
+    }
+
+    // Bet amount
+    &--bet {
+      color: rgba(255,255,255,0.55);
+      font-weight: 600;
+      white-space: nowrap;
+
+      &::before { content: '₹'; font-size: 0.65rem; opacity: 0.6; margin-right: 1px; }
+    }
+
+    // Result tags cell
+    &--result {
+      width: 100%;
+    }
+
+    // P&L — right aligned
+    &--gain {
+      text-align: right;
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    &--pos { color: #50e080; }
+    &--neg { color: rgba(255,100,100,0.7); }
+  }
+
+  // ── Result tags ───────────────────────────────────────
+  &__tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 6px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+
+    &--teen {
+      background: rgba($teen-clr, 0.14);
+      color: $teen-clr;
+      border: 1px solid rgba($teen-clr, 0.28);
+    }
+
+    &--do {
+      background: rgba($do-clr, 0.1);
+      color: $do-clr;
+      border: 1px solid rgba($do-clr, 0.22);
+    }
+
+    &--loss {
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+  }
+}

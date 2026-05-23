@@ -1,0 +1,1509 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap');
+
+$orange-bg: radial-gradient(circle at 50% 62%, #ebc70b, #d37006 88%);
+$header-bg: #965b0b;
+$panel-bg: rgba(120, 72, 8, 0.72);
+$btn-orange: #e28109;
+$shadow-button: 0 5px 0 rgba(0, 0, 0, 0.32), 0 12px 24px rgba(0, 0, 0, 0.18);
+$mobile: 480px;
+$tablet: 768px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.hilo {
+  width: 100%;
+  min-height: 100svh; 
+  background: #1a0e00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow', sans-serif;
+
+  button,
+  input {
+    font-family: inherit;
+  }
+
+  &__container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+    @media (max-width: $mobile) {
+      padding: 0;
+      align-items: flex-start;
+    }
+  }
+
+  &__gameviewport {
+    width: min(900px, 100%);
+  }
+
+  &__game {
+    width: 100%;
+    background-image: $orange-bg;
+    border: 2px solid #fb9c23;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 1px 1px rgba(255, 255, 255, 0.22);
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+
+    @media (max-width: $mobile) {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  // ── Background decorative cards — hide on mobile ─────────────────────────
+  &__bgcard1,
+  &__bgcard2,
+  &__bgcard3 {
+    @media (max-width: $mobile) {
+      display: none;
+    }
+  }
+
+  &__bgcard1 {
+    position: absolute;
+    left: -30px;
+    top: 20%;
+    width: 200px;
+    height: 300px;
+    object-fit: fill;
+  }
+
+  &__bgcard2 {
+    position: absolute;
+    right: -30px;
+    top: 20%;
+    width: 200px;
+    height: 300px;
+    object-fit: fill;
+  }
+
+  &__bgcard3 {
+    position: absolute;
+    left: 200px;
+    top: 37%;
+    width: 150px;
+    height: 200px;
+    object-fit: contain;
+    transform: translate(-0px, -37%);
+  }
+
+  // ── Header ──────────────────────────────────────────────────────────────
+  &__game-header {
+    width: 100%;
+    height: 36px;
+    background: $header-bg;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+    border-bottom: 1px solid rgba(251, 156, 35, 0.35);
+    border-radius: 17px;
+
+    @media (max-width: $mobile) {
+      height: 44px; // taller tap targets on mobile
+      border-radius: 0;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__gameheader-left {
+    display: flex;
+    align-items: center;
+  }
+
+  &__howtoplay-btn {
+    height: 26px;
+    padding: 0 14px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    background: linear-gradient(180deg, #f5a830, #c97500);
+    color: #3c0606;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+    &:hover {
+      background: linear-gradient(180deg, #ffba40, #df8800);
+    }
+
+    @media (max-width: $mobile) {
+      height: 30px;
+      font-size: 11px;
+      padding: 0 10px;
+    }
+  }
+
+  // Fun Mode badge — hidden on mobile per requirement
+  &__gameheader-mid {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+
+    @media (max-width: $mobile) {
+      display: none;
+    }
+  }
+
+  &__funmode-mark {
+    background: #fb9c23;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 4px 30px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    text-align: center;
+  }
+
+  &__gameheader__right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__balance {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+
+    span {
+      color: rgba(255, 255, 255, 0.55);
+      margin-left: 4px;
+      font-size: 12px;
+    }
+
+    @media (max-width: $mobile) {
+      font-size: 13px;
+    }
+  }
+
+  &__menublock {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #f5a830, #c97500);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 13px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+    @media (max-width: $mobile) {
+      width: 32px;
+      height: 32px;
+      font-size: 15px;
+    }
+  }
+
+  // ── Game body ───────────────────────────────────────────────────────────
+  &__gamebody {
+    width: 100%;
+    padding: 18px 16px 0px;
+
+    @media (max-width: $mobile) {
+      padding: 10px 10px 0;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  // ── History + multiplier row ─────────────────────────────────────────────
+  &__bodyrow {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    margin-bottom: 20px;
+
+    @media (max-width: $mobile) {
+      width: 100%;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+  }
+
+  &__gamehistory {
+    flex: 1;
+    min-height: 80px;
+    background: rgba(100, 58, 4, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 200, 100, 0.15);
+    overflow: hidden;
+
+    @media (max-width: $mobile) {
+      min-height: 60px;
+      border-radius: 10px;
+    }
+  }
+
+  &__history-inner {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    &::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(255, 200, 100, 0.3);
+      border-radius: 4px;
+    }
+
+    @media (max-width: $mobile) {
+      gap: 7px;
+      padding: 8px 10px;
+    }
+  }
+
+  // Mini history card
+  &__mini-card {
+    width: 44px;
+    height: 56px;
+    border-radius: 8px;
+    background: #faf8f2;
+    color: #1a1a2a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    position: relative;
+    flex: 0 0 auto;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+
+    &.red {
+      color: #d03050;
+    }
+
+    @media (max-width: $mobile) {
+      width: 32px;
+      height: 42px;
+      border-radius: 6px;
+      gap: 1px;
+    }
+  }
+
+  &__mini-rank {
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1;
+
+    @media (max-width: $mobile) {
+      font-size: 10px;
+    }
+  }
+
+  &__mini-suit {
+    font-size: 16px;
+    line-height: 1;
+
+    @media (max-width: $mobile) {
+      font-size: 12px;
+    }
+  }
+
+  &__mini-badge {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 900;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(100, 50, 0, 0.7);
+
+    &.high {
+      background: #d97b14;
+    }
+
+    &.low {
+      background: #1a6de0;
+    }
+
+    @media (max-width: $mobile) {
+      width: 14px;
+      height: 14px;
+      font-size: 7px;
+      top: -5px;
+      right: -5px;
+    }
+  }
+
+  &__multiplier-box {
+    width: 90px;
+    background: rgba(100, 58, 4, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 200, 100, 0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 8px;
+
+    @media (max-width: $mobile) {
+      width: 72px;
+      border-radius: 10px;
+      gap: 5px;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__counter {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+
+    @media (max-width: $mobile) {
+      font-size: 16px;
+    }
+  }
+
+  &__multiplayer-value {
+    background: #27c200;
+    color: #0a3a00;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 3px 12px;
+    border-radius: 20px;
+    min-width: 64px;
+    text-align: center;
+
+    @media (max-width: $mobile) {
+      font-size: 10px;
+      padding: 2px 8px;
+      min-width: 52px;
+    }
+  }
+
+  // ── Card Canvas ──────────────────────────────────────────────────────────
+  &__game-canvas {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 10px 0 20px;
+    min-height: 210px;
+    position: relative;
+
+    @media (max-width: $mobile) {
+      gap: 10px;
+      padding: 4px 0 10px;
+      min-height: 160px;
+      flex: 1;
+    }
+  }
+
+  // ── Card slot wrapper ────────────────────────────────────────────────────
+  &__card-slot {
+    perspective: 800px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    &--next {
+      margin-top: 20px;
+
+      @media (max-width: $mobile) {
+        margin-top: 14px;
+      }
+    }
+
+    @media (max-width: $mobile) {
+      gap: 6px;
+    }
+  }
+
+  &__card-inner {
+    width: 100px;
+    height: 154px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 14px;
+
+    &.gaddi {
+      width: 90px;
+      height: 130px;
+
+      @media (max-width: $mobile) {
+        width: 68px;
+        height: 98px;
+      }
+    }
+
+    &.flipped {
+      transform: rotateY(180deg);
+    }
+
+    @media (max-width: $mobile) {
+      width: 76px;
+      height: 116px;
+      border-radius: 10px;
+    }
+  }
+
+  &__card-back {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    background: linear-gradient(135deg, #0252e7 0%, #0252e7 100%);
+    border: 3px solid rgba(255, 255, 255, 0.954);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    overflow: hidden;
+    border-radius: inherit;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      background: repeating-linear-gradient(45deg,
+          rgba(255, 255, 255, 0.03) 0px,
+          rgba(255, 255, 255, 0.03) 2px,
+          transparent 2px,
+          transparent 9px);
+    }
+  }
+
+  &__card-face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    transform: rotateY(180deg);
+    background: #faf8f2;
+    border: 2px solid rgba(180, 150, 100, 0.35);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #1a1a2a;
+    border-radius: inherit;
+
+    &.red {
+      color: #d03050;
+    }
+
+    &--placeholder {
+      background: rgba(200, 160, 80, 0.12);
+      border: 2px dashed rgba(255, 200, 100, 0.25);
+      transform: rotateY(0deg);
+    }
+
+    @media (max-width: $mobile) {
+      gap: 3px;
+    }
+  }
+
+  &__card-rank {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+
+    @media (max-width: $mobile) {
+      font-size: 24px;
+    }
+  }
+
+  &__card-suit {
+    font-size: 40px;
+    line-height: 1;
+
+    @media (max-width: $mobile) {
+      font-size: 30px;
+    }
+  }
+
+  &__card-corner {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1;
+
+    &--tl {
+      top: 7px;
+      left: 9px;
+
+      @media (max-width: $mobile) {
+        top: 5px;
+        left: 6px;
+      }
+    }
+
+    &--br {
+      bottom: 7px;
+      right: 9px;
+      transform: rotate(180deg);
+
+      @media (max-width: $mobile) {
+        bottom: 5px;
+        right: 6px;
+      }
+    }
+
+    @media (max-width: $mobile) {
+      font-size: 10px;
+    }
+  }
+
+  &__card-load-action {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__change-card-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 28px;
+    padding: 0 20px;
+    border-radius: 999px;
+    border: 1.5px solid #fff;
+    background: rgba(100, 55, 0, 0.60);
+    color: #ba980d;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background 0.18s, transform 0.1s, opacity 0.15s;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    margin-top: 20px;
+    opacity: 0;
+
+    &.show {
+      opacity: 1;
+    }
+
+    i {
+      color: #fff;
+      font-size: 14px;
+      transition: transform 0.35s ease;
+    }
+
+    &:hover:not(:disabled) {
+      background: rgba(140, 75, 0, 0.80);
+      border-color: rgba(255, 200, 80, 0.7);
+      color: #fff;
+
+      i {
+        transform: rotate(180deg);
+      }
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    &:disabled {
+      opacity: 0.40;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: $mobile) {
+      height: 24px;
+      font-size: 10px;
+      padding: 0 14px;
+      margin-top: 6px;
+      gap: 4px;
+    }
+  }
+
+  // ── Guess buttons ────────────────────────────────────────────────────────
+  &__guess-row {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    opacity: 0;
+
+    &.show {
+      opacity: 1;
+    }
+
+    @media (max-width: $mobile) {
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: nowrap; // keep both buttons side-by-side on mobile
+    }
+  }
+
+  &__guess-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+
+    @media (max-width: $mobile) {
+      gap: 6px;
+      flex: 1;
+    }
+  }
+
+  &__guess-btn {
+    min-width: 200px;
+    height: 48px;
+    border-radius: 999px;
+    border: 2px solid rgba(10, 5, 0, 0.88);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    box-shadow: $shadow-button;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.5px;
+
+    span {
+      i {
+        font-size: 20px;
+        color: #6c3800;
+      }
+
+      .fa-chevron-down,
+      .fa-chevron-up {
+        font-size: 22px;
+        color: #fff;
+      }
+    }
+
+    &:active {
+      transform: translateY(2px);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    &:disabled {
+      opacity: 0.60;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: $shadow-button;
+    }
+
+    &--low {
+      background: linear-gradient(180deg, #3da1ff 0%, #1e6fd9 100%);
+    }
+
+    &--high {
+      background: linear-gradient(180deg, #bb6000 0%, #ec7a00 100%);
+    }
+
+    @media (max-width: $mobile) {
+      min-width: unset;
+      width: 100%;
+      height: 42px;
+      font-size: 11px;
+      gap: 8px;
+      box-shadow: 0 4px 0 rgba(0, 0, 0, 0.32), 0 8px 16px rgba(0, 0, 0, 0.18);
+    }
+  }
+
+  &__arr {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  &__odds-pill {
+    background: rgba(100, 60, 0, 0.72);
+    color: rgba(255, 235, 190, 0.95);
+    font-size: 13px;
+    font-weight: 800;
+    padding: 3px 20px 4px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 180, 50, 0.2);
+
+    @media (max-width: $mobile) {
+      font-size: 10px;
+      padding: 2px 12px 3px;
+    }
+  }
+
+  // ── Bottom controllers ──────────────────────────────────────────────────
+  &__gamecontrollers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background: rgba(110, 60, 0, 0.65);
+    border-radius: 16px;
+    padding: 14px 18px;
+    flex-wrap: wrap;
+    border: 1px solid rgba(255, 180, 50, 0.15);
+
+    @media (max-width: $mobile) {
+      gap: 8px;
+      padding: 10px;
+      border-radius: 12px;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      margin-top: auto; // push to bottom on mobile
+    }
+  }
+
+  &__controls-amount {
+    background: #e28109 !important;
+    padding: 0 12px 0 14px;
+    border: 1px solid rgba(0, 0, 0, 0.53);
+    box-shadow: inset 1px 1px #fff1cd33;
+    border-radius: 30px;
+    max-width: 300px;
+    min-width: 300px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    @media (max-width: $mobile) {
+      min-width: unset;
+      max-width: unset;
+      width: 100%;
+      height: 46px;
+      padding: 0 10px 0 12px;
+    }
+  }
+
+  &__betstakes-box {
+    position: absolute;
+    bottom: 70px; // 👈 popup above input
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+
+    background: #5a3308;
+    border: 2px solid #2b1e0c;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    z-index: 50;
+  }
+
+  &__betstakes-heading {
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+
+  &__betstakes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+
+  &__betstake {
+    background: #8a4d05;
+    border: 2px solid #3b2206;
+    border-radius: 999px;
+    padding: 4px 0;
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.15),
+      0 3px 6px rgba(0, 0, 0, 0.4);
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    &.active {
+      background: linear-gradient(180deg, #ff9c1a, #e67e00);
+      border-color: #5a2d00;
+    }
+  }
+
+  &__input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  &__input-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+
+    @media (max-width: $mobile) {
+      font-size: 9px;
+    }
+  }
+
+  &__bet-input {
+    width: 100px;
+    height: 26px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(80, 35, 0, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff0cc;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 800;
+    outline: none;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+
+    @media (max-width: $mobile) {
+      width: 90px;
+      height: 23px;
+      font-size: 13px;
+    }
+  }
+
+  &__amountactions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    @media (max-width: $mobile) {
+      gap: 5px;
+    }
+  }
+
+  &__amountaction-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(80, 35, 0, 0.7);
+    background: linear-gradient(180deg, #ffa030, #d87800);
+    color: #fff0cc;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: opacity 0.15s;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &--coin {
+      font-size: 14px;
+    }
+
+    &:not(:disabled):hover {
+      filter: brightness(1.1);
+    }
+
+    @media (max-width: $mobile) {
+      width: 30px;
+      height: 30px;
+      font-size: 13px;
+    }
+  }
+
+  // ── Place Bet / Cashout button ───────────────────────────────────────────
+  &__place-bet-btn {
+    border-radius: 30px;
+    max-width: 300px;
+    min-width: 300px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    gap: 2px;
+    background-image: radial-gradient(circle at 50% 50%, #61a503, #2d7500 94%);
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 3px 3px 6px #020b1a80, inset -1px -1px #00000052, inset 1px 1px #fff1cd33;
+    border: 2px solid rgba(0, 0, 0, 0.9);
+
+    &.cashout-state {
+      background-image: radial-gradient(44% 44% at 49.36% 52%, #dba355 0%, #c4872e 100%);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(2px);
+      box-shadow: 0 3px 0 rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: $mobile) {
+      min-width: unset;
+      max-width: unset;
+      width: 100%;
+      height: 48px;
+      font-size: 14px;
+    }
+  }
+
+  &__action-title {
+    font-size: 15px;
+    font-weight: 800;
+
+    @media (max-width: $mobile) {
+      font-size: 14px;
+    }
+  }
+
+  &__action-val {
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.88;
+
+    @media (max-width: $mobile) {
+      font-size: 10px;
+    }
+  }
+
+  // ── Overlays ────────────────────────────────────────────────────────────
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    z-index: 10;
+    animation: overlayIn 0.3s ease;
+    padding: 24px;
+    text-align: center;
+
+    &--crash {
+      background: rgba(160, 20, 20, 0.92);
+    }
+
+    &--win {
+      background: rgba(10, 75, 0, 0.92);
+    }
+
+    @media (max-width: $mobile) {
+      border-radius: 0;
+      gap: 10px;
+      padding: 20px;
+    }
+  }
+
+  &__overlay-icon {
+    font-size: 52px;
+    line-height: 1;
+
+    @media (max-width: $mobile) {
+      font-size: 40px;
+    }
+  }
+
+  &__overlay-title {
+    font-size: 38px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+
+    @media (max-width: $mobile) {
+      font-size: 30px;
+    }
+  }
+
+  &__overlay-msg {
+    font-size: 15px;
+    color: rgba(255, 215, 215, 0.9);
+    font-weight: 600;
+
+    @media (max-width: $mobile) {
+      font-size: 13px;
+    }
+  }
+
+  &__overlay-amount {
+    font-size: 28px;
+    font-weight: 900;
+    color: #a8ff7a;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+
+    @media (max-width: $mobile) {
+      font-size: 22px;
+    }
+  }
+
+  &__overlay-btn {
+    margin-top: 10px;
+    padding: 12px 44px;
+    border-radius: 999px;
+    border: none;
+    background: #fff;
+    color: #4a1a00;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+    transition: transform 0.1s;
+
+    .hilo__overlay--win & {
+      color: #0a4000;
+    }
+
+    &:active {
+      transform: translateY(2px);
+    }
+
+    &:hover {
+      filter: brightness(1.05);
+    }
+
+    @media (max-width: $mobile) {
+      padding: 10px 36px;
+      font-size: 14px;
+    }
+  }
+}
+
+
+// ── Game Menu ─────────────────────────────────────────────────────────────────
+.game-menu {
+  position: absolute;
+  right: 10px;
+  top: 40px;
+  z-index: 999;
+
+  @media (max-width: $mobile) {
+    right: 8px;
+    top: 50px;
+  }
+
+  &__card {
+    width: 300px;
+    border-radius: 8px;
+    border-color: #1b1b1b;
+    background-color: #212226;
+    color: #d1d5db;
+    overflow: hidden;
+
+    @media (max-width: $mobile) {
+      width: calc(100vw - 16px);
+      max-width: 340px;
+    }
+  }
+
+  &__header {
+    padding: 6px 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+
+  &__sound-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #e0ddc6 !important;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #0003;
+    margin-bottom: 6px;
+    justify-content: space-between;
+  }
+
+  &__list {
+    padding: 5px 10px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #e0ddc6 !important;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #0003;
+    border-bottom: 1px solid #ffffff1a;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &--flex {
+      justify-content: space-between;
+    }
+
+    &--active {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: $mobile) {
+      padding: 8px 10px; // taller tap targets
+    }
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__icon {
+    width: 20px;
+    text-align: center;
+    opacity: 0.9;
+  }
+
+  /* Toggle Switch */
+  &__switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+
+    input {
+      display: none;
+    }
+  }
+
+  &__slider {
+    position: absolute;
+    inset: 0;
+    background: #444;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+  }
+
+  input:checked+&__slider {
+    background: #22c55e;
+  }
+
+  input:checked+&__slider::before {
+    transform: translateX(18px);
+  }
+
+  &__footer {
+    padding: 4px 10px;
+  }
+
+  &__home {
+    text-align: center;
+    font-size: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #9ca3af;
+    padding: 10px 10px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  &__fair {
+    color: #22c55e;
+  }
+
+  &__brand {
+    opacity: 0.7;
+  }
+}
+
+
+// ── Keyframes ─────────────────────────────────────────────────────────────────
+@keyframes overlayIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+
+
+// ── Win Banner — slides up from bottom on cashout only ────────────────────────
+
+.hilo__win-banner {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -120px);
+  width: calc(100% - 32px);
+  max-width: 460px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  border-radius: 999px;
+  overflow: hidden;
+  border: 2px solid rgba(80, 200, 60, 0.5);
+  box-shadow:
+    0 0 0 1px rgba(80, 200, 60, 0.15),
+    0 8px 32px rgba(0, 0, 0, 0.5);
+  background: #192b08;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0;
+
+  transition:
+    transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), // bounce
+    opacity 0.25s ease;
+
+  &.show {
+    transform: translate(-50%, 100px);
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  @media (max-width: $mobile) {
+    width: calc(100% - 20px);
+    height: 58px;
+
+    &.show {
+      bottom: 12px;
+    }
+  }
+
+  &__left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    gap: 2px;
+  }
+
+  &__left-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(190, 255, 165, 0.7);
+    letter-spacing: 0.3px;
+
+    @media (max-width: $mobile) {
+      font-size: 11px;
+    }
+  }
+
+  &__left-val {
+    font-size: 22px;
+    font-weight: 900;
+    color: #fff;
+    letter-spacing: -0.5px;
+    line-height: 1;
+
+    @media (max-width: $mobile) {
+      font-size: 19px;
+    }
+  }
+
+
+  &__divider {
+    width: 1.5px;
+    height: 36px;
+    background: rgba(80, 200, 60, 0.25);
+    flex-shrink: 0;
+  }
+
+
+  &__right {
+    height: 100%;
+    min-width: 140px;
+    background: linear-gradient(140deg, #3c9010 0%, #2a6e00 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 18px;
+    gap: 1px;
+    position: relative;
+    border-left: 1.5px solid rgba(80, 200, 60, 0.28);
+
+    @media (max-width: $mobile) {
+      min-width: 118px;
+      padding: 0 12px;
+    }
+  }
+
+
+  &__star {
+    position: absolute;
+    font-size: 15px;
+    color: #a8ff70;
+    opacity: 0.55;
+    line-height: 1;
+
+    &--tl {
+      top: 8px;
+      left: 10px;
+    }
+
+    &--tr {
+      top: 8px;
+      right: 10px;
+    }
+
+    &--bl {
+      bottom: 8px;
+      left: 10px;
+    }
+
+    &--br {
+      bottom: 8px;
+      right: 10px;
+    }
+
+    @media (max-width: $mobile) {
+      font-size: 12px;
+    }
+  }
+
+  &__right-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(190, 255, 165, 0.8);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 1;
+  }
+
+  &__right-val {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.5px;
+    text-shadow: 0 0 14px rgba(90, 255, 50, 0.4);
+    position: relative;
+    z-index: 1;
+
+    @media (max-width: $mobile) {
+      font-size: 22px;
+    }
+  }
+
+  // ── Close button ─────────────────────────────────────────────────────────
+  &__close {
+    width: 52px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(190, 255, 165, 0.55);
+    font-size: 17px;
+    font-weight: 900;
+    border-left: 1px solid rgba(80, 200, 60, 0.18);
+    background: rgba(0, 0, 0, 0.15);
+    flex-shrink: 0;
+    transition: color 0.15s, background 0.15s;
+    user-select: none;
+
+    &:hover {
+      color: #fff;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    @media (max-width: $mobile) {
+      width: 44px;
+      font-size: 15px;
+    }
+  }
+}

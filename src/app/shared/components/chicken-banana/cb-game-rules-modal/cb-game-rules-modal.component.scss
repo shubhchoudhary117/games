@@ -1,0 +1,159 @@
+.cb-gr-modal {
+  width: 100%;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden auto;
+  background: rgba(22, 32, 44, 0.8);
+  backdrop-filter: blur(5px);
+
+  &__container {
+    width: 100%;
+    max-width: 500px;
+    padding: 32px;
+    background: rgb(27, 29, 33);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 28px 28px 26px;
+    position: relative;
+    box-shadow:
+      0 12px 35px rgba(0, 0, 0, 0.45),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+  }
+
+  /* =========================
+     CLOSE BUTTON
+  ========================= */
+
+  &__close {
+    position: absolute;
+    top: 22px;
+    right: 22px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+
+    cursor: pointer;
+
+    &::before,
+    &::after {
+      content: "";
+
+      position: absolute;
+      left: 50%;
+      top: 50%;
+
+      width: 24px;
+      height: 2px;
+
+      border-radius: 50px;
+      background: #ffffff;
+    }
+
+    &::before {
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &::after {
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+
+
+  &__title {
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.1;
+
+    margin-bottom: 8px;
+  }
+
+  &__subtitle {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+
+  /* =========================
+     RULES
+  ========================= */
+
+  &__rules {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  &__rule {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    padding: 10px 36px 9px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+  }
+
+  &__label,
+  &__value {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  /* =========================
+     FOOTER
+  ========================= */
+
+  &__footer {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+
+  @media (max-width: 768px) {
+    padding: 14px;
+
+    &__container {
+      padding: 24px 18px 22px;
+      border-radius: 16px;
+    }
+
+    &__title {
+      font-size: 26px;
+    }
+
+    &__subtitle {
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    &__rules {
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+
+    &__label,
+    &__value {
+      font-size: 13px;
+    }
+
+    &__footer {
+      font-size: 13px;
+    }
+  }
+}

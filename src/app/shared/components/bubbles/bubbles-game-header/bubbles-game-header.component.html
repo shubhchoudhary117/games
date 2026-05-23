@@ -1,0 +1,52 @@
+<header class="bubbles-game-header">
+    <nav class="bubbles-game-header__nav">
+        <div class="bubbles-game-header__balance">
+            Balance <span>$1999</span>
+        </div>
+        <div class="bubbles-game-header__actions">
+            <button class="bubbles-game-header__action-btn">
+                <img src="assets/bubbles-game/icons/speaker-on.svg" alt="speaker on"
+                    class="bubbles-game-header__action-icon">
+            </button>
+            <button class="bubbles-game-header__action-btn" (click)="openMenus()">
+                <img src="assets/bubbles-game/icons/menu.svg" alt="speaker on" class="bubbles-game-header__action-icon">
+            </button>
+        </div>
+    </nav>
+</header>
+
+<div class="bubbles-game" *ngIf="showMenus">
+    <div class="bubbles-game__menucard">
+        <div class="bubbles-game__menucard-header">
+            <div class="bubbles-game__username-with-avtar">
+                <img src="assets/bubbles-game/profileAvatar.png" class="bubbles-game__user-avtar">
+                Coder
+            </div>
+        </div>
+        <div class="bubbles-game__menus">
+            <div class="bubbles-game__menu-row">
+                <div class="bubbles-game__menu-title">
+                    <i class="fas fa-history bubbles-game__menu-icon"></i>
+                    History
+                </div>
+            </div>
+
+            <div class="bubbles-game__menu-row" (click)="openGameRules()">
+                <div class="bubbles-game__menu-title">
+                    <i class="fas fa-book bubbles-game__menu-icon"></i>
+                    Game Rules
+                </div>
+            </div>
+            <div class="bubbles-game__menu-row">
+                <div class="bubbles-game__menu-title">
+                    <i class="fas fa-sign-out-alt bubbles-game__menu-icon"></i>
+                    Exit Game
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<app-bubble-game-rules *ngIf="showGameRules" (closeModal)="closeGameRules()"></app-bubble-game-rules>

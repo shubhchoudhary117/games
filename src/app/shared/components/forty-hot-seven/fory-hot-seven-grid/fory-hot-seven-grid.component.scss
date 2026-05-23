@@ -1,0 +1,192 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 3px;
+    width: clamp(340px, 65vw, 700px);
+    height: clamp(210px, 40vw, 420px);
+}
+
+.cell {
+    background: #0d0d0d;
+    border: 1px solid #2a1800;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+
+    &__shine {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, transparent 50%, rgba(0, 0, 0, 0.3) 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    &.winning {
+        border-color: #f5c842 !important;
+        box-shadow: 0 0 12px rgba(255, 200, 0, 0.7), inset 0 0 20px rgba(255, 150, 0, 0.2);
+        animation: cellPulse 0.6s ease-in-out infinite alternate;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(255, 200, 0, 0.15) 0%, transparent 70%);
+            animation: glowPulse 0.6s ease-in-out infinite alternate;
+        }
+    }
+
+    &.spinning .symbol {
+        animation: symbolSpin 0.12s linear infinite;
+    }
+}
+
+.symbol {
+    font-size: clamp(60px, 4.5vw, 52px);
+    line-height: 1;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+    user-select: none;
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes cellPulse {
+    0% {
+        box-shadow: 0 0 12px rgba(255, 200, 0, 0.7), inset 0 0 20px rgba(255, 150, 0, 0.2);
+    }
+
+    100% {
+        box-shadow: 0 0 24px rgba(255, 200, 0, 1), inset 0 0 30px rgba(255, 180, 0, 0.4);
+    }
+}
+
+@keyframes glowPulse {
+    0% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes symbolSpin {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+
+
+
+@media (max-width: 1024px) {
+    .grid {
+        width: 80vw;
+        height: calc(80vw * 3 / 5); 
+        gap: 3px;
+    }
+
+    .symbol {
+        font-size: 38px;
+    }
+}
+
+
+// ── Tablet portrait (max-width: 768px) ────────────────────────────────
+
+@media (max-width: 768px) {
+    .grid {
+        width: 88vw;
+        height: calc(88vw * 3 / 5);
+        gap: 2px;
+    }
+
+    .cell {
+        border-radius: 2px;
+
+        &.winning {
+            box-shadow: 0 0 8px rgba(255, 200, 0, 0.7), inset 0 0 14px rgba(255, 150, 0, 0.2);
+        }
+    }
+
+    .symbol {
+        font-size: 40px;
+        filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
+    }
+
+    @keyframes cellPulse {
+        0% {
+            box-shadow: 0 0 8px rgba(255, 200, 0, 0.7), inset 0 0 14px rgba(255, 150, 0, 0.2);
+        }
+
+        100% {
+            box-shadow: 0 0 16px rgba(255, 200, 0, 1), inset 0 0 20px rgba(255, 180, 0, 0.4);
+        }
+    }
+}
+
+
+// ── Mobile landscape (max-width: 640px) ───────────────────────────────
+
+@media (max-width: 640px) {
+    .grid {
+        width: 92vw;
+        height: calc(92vw * 3 / 5);
+        gap: 2px;
+    }
+
+    .symbol {
+        font-size: 40px;
+    }
+}
+
+
+// ── Mobile portrait (max-width: 480px) ────────────────────────────────
+
+@media (max-width: 480px) {
+    .grid {
+        width: 95vw;
+        height: calc(95vw * 3 / 5);
+        gap: 1px;
+        padding: 3px;
+    }
+
+    .cell {
+        border-radius: 2px;
+
+        &.winning {
+            box-shadow: 0 0 6px rgba(255, 200, 0, 0.7), inset 0 0 10px rgba(255, 150, 0, 0.2);
+        }
+    }
+
+    .symbol {
+        font-size: 40px;
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8));
+    }
+
+    @keyframes cellPulse {
+        0% {
+            box-shadow: 0 0 6px rgba(255, 200, 0, 0.7), inset 0 0 10px rgba(255, 150, 0, 0.2);
+        }
+
+        100% {
+            box-shadow: 0 0 12px rgba(255, 200, 0, 1), inset 0 0 16px rgba(255, 180, 0, 0.4);
+        }
+    }
+}

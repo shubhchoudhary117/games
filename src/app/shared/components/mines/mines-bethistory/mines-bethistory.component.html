@@ -1,0 +1,51 @@
+<div class="bet-history-table-wrapper">
+  
+  <div class="bet-history-table-actions">
+    <button 
+      (click)="handleHistoryType('MY_BETS')" 
+      [ngClass]="{'table-action-btn': true, 'active': selectedBetsHistory === 'MY_BETS'}">
+      My Bets
+    </button>
+
+    <button 
+      (click)="handleHistoryType('ALL_BETS')" 
+      [ngClass]="{'table-action-btn': true, 'active': selectedBetsHistory === 'ALL_BETS'}">
+      All Bets
+    </button>
+  </div>
+
+  <div class="bet-history-table">
+
+    <div class="bet-history-table-thead">
+      <div class="bet-history-th">Bet Amount</div>
+      <div class="bet-history-th">Mines</div>
+      <div class="bet-history-th">Payout</div>
+    </div>
+
+    <div class="bet-history-table-tbody">
+
+      <!-- Loader -->
+      <!-- <mat-progress-spinner *ngIf="loading" diameter="20"></mat-progress-spinner> -->
+
+      <div 
+        class="bet-history-tr" 
+        *ngFor="let history of getReversedHistories()">
+
+        <div class="bet-history-td">
+          {{ history?.amount }}
+        </div>
+
+        <div class="bet-history-td">
+          {{ history?.mines }}
+        </div>
+
+        <div class="bet-history-td">
+          {{ history.isCollect ? (history.winAmount | number:'1.2-2') : 0 }}
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>

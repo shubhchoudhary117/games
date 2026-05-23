@@ -1,0 +1,97 @@
+<div class="slots">
+
+  <!-- ── INTRO SCREEN ─────────────────────────────────── -->
+  <div class="slots__intro" *ngIf="gamePhase === 'intro'">
+    <div class="slots__intro-card">
+
+      <div class="slots__intro-header">
+        <p class="slots__intro-eyebrow">Lucky Spin</p>
+        <h1 class="slots__intro-title">SLOTS</h1>
+        <p class="slots__intro-sub">Match symbols across lines to win</p>
+      </div>
+
+      <div class="slots__intro-paytable">
+        <div class="slots__intro-pt-title">Paytable</div>
+        <div class="slots__intro-row" *ngFor="let item of paytable">
+          <img [src]="item.img" [alt]="item.label" class="slots__intro-sym" />
+          <span class="slots__intro-label">{{ item.label }}</span>
+          <span class="slots__intro-mult">{{ item.mult }}</span>
+        </div>
+      </div>
+
+      <button class="slots__intro-btn" (click)="startGame()">
+        Play Now
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ── GAME ─────────────────────────────────────────── -->
+  <ng-container *ngIf="gamePhase === 'playing'">
+    <app-slots-header></app-slots-header>
+
+    <div class="slots__container">
+      <div class="slots__panel">
+
+        <app-big-win-alert *ngIf="openBigWin" [value]="response?.totalPayout ?? 0"></app-big-win-alert>
+        <audio #audioRef src="/assets/slots/audio/bigwin.mp3"></audio>
+        <app-render-mike [status]="getCurrentMike()"></app-render-mike>
+
+        <app-slot-spin-board
+          [grid]="grid"
+          [isSpinning]="isSpinning"
+          [data]="response"
+          [winningLines]="winningLines"
+          [loadedImages]="loadedImages"
+          (loadedImagesChange)="loadedImages = $event"
+        ></app-slot-spin-board>
+
+        <div class="slots__controls">
+          <div class="slots__values">
+            <app-value-viewer
+              *ngFor="let type of valueTypes"
+              [type]="type"
+              [betAmount]="betAmount"
+              [totalWins]="totalWins"
+            ></app-value-viewer>
+          </div>
+          <div class="slots__actions">
+            <button
+              class="slots__bet-btn"
+              type="button"
+              [disabled]="isSpinning"
+              (click)="changeBet('subtract')"
+            >&minus;</button>
+
+            <button
+              class="slots__spin-btn"
+              type="button"
+              [disabled]="isSpinning"
+              [class.slots__spin-btn--disabled]="isSpinning"
+              (click)="handleSpin()"
+            >Spin</button>
+
+            <button
+              class="slots__bet-btn"
+              type="button"
+              [disabled]="isSpinning"
+              (click)="changeBet('add')"
+            >&plus;</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <app-slots-result-popup
+      *ngIf="showResultPopup"
+      [type]="popupType"
+      [winAmount]="totalWins"
+      [betAmount]="betAmount"
+      [winningLines]="winningLines"
+      (collect)="onPopupCollect()"
+      (playAgain)="onPopupPlayAgain()"
+    ></app-slots-result-popup>
+  </ng-container>
+
+</div>

@@ -1,0 +1,383 @@
+<div class="chicken-road-wrapper">
+   <header class="top-nav">
+      <div class="logo">
+         <span class="text-white">CHICKEN</span><span class="text-red">2</span><span class="text-white">ROAD</span>
+      </div>
+      <div class="live-wins"
+         style="position: absolute; left: 20px; top: 60px; font-size: 11px; color:#aaa; font-weight: 500;">
+         Live wins: <span
+            style="display:inline-block;width:8px;height:8px;background:#22c55e;border-radius:50%;margin-right:4px;"></span>
+         Online: 12783
+      </div>
+      <div class="top-right">
+         <button class="nav-btn info-btn" (click)="handleHowToPlay()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+               <path
+                  d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
+            </svg>
+            How to play?
+         </button>
+         <div class="nav-balance">
+            1 000 000
+            <div class="coin-icon">$</div>
+         </div>
+         <button class="nav-btn icon-only">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+               <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z" />
+            </svg>
+         </button>
+         <button class="nav-btn icon-only" (click)="toggleMenu()">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+               <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
+            </svg>
+         </button>
+      </div>
+   </header>
+
+   <main class="board-panel" [class.screen-shake]="screenShake">
+      <div class="overlay-message" *ngIf="gameState === 'gameover' || gameState === 'cashout'">
+         <div class="banner" [class.win]="gameState === 'cashout'" [class.lose]="gameState === 'gameover'">
+            <h2>{{ gameState === 'cashout' ? 'CASHOUT' : 'CRASHED' }}</h2>
+            <p *ngIf="gameState === 'cashout'">Won {{ currentCashout | number:'1.2-2' }} USD</p>
+            <p *ngIf="gameState === 'gameover'">You lost the bet.</p>
+         </div>
+      </div>
+
+      <div class="perspective-box">
+         <div class="map-camera" [style.transform]="getCameraTranslateX()">
+            <div class="sidewalk chunk">
+            </div>
+            <div class="lane chunk" *ngFor="let step of steps">
+
+               <div class="barricade-prop" *ngIf="step.status === 'safe' || step.id < currentStepIndex">
+                  <div class="barricade-legs"></div>
+                  <div class="barricade-board"></div>
+               </div>
+
+               <div class="ambient-vehicle" *ngIf="step.id >= currentStepIndex && step.status !== 'crashed'"
+                  [class.zoom-away-and-stop]="step.status === 'safe' || (isHopping && step.id === currentStepIndex + 1)"
+                  [style.animation-delay]="step.status === 'safe' ? '0s' : step.ambientDelay"
+                  [style.animation-duration]="step.ambientDuration">
+                  <img *ngIf="step.ambientCar === 'taxi'" src="/assets/chicken-road/carDefault1.png" alt="car">
+                  <img *ngIf="step.ambientCar === 'police'" src="/assets/chicken-road/carDefault2.png" alt="car">
+                  <img *ngIf="step.ambientCar === 'sports'" src="/assets/chicken-road/carDefault1.png"
+                     style="filter: hue-rotate(120deg);" alt="car">
+               </div>
+
+
+               <div class="crash-vehicle" *ngIf="step.status === 'crashed'">
+                  <img *ngIf="step.carType === 'taxi'" src="/assets/chicken-road/carDefault1.png" alt="car">
+                  <img *ngIf="step.carType === 'police'" src="/assets/chicken-road/carDefault2.png" alt="car">
+                  <img *ngIf="step.carType === 'sports'" src="/assets/chicken-road/carDefault1.png"
+                     style="filter: hue-rotate(120deg);" alt="car">
+               </div>
+
+
+               <div class="manhole" (click)="handleManholeClick(step.id)"
+                  [class.clickable]="step.id === currentStepIndex + 1 && gameState === 'playing' && !isHopping"
+                  [class.passed]="step.status === 'safe' || step.id < currentStepIndex"
+                  [class.active]="step.id === currentStepIndex + 1" [class.crashed]="step.status === 'crashed'">
+
+                  <span class="manhole-text" *ngIf="step.status !== 'safe' && step.id >= currentStepIndex">
+                     {{ step.multiplier | number:'1.2-2' }}x
+                  </span>
+
+                  <div class="manhole-coin" *ngIf="step.status === 'safe' || step.id < currentStepIndex">
+                     <div class="plate-inner"></div>
+                     <div class="chicken-roast">🍗</div> <!-- Stand in for the cooked chicken icon -->
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="camera-fixed-chicken" [class.dead]="gameState === 'gameover'">
+            <div class="chicken-tooltip" *ngIf="currentStepIndex !== -1 && gameState === 'playing' && !isHopping">
+               {{ currentMultiplier | number:'1.2-2' }}x
+            </div>
+            <div id="spine-chicken-container"></div>
+         </div>
+
+      </div>
+   </main>
+
+   <footer class="bottom-panel">
+      <div class="panel-inner">
+
+         <div class="bet-section">
+            <div class="bet-input-wrap">
+               <button class="bet-mod" (click)="setBet(betAmount/2)">MIN</button>
+               <input type="number" class="bet-input" [(ngModel)]="betAmount" [disabled]="gameState === 'playing'" />
+               <button class="bet-mod" (click)="setBet(betAmount*2)">MAX</button>
+            </div>
+            <div class="quick-bets">
+               <button (click)="setBet(0.5)" [disabled]="gameState === 'playing'">0.5 $</button>
+               <button (click)="setBet(1)" [disabled]="gameState === 'playing'">1 $</button>
+               <button (click)="setBet(2)" [disabled]="gameState === 'playing'">2 $</button>
+               <button (click)="setBet(7)" [disabled]="gameState === 'playing'">7 $</button>
+            </div>
+         </div>
+
+
+         <div class="diff-section">
+            <div class="diff-header">
+               <span class="diff-label">Difficulty</span>
+               <span class="diff-chance">Chance of being shot down</span>
+            </div>
+            <div class="diff-buttons">
+               <button [class.active]="selectedMode === 'easy'" (click)="setMode('easy')"
+                  [disabled]="gameState === 'playing'">Easy</button>
+               <button [class.active]="selectedMode === 'medium'" (click)="setMode('medium')"
+                  [disabled]="gameState === 'playing'">Medium</button>
+               <button [class.active]="selectedMode === 'hard'" (click)="setMode('hard')"
+                  [disabled]="gameState === 'playing'">Hard</button>
+               <button [class.active]="selectedMode === 'hardcore'" (click)="setMode('hardcore')"
+                  [disabled]="gameState === 'playing'">Hardcore</button>
+            </div>
+         </div>
+
+
+         <div class="play-section">
+            <button class="btn btn-green btn-large"
+               *ngIf="gameState === 'menu' || gameState === 'gameover' || gameState === 'cashout'"
+               (click)="startGame()">
+               Play
+            </button>
+
+            <div class="playing-actions" *ngIf="gameState === 'playing'">
+               <button class="btn btn-yellow btn-cashout" (click)="cashout()" [disabled]="currentStepIndex === -1">
+                  CASH OUT<br /><span>{{ currentCashout | number:'1.2-2' }} USD</span>
+               </button>
+               <button class="btn btn-green btn-go" (click)="spinAndGo()" [disabled]="isHopping">
+                  GO
+               </button>
+            </div>
+         </div>
+
+      </div>
+   </footer>
+</div>
+
+
+<div class="htp-modal-overlay" *ngIf="showHowToPlay">
+   <div class="htp-modal">
+      <div class="htp-modal__header">
+         <div class="htp-modal__heading">How to play</div>
+         <button class="htp-modal__close" (click)="closeHowToPlay()">
+            <i class="fas fa-close"></i>
+         </button>
+      </div>
+      <div class="htp-modal__body">
+         <div class="htp-list">
+            <div class="htp-item">
+               <span class="num">1.</span>
+               <span>Specify the amount of your bet.</span>
+            </div>
+            <div class="htp-item">
+               <span class="num">2.</span>
+               <span>
+                  Choose a difficulty level in the game. The number of lanes and crash chance varies.
+                  <br><br>
+                  <strong>Difficulty Levels:</strong><br>
+                  • Easy – 24 lines<br>
+                  • Medium – 22 lines<br>
+                  • Hard – 20 lines<br>
+                  • Hardcore – 15 lines
+               </span>
+            </div>
+
+            <div class="htp-item">
+               <span class="num">3.</span>
+               <span>Press the “Play” button.</span>
+            </div>
+
+            <div class="htp-item">
+               <span class="num">4.</span>
+               <span>
+                  Cross as many lanes as possible without getting fried.
+                  You can withdraw your winnings anytime.
+               </span>
+            </div>
+
+            <div class="htp-item">
+               <span class="num">5.</span>
+               <span>
+                  Enable "Space" to spin & go.
+                  Use the <strong>Space key</strong> to move forward.
+               </span>
+            </div>
+
+            <div class="htp-item">
+               <span class="num">6.</span>
+               <span>Malfunction voids all pays and plays.</span>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+
+<div class="user-menu" *ngIf="isMenuOpen">
+   <div class="menu-card">
+      <div class="menu-profile">
+         <div class="avatar"></div>
+         <div class="name">Moccasin P...</div>
+         <div class="change">Change avatar</div>
+      </div>
+      <div class="menu-item">
+         <span>🔊 Sound</span>
+         <label class="switch">
+            <input type="checkbox">
+            <span></span>
+         </label>
+      </div>
+
+      <div class="menu-item">
+         <span>🎵 Music</span>
+         <label class="switch">
+            <input type="checkbox">
+            <span></span>
+         </label>
+      </div>
+
+      <div class="divider"></div>
+      <div class="menu-link" (click)="openGameProvably()">✔ Provably fair settings</div>
+      <div class="menu-link" (click)="openRules()">📄 Game rules</div>
+      <div class="menu-link" (click)="openBetHistory()">🕒 My bet history</div>
+
+      <div class="divider"></div>
+      <div class="powered">
+         Powered by <span>GURUGAMES</span>
+      </div>
+   </div>
+</div>
+
+
+
+
+<div class="bh-overlay" *ngIf="showBetHistory">
+   <div class="bh-modal">
+      <div class="bh-header">
+         <h2>My bet history</h2>
+         <button class="close-btn" (click)="closeBetHistory()">✕</button>
+      </div>
+      <div class="bh-table-header">
+         <span>Date</span>
+         <span>Bet</span>
+         <span>Mult.</span>
+         <span>Win</span>
+         <span></span>
+      </div>
+
+      <div class="bh-rows">
+         <div class="bh-row" *ngFor="let item of bets">
+
+            <div class="date">{{ item.date }}</div>
+
+            <div class="bet">
+               <span class="coin">$</span> {{ item.bet }}
+            </div>
+
+            <div class="mult">
+               <span class="pill" [class.zero]="item.mult === 0">
+                  x{{ item.mult }}
+               </span>
+            </div>
+
+            <div class="win">
+               <ng-container *ngIf="item.win; else noWin">
+                  <span class="coin">$</span> {{ item.win }}
+               </ng-container>
+               <ng-template #noWin>—</ng-template>
+            </div>
+
+            <div class="status">
+               <span class="check"></span>
+            </div>
+
+         </div>
+      </div>
+
+      <div class="bh-footer">
+         <button class="load-btn">LOAD MORE</button>
+      </div>
+   </div>
+</div>
+
+
+
+
+<div class="gr-modal-overlay" *ngIf="showRules">
+  <div class="gr-modal">
+    <div class="gr-modal__header">
+      <div>
+        <h2 class="gr-modal__title">Game rules</h2>
+        <p class="gr-modal__subtitle">Bet limits are presented below</p>
+      </div>
+      <button class="gr-modal__close" (click)="closeRules()">✕</button>
+    </div>
+    <div class="gr-modal__body">
+      <div class="gr-modal__row">
+        <span>Min bet:</span>
+        <span>0.01 USD</span>
+      </div>
+
+      <div class="gr-modal__row">
+        <span>Max bet:</span>
+        <span>150 USD</span>
+      </div>
+
+      <div class="gr-modal__row">
+        <span>Max win:</span>
+        <span>10 000 USD</span>
+      </div>
+
+      <div class="gr-modal__note">
+        Malfunction voids all pays and plays
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="pf-modal-overlay" *ngIf="showGameProvablyModal">
+  <div class="pf-modal">
+    <div class="pf-modal__header">
+      <div>
+        <h2 class="pf-modal__title">Provably fair settings</h2>
+        <p class="pf-modal__subtitle">
+          This game uses Provably Fair technology to determine game result
+        </p>
+      </div>
+      <button class="pf-modal__close" (click)="closeGameProvably()">✕</button>
+    </div>
+
+    <div class="pf-modal__body">
+      <div class="pf-modal__section">
+        <div class="pf-modal__label">Next client (Your) seed:</div>
+        <div class="pf-modal__desc">
+          Round result is determined from combination of server seed and first 3 bets of the round.
+        </div>
+      </div>
+
+      <div class="pf-modal__section">
+        <div class="pf-modal__label">Random on every game:</div>
+        <div class="pf-modal__input">
+          <span>Current: 267e9b8b526809b9</span>
+          <button class="pf-modal__copy">📋</button>
+        </div>
+      </div>
+
+      <div class="pf-modal__section">
+        <div class="pf-modal__label">Next server seed SHA256:</div>
+        <div class="pf-modal__input">
+          <span>281ac8d6d4733bc97f489e6ac6c6757ff5a3e2f29d8cf6c2e</span>
+          <button class="pf-modal__copy">📋</button>
+        </div>
+      </div>
+      <div class="pf-modal__footer">
+        You can check fairness of each bet from bets history
+      </div>
+    </div>
+  </div>
+</div>

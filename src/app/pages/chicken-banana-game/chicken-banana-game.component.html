@@ -1,0 +1,289 @@
+<audio #bgSound src="assets/audios/chicken-banana/bg-sound.m4a"   loop></audio>
+<audio #pickSound src="assets/audios/chicken-banana/pick-sound.mp3"  ></audio>
+<audio #winSound src="assets/audios/chicken-banana/win-sound.mp3"  ></audio>
+<section class="bc-game">
+    <div class="bc-game__logo">
+        <img src="assets/chicken-banana/game-logo.png" alt="game logo" class="bg-game__logo-img">
+    </div>
+    <div class="bc-game__menu-btn" (click)="openMenusCard()">
+        @if (showMenuCard) {
+        <i class="fas fa-close"></i>
+        }
+        @else {
+        <i class="fas fa-bars"></i>
+        }
+    </div>
+    <div class="bc-game__overlay"></div>
+    <div class="bc-game__bg-icons pair1">
+        <span class="icon chicken"></span>
+        <span class="icon banana"></span>
+        <span class="icon hen"></span>
+    </div>
+
+    <div class="bc-game__bg-icons pair2">
+        <span class="icon banana-pill "></span>
+        <span class="icon banana-pack "></span>
+        <span class="icon hen"></span>
+    </div>
+
+    <div class="bc-game__bg-icons pair3">
+        <span class="icon banana-pill "></span>
+        <span class="icon banana-pack "></span>
+        <span class="icon hen"></span>
+    </div>
+
+    <div class="bc-game__bg-icons pair4">
+        <span class="icon banana-pill "></span>
+        <span class="icon banana-pack "></span>
+        <span class="icon hen"></span>
+    </div>
+
+    <div class="bc-game__single-icon banana">
+    </div>
+    <div class="bc-game__single-icon chicken">
+    </div>
+    <div class="bc-game__single-icon banana-pill">
+    </div>
+    <div class="bc-game__single-icon banana-pack">
+    </div>
+    <div class="bc-game__single-icon chicken-box">
+    </div>
+
+    <div class="bc-game__game-viewport">
+        <div class="bc-game__game-instruction-title">Match 3 Symboles to win</div>
+        <div class="bc-game__game-box">
+            <div class="bc-game__multipliers">
+
+                @for (multi of currentMultipliers; track multi.uniqueId) {
+
+                <div class="bc-game__multiplier" [style.animation-delay]="($index * 120) + 'ms'">
+
+                    <div class="bc-game__multiplier-widget">
+
+                        <img [src]="multi.widget" [alt]="multi.label" class="bc-game__multiplier-widget-img">
+
+                    </div>
+
+                    <div class="bc-game__multiplier-value">
+                        ${{multi.amount}}
+                    </div>
+
+                </div>
+
+                }
+
+            </div>
+            <div class="bc-game__game-canvas">
+                @for (box of gamePicks; track box.id) {
+                <div class="bc-game__game-pick-box" [class.blur]="box.showOverlay" [class.matched]="box.matched"
+                    [class.revealed]="box.revealed" [class.auto-flip]="box.autoFlip" (click)="openBox(box)">
+                    <div class="bc-game__pick-card">
+                        <!-- BACK -->
+                        <div class="bc-game__pick-back">
+                            PICK
+                        </div>
+                        <!-- FRONT -->
+                        <div class="bc-game__pick-front">
+                            @if (box.revealed) {
+                            <img [src]="box.item.widget" [alt]="box.item.label" class="bc-game__pick-img">
+                            }
+                        </div>
+                    </div>
+                    <!-- Overlay -->
+                    @if(box.showOverlay){
+                    <div class="bc-game__pickbox-overlay"></div>
+                    }
+                </div>
+
+                }
+
+                @if (gameWon && winningItem) {
+                <div class="win-popup">
+                    <div class="win-popup__content">
+                        <h2 class="win-popup__title">YOU WIN!</h2>
+                        <div class="win-popup__amount">${{winningItem.amount}}</div>
+
+                        <!-- background icons -->
+                        <div class="win-popup__banana"></div>
+                        <div class="win-popup__chicken"></div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        <div class="bc-game__play-instruction">Press play to start</div>
+        <div class="bc-game__controllers">
+            <div class="bc-game__controllers-left">
+                <div class="bc-game__balance-box">
+                    <span class="balance-val">
+                        <span class="balance-icon">$</span>
+
+                        {{ balance | number }}
+                    </span>
+                </div>
+            </div>
+            <div class="bc-game__controllers-mid">
+                <div class="bc-game__last-win">
+                    <div class="last-win-label">Last Win </div>
+                    <div class="last-win-val">
+                        {{ lastWin ? ('$' + lastWin) : '-' }}
+                    </div>
+                </div>
+            </div>
+            <div class="bc-game__controllers-right">
+                <div class="bc-game__controll-group">
+                    <div class="bc-game__bet-amount-box">
+                        <div class="bc-game__bet-amount-box-left">
+                            <span class="label">Bet</span>
+                            <span class="bet-val">
+                                <span class="bet-icon">$</span>
+                                {{ betAmount }}
+                            </span>
+                        </div>
+                        <div class="bc-game__amount-actions">
+
+                            <button class="bc-game__amount-action" (click)="increaseBet()">
+                                <i class="fa-solid fa-angle-up"></i>
+                            </button>
+
+                            <button class="bc-game__amount-action" (click)="decreaseBet()">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </button>
+
+                        </div>
+                    </div>
+                    @if (!gameStarted) {
+
+                    <button class="bc-game__play-button" (click)="startGame()">
+                        <i class="fas fa-play"></i>
+                    </button>
+
+                    } @else {
+
+                    <button class="bc-game__play-button go" (click)="autoOpenRandomBox()">
+                        GO
+                    </button>
+
+                    }
+                    <div class="bc-game__autoplay-box"
+                        (click)="isAutoplayRunning ? stopAutoplay() : openAutoplayModal()">
+
+                        @if (!isAutoplayRunning) {
+
+                        <img src="assets/chicken-banana/autoplay-icon.svg" alt="autoplay" class="autoplay-icon">
+
+                        } @else {
+
+                        <button class="bc-game__stop-autoplay-btn">
+                            <i class="fas fa-close"></i>
+                        </button>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bc-game__mcontrollers">
+            <div class="bc-game__mcontrollers-betamt-box">
+                <div class="bc-game__m-bet-box-left">
+                    <span class="label">Bet</span>
+                    <span class="bet-val">
+                        <span class="bet-icon">$</span>
+                        {{ betAmount }}
+                    </span>
+                </div>
+                <div class="bc-game__m-amount-actions">
+
+                    <button class="bc-game__m-amount-action" (click)="increaseBet()">
+                        <i class="fa-solid fa-angle-up"></i>
+                    </button>
+
+                    <button class="bc-game__m-amount-action" (click)="decreaseBet()">
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </button>
+
+                </div>
+            </div>
+            @if (!gameStarted) {
+
+            <button class="bc-game__m-play-button" (click)="startGame()" (mousedown)="startHoldAutoplay()"
+                (mouseup)="cancelHoldAutoplay()" (mouseleave)="cancelHoldAutoplay()" (touchstart)="startHoldAutoplay()"
+                (touchend)="cancelHoldAutoplay()">
+                <i class="fas fa-play"></i>
+            </button>
+
+            } @else {
+
+            @if (!isAutoplayRunning) {
+            <button class="bc-game__m-play-button go" (click)="autoOpenRandomBox()" (mousedown)="startHoldAutoplay()"
+                (mouseup)="cancelHoldAutoplay()" (mouseleave)="cancelHoldAutoplay()" (touchstart)="startHoldAutoplay()"
+                (touchend)="cancelHoldAutoplay()">
+                GO
+            </button>
+            }@else {
+            <button class="bc-game__stop-autoplay-btn" (click)="stopAutoplay()">
+                <i class="fas fa-close"></i>
+            </button>
+            }
+
+            }
+            <div class="bc-game__m-balance-box">
+                <span class="label">Balance</span>
+                <span class="balance-val">
+                    <span class="balance-icon">$</span>
+                    {{ balance | number }}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    @if (showAutoplayModal) {
+    <div class="autoplay-modal-overlay">
+        <div class="autoplay-modal">
+            <div class="autoplay-modal__header">
+                <div class="autoplay-modal__title">
+                    Autoplay settings
+                </div>
+                <button class="autoplay-modal__close" (click)="closeAutoplayModal()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+            <div class="autoplay-modal__label">
+                Numbers of autospins:
+            </div>
+            <div class="autoplay-modal__options">
+                @for (spin of autoPlayOptions; track spin) {
+                <button class="autoplay-modal__option" [class.active]="selectedAutoplayCount === spin"
+                    (click)="selectAutoplay(spin)">
+
+                    {{ spin }}
+                </button>
+                }
+            </div>
+            <div class="autoplay-modal__range-wrap">
+                <input type="range" min="10" max="1000" step="5" [value]="selectedAutoplayCount"
+                    (input)="onSliderChange($event)" class="autoplay-modal__range">
+
+                <div class="autoplay-modal__range-value">
+                    {{ selectedAutoplayCount }}
+                </div>
+            </div>
+            <button class="autoplay-modal__start-btn" (click)="startAutoplay()">
+                Start autoplay ({{ selectedAutoplayCount }})
+            </button>
+        </div>
+    </div>
+
+    }
+
+    <app-cb-menu-card *ngIf="showMenuCard" />
+    <app-cb-htp-modal *ngIf="(chickenBananaMenuService.howToPlayModal$ | async)">
+    </app-cb-htp-modal>
+    <app-cb-game-rules-modal *ngIf="(chickenBananaMenuService.gameRulesModal$ | async)">
+    </app-cb-game-rules-modal>
+    <app-cb-bethistory *ngIf="(chickenBananaMenuService.betHistoryModal$ | async)">
+    </app-cb-bethistory>
+</section>

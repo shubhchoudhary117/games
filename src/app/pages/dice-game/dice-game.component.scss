@@ -1,0 +1,1368 @@
+.dice-game {
+  width: 100%;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(56, 0, 120, 0.35), transparent 35%),
+    radial-gradient(circle at bottom, rgba(0, 89, 255, 0.18), transparent 40%),
+    #020312;
+  padding: 0px 8px 20px 8px;
+
+
+  &__container {
+    max-width: 50%;
+    margin: auto;
+  }
+
+  &__round-section {
+    width: 100%;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    padding: 10px 14px;
+    margin-top: 4px;
+    border-radius: 14px;
+
+    background:
+      linear-gradient(180deg, #090a2a 0%, #06061d 100%);
+
+    border: 1px solid rgba(171, 95, 255, 0.35);
+
+    box-shadow:
+      inset 0 0 12px rgba(173, 79, 255, 0.12),
+      0 0 14px rgba(121, 37, 255, 0.12);
+  }
+
+  &__rounds-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  &__total-rounds {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    text-wrap: nowrap;
+  }
+
+  &__round-live {
+    font-size: 11px;
+    color: #27ff63;
+    font-weight: 600;
+    margin-top: 5px;
+    position: relative;
+    padding-left: 14px;
+    text-transform: uppercase;
+
+    &::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #1dff5f;
+      box-shadow: 0 0 8px #1dff5f;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+  }
+
+  &__round-timer-box {
+    flex: 1;
+    max-width: 200px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background:
+      radial-gradient(circle at center, rgba(255, 196, 0, 0.14), transparent 75%),
+      linear-gradient(180deg, #0b0928 0%, #09061f 100%);
+    border: 1px solid rgba(255, 208, 12, 0.5);
+    border-radius: 40px;
+    box-shadow:
+      inset 0 0 16px rgba(255, 208, 12, 0.12),
+      0 0 14px rgba(255, 208, 12, 0.18);
+
+    .timer-label {
+      font-size: 11px;
+      color: #ffd400;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .beting-round-time {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1;
+      color: #ffd400;
+      text-shadow: 0 0 18px rgba(255, 212, 0, 0.5);
+      margin-top: 5px;
+
+      span {
+        font-size: 18px;
+      }
+    }
+  }
+
+  &__betting-status {
+    display: flex;
+    flex-direction: column;
+
+    .bo-l {
+      font-size: 14px;
+      color: #24ff62;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-wrap: nowrap;
+    }
+
+    .pyb {
+      font-size: 12px;
+      margin-top: 4px;
+      color: #ffffff;
+      font-weight: 500;
+    }
+  }
+
+  &__recent-results-container {
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px 12px 12px;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, #090a2b 0%, #050519 100%);
+    border: 1px solid rgba(130, 86, 255, 0.4);
+    box-shadow:
+      inset 0 0 14px rgba(169, 92, 255, 0.08),
+      0 0 12px rgba(110, 61, 255, 0.1);
+  }
+
+  &__recent-results-title {
+    font-size: 12px;
+    color: #ffffff;
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  &__recent-results-list {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  &__recent-result-box {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(circle at 30% 30%, #173eff 0%, #081a71 100%);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    border: 2px solid #62beff;
+    box-shadow:
+      inset 0 0 10px rgba(255, 255, 255, 0.15),
+      0 0 14px rgba(54, 138, 255, 0.45);
+  }
+
+  /* different colors like image */
+  &__recent-result-box.green {
+    background:
+      radial-gradient(circle at 30% 30%, #0cd34f 0%, #0d5a24 100%);
+    border-color: #7cffaa;
+    box-shadow: 0 0 14px rgba(28, 255, 111, 0.4);
+  }
+
+  &__recent-result-box.red {
+    background:
+      radial-gradient(circle at 30% 30%, #ff5028 0%, #7a1100 100%);
+    border-color: #ff9a87;
+    box-shadow: 0 0 14px rgba(255, 70, 70, 0.45);
+  }
+
+  &__recent-result-box.purple {
+    background:
+      radial-gradient(circle at 30% 30%, #b228ff 0%, #51006d 100%);
+    border-color: #e38dff;
+    box-shadow: 0 0 14px rgba(201, 70, 255, 0.45);
+  }
+
+  &__recent-result-box.gold {
+    background:
+      radial-gradient(circle at 30% 30%, #ffcf32 0%, #7b4d00 100%);
+    border-color: #ffe38d;
+    box-shadow: 0 0 14px rgba(255, 191, 0, 0.45);
+  }
+
+  &__viewport {
+    width: 100%;
+    margin-top: 6px;
+  }
+
+  &__dice-spin-box {
+    width: 100%;
+    height: 160px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+
+    background:
+      radial-gradient(circle at left center, rgba(0, 81, 255, 0.4), transparent 28%),
+      radial-gradient(circle at right center, rgba(175, 0, 255, 0.4), transparent 28%),
+      linear-gradient(180deg, #07071f 0%, #020210 100%);
+
+    border: 2px solid #9a3cff;
+
+    box-shadow:
+      inset 0 0 24px rgba(154, 60, 255, 0.18),
+      0 0 22px rgba(154, 60, 255, 0.35);
+
+  }
+
+
+
+
+
+  &__betting-digits-container {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 12px 12px;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, #090a2b 0%, #050519 100%);
+    border: 1px solid rgba(130, 86, 255, 0.4);
+    box-shadow:
+      inset 0 0 14px rgba(169, 92, 255, 0.08),
+      0 0 12px rgba(110, 61, 255, 0.1);
+  }
+
+  &__betting-digits-title {
+    font-size: 12px;
+    color: #31a3fe;
+    font-weight: 400;
+  }
+
+  &__digits-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(11, 1fr);
+    gap: 5px;
+    margin-top: 5px;
+  }
+
+  &__betting-digit-box {
+    width: 100%;
+    min-width: 0;
+    min-height: 70px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #312c49;
+
+    .digit {
+      font-size: 17px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .digit-x {
+      font-size: 11px;
+      color: #ffd400;
+      margin-top: 6px;
+
+    }
+  }
+
+  &__pairs-digits-groups {
+    width: 100%;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, #080a2b 0%, #040518 100%);
+
+    border: 1px solid rgba(110, 70, 255, 0.35);
+
+    box-shadow:
+      inset 0 0 18px rgba(165, 90, 255, 0.06),
+      0 0 14px rgba(98, 52, 255, 0.08);
+
+    display: flex;
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  /* ================= LEFT / RIGHT DICE ================= */
+
+  &__pair-digit-group {
+    flex: 1;
+    border: 1px solid rgba(104, 72, 190, 0.45);
+    border-radius: 10px;
+    padding: 6px;
+
+    background:
+      linear-gradient(180deg, #09092a 0%, #050518 100%);
+  }
+
+  &__digits-group-title {
+    font-size: 12px;
+    color: #14a8ff;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+
+    text-shadow: 0 0 10px rgba(20, 168, 255, 0.4);
+  }
+
+  &__digits-group-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 4px;
+  }
+
+  &__pair-digit-box {
+    width: 100%;
+    min-height: 80px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, #10103b 0%, #06061c 100%);
+    border: 1px solid rgba(120, 90, 220, 0.38);
+    box-shadow:
+      inset 0 0 10px rgba(167, 109, 255, 0.06),
+      0 0 8px rgba(88, 45, 255, 0.08);
+    transition: .2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+
+      border-color: rgba(180, 130, 255, 0.6);
+
+      box-shadow:
+        inset 0 0 12px rgba(177, 109, 255, 0.1),
+        0 0 12px rgba(102, 58, 255, 0.16);
+    }
+
+    .digit {
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1;
+      color: #ffffff;
+
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+    }
+
+    .digit-x {
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 400;
+      color: #ffd400;
+
+      text-shadow: 0 0 8px rgba(255, 212, 0, 0.35);
+    }
+  }
+
+  /* ================= EVEN ODD ================= */
+
+  &__even-odds-dice {
+    width: 140px;
+    flex-shrink: 0;
+    border: 1px solid rgba(104, 72, 190, 0.45);
+    border-radius: 10px;
+    padding: 6px;
+
+    background:
+      linear-gradient(180deg, #09092a 0%, #050518 100%);
+  }
+
+  &__even-odd-dice-title {
+    font-size: 12px;
+    color: #14a8ff;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+
+    text-shadow: 0 0 10px rgba(20, 168, 255, 0.4);
+  }
+
+  &__even-odd-digit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+
+  &__even-odd-box {
+    min-height: 80px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg, #10103b 0%, #06061c 100%);
+    border: 1px solid rgba(120, 90, 220, 0.38);
+    box-shadow:
+      inset 0 0 10px rgba(167, 109, 255, 0.06),
+      0 0 8px rgba(88, 45, 255, 0.08);
+
+    .label {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      text-transform: uppercase;
+
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.15);
+    }
+
+    .digit-x {
+      margin-top: 6px;
+      font-size: 11px;
+      font-weight: 400;
+      color: #ffd400;
+      text-shadow: 0 0 8px rgba(255, 212, 0, 0.35);
+    }
+
+  }
+
+  /* ODD GREEN */
+  &__even-odd-box:first-child {
+    background:
+      linear-gradient(180deg, #0d5f2f 0%, #082416 100%);
+    border: 1px solid rgba(45, 255, 122, 0.45);
+    box-shadow:
+      inset 0 0 12px rgba(45, 255, 122, 0.12),
+      0 0 12px rgba(45, 255, 122, 0.16);
+  }
+
+  &__even-odd-box:last-child {
+    background:
+      linear-gradient(180deg, #103c92 0%, #07173f 100%);
+    border: 1px solid rgba(72, 145, 255, 0.45);
+    box-shadow:
+      inset 0 0 12px rgba(72, 145, 255, 0.12),
+      0 0 12px rgba(72, 145, 255, 0.16);
+  }
+
+  &__betcontrollers {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  &__controllers-row {
+    width: 100%;
+    margin-top: 5px;
+    padding: 10px 12px 12px;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, #090a2b 0%, #050519 100%);
+    border: 1px solid rgba(130, 86, 255, 0.4);
+    box-shadow:
+      inset 0 0 14px rgba(169, 92, 255, 0.08),
+      0 0 12px rgba(110, 61, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__controllers-left {
+    display: flex;
+    align-items: center;
+  }
+
+  &__clear-btn {
+  width: 100px;
+  height: 45px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 18px;
+  background:
+    linear-gradient(180deg, #17173e 0%, #09091f 100%);
+  border: 1px solid rgba(138, 102, 255, 0.35);
+  box-shadow:
+    inset 0 0 14px rgba(255,255,255,0.05),
+    0 0 12px rgba(81, 46, 255, 0.14);
+  cursor: pointer;
+  transition: all .2s ease;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(188, 145, 255, 0.6);
+    box-shadow:
+      inset 0 0 16px rgba(255,255,255,0.08),
+      0 0 18px rgba(103, 58, 255, 0.22);
+  }
+  &:active {
+    transform: scale(.98);
+  }
+
+  i {
+    font-size: 12px;
+    color: #ffb4b4;
+    text-shadow:
+      0 0 10px rgba(255, 120, 120, 0.45),
+      0 0 16px rgba(255, 120, 120, 0.25);
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    color: #ffffff;
+    text-shadow:
+      0 0 10px rgba(255,255,255,0.12);
+  }
+}
+
+  &__controllers-mid {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__betting-chips {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  &__betting-chip {
+    width: 44px;
+    height: 44px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.02s ease-in-out;
+
+    &:active {
+      transform: scale(0.96);
+    }
+  }
+
+  &__chip-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__controllers-right {
+    display: flex;
+    align-items: center;
+  }
+
+  &__repeat-btn {
+    width: 165px;
+    height: 45px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background:
+      linear-gradient(180deg, #17173e 0%, #09091f 100%);
+    border: 1px solid rgba(138, 102, 255, 0.35);
+    box-shadow:
+      inset 0 0 14px rgba(255, 255, 255, 0.05),
+      0 0 12px rgba(81, 46, 255, 0.14);
+    transition: all .2s ease;
+    cursor: pointer;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+      transform: translateY(-2px);
+      border-color: rgba(188, 145, 255, 0.55);
+      box-shadow:
+        inset 0 0 16px rgba(255, 255, 255, 0.08),
+        0 0 18px rgba(103, 58, 255, 0.22);
+    }
+
+    &:active {
+      transform: scale(.98);
+    }
+
+    .repeat-label {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      color: #ffffff;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.12);
+      i {
+        font-size: 16px;
+        margin-right: 10px;
+        color: #ffc4b6;
+        text-shadow:
+          0 0 8px rgba(255, 180, 160, 0.4),
+          0 0 14px rgba(255, 180, 160, 0.2);
+      }
+    }
+
+    .amount {
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      color: #ffd54d;
+      text-shadow:
+        0 0 10px rgba(255, 212, 77, 0.3);
+
+      i {
+        font-size: 12px;
+        margin-right: 4px;
+      }
+    }
+  }
+
+  &__place-bet-actions {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  &__place-bet-btn {
+    width: 70%;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: #06600c;
+    border: none;
+    outline: none;
+    border-radius: 6px;
+    text-transform: uppercase;
+    transition: transform 0.02s ease-in-out;
+    cursor: pointer;
+
+    &:active {
+      transform: scale(0.96);
+    }
+
+    .place-bet-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .place-bet-subtitle {
+      font-size: 12px;
+      color: #82e260;
+    }
+  }
+}
+
+
+
+// ── Chip selected state ──────────────────────────────────
+.dice-game__betting-chip.chip-selected {
+  filter: drop-shadow(0 0 8px rgba(255, 212, 0, 0.9));
+  transform: scale(1.15);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+// ── Bet chip overlay on number boxes ────────────────────
+.dice-game__betting-digit-box,
+.dice-game__pair-digit-box,
+.dice-game__even-odd-box {
+  position: relative;
+  cursor: pointer;
+}
+
+.bet-chip-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
+  pointer-events: none;
+
+  .bet-chip-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(255, 212, 0, 0.8));
+  }
+
+  .bet-chip-amount {
+    font-size: 10px;
+    font-weight: 700;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 4px;
+    padding: 1px 4px;
+    margin-top: 2px;
+    text-shadow: none;
+  }
+}
+
+// ── Has bet glow ─────────────────────────────────────────
+.has-bet {
+  border-color: rgba(255, 212, 0, 0.8) !important;
+  box-shadow:
+    inset 0 0 12px rgba(255, 212, 0, 0.15),
+    0 0 14px rgba(255, 212, 0, 0.35) !important;
+}
+
+// ── Winning cell flash ───────────────────────────────────
+.winning-cell {
+  animation: winFlash 0.5s ease-in-out 3;
+  border-color: #27ff63 !important;
+}
+
+@keyframes winFlash {
+  0%, 100% {
+    box-shadow: inset 0 0 12px rgba(39, 255, 99, 0.2), 0 0 14px rgba(39, 255, 99, 0.5);
+  }
+  50% {
+    box-shadow: inset 0 0 24px rgba(39, 255, 99, 0.5), 0 0 28px rgba(39, 255, 99, 0.9);
+  }
+}
+
+// ── Betting closed state ─────────────────────────────────
+.bo-l.closed {
+  color: #ff5555 !important;
+}
+
+.dice-game__place-bet-btn.closed {
+  background: #3a0808 !important;
+  cursor: not-allowed;
+}
+
+// ── Result total in timer ────────────────────────────────
+.result-total {
+  font-size: 28px !important;
+  color: #27ff63 !important;
+  text-shadow: 0 0 20px rgba(39, 255, 99, 0.7) !important;
+}
+
+// ── Bet summary bar ──────────────────────────────────────
+.dice-game__bet-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #aaa;
+
+  .bet-total-amt {
+    color: #ffd400;
+    font-weight: 700;
+    font-size: 14px;
+  }
+}
+
+// ── Disabled buttons ─────────────────────────────────────
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+// ── Mobile bet chip smaller ───────────────────────────────
+@media screen and (max-width: 768px) {
+  .bet-chip-overlay {
+    .bet-chip-img {
+      width: 22px;
+      height: 22px;
+    }
+    .bet-chip-amount {
+      font-size: 8px;
+    }
+  }
+}
+
+
+
+// ─────────────────────────────────────────────────────────────────
+// PASTE THESE STYLES at the bottom of dice-game.component.scss
+// ─────────────────────────────────────────────────────────────────
+
+// Betting status "closed" state
+.bo-l.closed {
+  color: #ff4646 !important;
+}
+
+// Winning cell highlight (sum grid + pair grid)
+.dice-game__betting-digit-box.winning-cell,
+.dice-game__pair-digit-box.winning-cell {
+  border-color: #24ff62 !important;
+  background: rgba(36, 255, 98, 0.15) !important;
+  box-shadow: 0 0 18px rgba(36, 255, 98, 0.45);
+  animation: winPulse 0.6s ease-in-out 2;
+}
+
+// Winning even/odd cell
+.dice-game__even-odd-box.winning-cell {
+  border-color: #24ff62 !important;
+  box-shadow: 0 0 18px rgba(36, 255, 98, 0.5) !important;
+  animation: winPulse 0.6s ease-in-out 2;
+}
+
+@keyframes winPulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
+// Cells that have a bet on them
+.dice-game__betting-digit-box.has-bet,
+.dice-game__pair-digit-box.has-bet {
+  border-color: rgba(255, 212, 0, 0.6);
+  background: rgba(255, 212, 0, 0.07);
+}
+
+.dice-game__even-odd-box.has-bet {
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.45) !important;
+  border-color: rgba(255, 212, 0, 0.7) !important;
+}
+
+// Place bet button — active (has pending bets)
+.dice-game__place-bet-btn.has-pending {
+  background: #07880f;
+  box-shadow: 0 0 18px rgba(36, 255, 98, 0.25);
+  animation: glowPulse 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  from { box-shadow: 0 0 10px rgba(36, 255, 98, 0.2); }
+  to   { box-shadow: 0 0 28px rgba(36, 255, 98, 0.5); }
+}
+
+// Place bet button — closed/disabled state
+.dice-game__place-bet-btn.closed,
+.dice-game__place-bet-btn:disabled:not(.has-pending) {
+  background: #1a1a2e !important;
+  cursor: not-allowed;
+  opacity: 0.65;
+  animation: none;
+}
+
+// Chip overlay (bet amount shown on cell)
+.bet-chip-overlay {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+
+  .bet-chip-img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(255, 212, 0, 0.6));
+  }
+
+  .bet-chip-amount {
+    font-size: 9px;
+    font-weight: 800;
+    color: #ffd400;
+    text-shadow: 0 0 6px rgba(255, 212, 0, 0.7);
+    line-height: 1;
+    margin-top: 1px;
+  }
+}
+
+// Selected chip highlight
+.dice-game__betting-chip.chip-selected {
+  transform: scale(1.18) translateY(-3px);
+  filter: drop-shadow(0 0 8px rgba(255, 212, 0, 0.7));
+}
+
+// Bet summary bar
+.dice-game__bet-summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 6px;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  color: #ccc;
+  background: rgba(168, 85, 247, 0.08);
+  border: 1px solid rgba(168, 85, 247, 0.22);
+
+  .bet-total-amt {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffd400;
+  }
+}
+
+// Result total in timer box
+.result-total {
+  color: #ffd400 !important;
+  font-size: 22px !important;
+}
+
+
+/* ================= MOBILE VIEW ================= */
+
+@media screen and (max-width: 768px) {
+
+  .dice-game {
+
+    padding: 0px 5px 10px 5px;
+
+    &__container {
+      max-width: 100%;
+    }
+
+    /* ================= ROUND SECTION ================= */
+
+    &__round-section {
+      padding: 8px;
+      gap: 4px;
+      border-radius: 10px;
+      min-height: auto;
+    }
+
+    &__total-rounds {
+      font-size: 10px;
+    }
+
+    &__round-live {
+      font-size: 9px;
+      margin-top: 3px;
+    }
+
+    &__round-timer-box {
+      max-width: 110px;
+      padding: 4px 8px;
+      border-radius: 20px;
+
+      .timer-label {
+        font-size: 8px;
+      }
+
+      .beting-round-time {
+        font-size: 13px;
+
+        span {
+          font-size: 11px;
+        }
+      }
+    }
+
+    &__betting-status {
+
+      .bo-l {
+        font-size: 10px;
+      }
+
+      .pyb {
+        font-size: 9px;
+        margin-top: 2px;
+      }
+    }
+
+    /* ================= RECENT RESULT ================= */
+
+    &__recent-results-container {
+      margin-top: 4px;
+      padding: 8px;
+      border-radius: 10px;
+    }
+
+    &__recent-results-title {
+      font-size: 10px;
+      margin-bottom: 6px;
+    }
+
+    &__recent-results-list {
+      gap: 5px;
+    }
+
+    &__recent-result-box {
+      width: 22px;
+      height: 22px;
+      font-size: 11px;
+      border-width: 1px;
+    }
+
+    /* ================= DICE AREA ================= */
+
+    &__viewport {
+      margin-top: 4px;
+    }
+
+    &__dice-spin-box {
+      height: 120px;
+      border-radius: 12px;
+    }
+
+    /* ================= BETTING DIGITS ================= */
+
+    &__betting-digits-container {
+      margin-top: 6px;
+      padding: 8px;
+      border-radius: 10px;
+    }
+
+    &__betting-digits-title {
+      font-size: 10px;
+    }
+
+    &__digits-grid {
+      grid-template-columns: repeat(6, 1fr);
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    &__betting-digit-box {
+      min-height: 52px;
+      border-radius: 6px;
+
+      .digit {
+        font-size: 13px;
+      }
+
+      .digit-x {
+        font-size: 9px;
+        margin-top: 3px;
+      }
+    }
+
+    /* ================= PAIRS ================= */
+
+    &__pairs-digits-groups {
+      flex-direction: column;
+      gap: 6px;
+      padding: 6px;
+      margin-top: 6px;
+    }
+
+    &__pair-digit-group {
+      padding: 5px;
+    }
+
+    &__digits-group-title {
+      font-size: 10px;
+      margin-bottom: 5px;
+    }
+
+    &__digits-group-grid {
+      gap: 3px;
+    }
+
+    &__pair-digit-box {
+      min-height: 52px;
+      border-radius: 6px;
+
+      .digit {
+        font-size: 12px;
+      }
+
+      .digit-x {
+        font-size: 9px;
+        margin-top: 3px;
+      }
+    }
+
+    /* ================= EVEN ODD ================= */
+
+    &__even-odds-dice {
+      width: 100%;
+      padding: 5px;
+    }
+
+    &__even-odd-dice-title {
+      font-size: 10px;
+      margin-bottom: 5px;
+    }
+
+    &__even-odd-digit-grid {
+      gap: 4px;
+    }
+
+    &__even-odd-box {
+      min-height: 50px;
+      border-radius: 6px;
+
+      .label {
+        font-size: 12px;
+      }
+
+      .digit-x {
+        font-size: 9px;
+        margin-top: 3px;
+      }
+    }
+
+    /* ================= CONTROLLERS ================= */
+
+    &__betcontrollers {
+      margin-top: 6px;
+    }
+
+    &__controllers-row {
+      padding: 8px;
+      border-radius: 10px;
+      gap: 5px;
+    }
+
+    &__controllers-left,
+    &__controllers-mid,
+    &__controllers-right {
+      flex: unset;
+    }
+
+    &__betting-chips {
+      gap: 3px;
+    }
+
+    &__betting-chip {
+      width: 30px;
+      height: 30px;
+    }
+
+    /* ================= CLEAR BUTTON ================= */
+
+    &__clear-btn {
+      width: 70px;
+      height: 34px;
+      padding: 0 8px;
+      border-radius: 8px;
+      gap: 4px;
+
+      i {
+        font-size: 9px;
+      }
+
+      span {
+        font-size: 9px;
+        letter-spacing: 0;
+      }
+    }
+
+    /* ================= REPEAT BUTTON ================= */
+
+    &__repeat-btn {
+      width: 105px;
+      height: 34px;
+      border-radius: 8px;
+      gap: 1px;
+
+      .repeat-label {
+        font-size: 8px;
+        letter-spacing: 0;
+
+        i {
+          font-size: 10px;
+          margin-right: 4px;
+        }
+      }
+
+      .amount {
+        font-size: 8px;
+
+        i {
+          font-size: 8px;
+        }
+      }
+    }
+
+    /* ================= PLACE BET ================= */
+
+    &__place-bet-actions {
+      margin-top: 6px;
+    }
+
+    &__place-bet-btn {
+      width: 100%;
+      height: 46px;
+      border-radius: 8px;
+
+      .place-bet-title {
+        font-size: 11px;
+      }
+
+      .place-bet-subtitle {
+        font-size: 9px;
+      }
+    }
+  }
+
+  /* ================= HEADER ================= */
+
+  .dice-header {
+    height: 52px;
+    padding: 0px 6px;
+
+    &__menu {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+
+      i {
+        font-size: 13px;
+      }
+    }
+
+    &__logo {
+      height: 38px;
+    }
+
+    &__balance-box {
+      min-width: 95px;
+      min-height: 32px;
+      padding: 0px 8px;
+      border-radius: 8px;
+
+      .coin-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+      }
+
+      i {
+        font-size: 10px;
+        margin-right: 2px;
+      }
+
+      .balance {
+        font-size: 11px;
+      }
+    }
+  }
+}
+
+
+/* ================= HEADER ================= */
+
+.dice-header {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10px;
+
+  background:
+    linear-gradient(180deg, #05061f 0%, #020212 100%);
+
+  border: 1px solid rgba(110, 61, 255, 0.22);
+
+  &__left {
+    display: flex;
+    align-items: center;
+  }
+
+  &__menu {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+      linear-gradient(180deg, #13133d 0%, #08081d 100%);
+
+    border: 1px solid rgba(164, 96, 255, 0.45);
+
+    border-radius: 12px;
+
+    box-shadow:
+      inset 0 0 10px rgba(173, 104, 255, 0.1),
+      0 0 12px rgba(115, 55, 255, 0.18);
+
+    i {
+      font-size: 16px;
+      color: #ffffff;
+    }
+  }
+
+  &__logo {
+    width: auto;
+    height: 50px;
+  }
+
+  &__logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  &__balance-box {
+    min-width: 140px;
+    min-height: 40px;
+    padding: 0px 14px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+      linear-gradient(180deg, #0e092f 0%, #07051c 100%);
+
+    border: 1px solid rgba(255, 170, 0, 0.45);
+
+    box-shadow:
+      inset 0 0 12px rgba(255, 183, 0, 0.12),
+      0 0 14px rgba(255, 183, 0, 0.15);
+
+    .coin-icon {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      margin-right: 10px;
+    }
+
+    i {
+      font-size: 14px;
+      color: #ffd54d;
+      margin-right: 4px;
+    }
+
+    .balance {
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+  }
+}

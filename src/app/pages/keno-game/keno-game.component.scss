@@ -1,0 +1,1213 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap');
+
+// ── Variables ──────────────────────────────────────────────────────────────
+$header-bg: #6d0a2b;
+$game-bg: #9b0a3e;
+$btn-red: #ca0348;
+$orange-gold: #fb9c23;
+$mobile: 480px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.keno {
+  width: 100%;
+  min-height: 100svh;
+  background: #1a0e00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Barlow', sans-serif;
+
+  button,
+  input {
+    font-family: inherit;
+  }
+
+  // ── Container ────────────────────────────────────────────────────────
+  &__container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+
+    @media (max-width: $mobile) {
+      padding: 0;
+      align-items: flex-start;
+      min-height: 100svh;
+    }
+  }
+
+  &__gameviewport {
+    width: min(960px, 100%);
+
+    @media (max-width: $mobile) {
+      width: 100%;
+      min-height: 100svh;
+    }
+  }
+
+  // ── Game shell ───────────────────────────────────────────────────────
+  &__game {
+    width: 100%;
+    background: $game-bg;
+    border: 2px solid $orange-gold;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), inset 1px 1px rgba(255, 255, 255, 0.22);
+    position: relative;
+    overflow: visible;
+    color: #fff;
+    min-height: 530px;
+
+    @media (max-width: $mobile) {
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  // ── BG decorative arrows ─────────────────────────────────────────────
+  &__bgimg-left,
+  &__bgimg-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    pointer-events: none;
+
+    @media (max-width: $mobile) {
+      display: none;
+    }
+  }
+
+  &__bgimg-left {
+    left: 6px;
+  }
+
+  &__bgimg-right {
+    right: 6px;
+  }
+
+  // ── Header ───────────────────────────────────────────────────────────
+  &__game-header {
+    width: 100%;
+    height: 30px;
+    background: $header-bg;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
+    position: relative;
+    border-bottom: 1px solid rgba($orange-gold, 0.35);
+    border-radius: 13px 13px 0 0;
+
+    @media (max-width: $mobile) {
+      height: 44px;
+      border-radius: 0;
+      padding: 0 12px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__gameheader-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__howtoplay-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    height: 22px;
+    padding: 0 16px;
+    background: linear-gradient(to bottom, #f9a119, #f38410);
+    border: none;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #3c0606;
+    cursor: pointer;
+    transition: filter 0.15s;
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+
+    @media (max-width: $mobile) {
+      height: 30px;
+      padding: 0 12px;
+      font-size: 11px;
+    }
+  }
+
+  // Desktop-only centre tab
+  &__gameheader-mid {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+
+    @media (max-width: $mobile) {
+      display: none;
+    }
+  }
+
+  &__funmode-mark {
+    background: $orange-gold;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    padding: 5px 32px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  &__gameheader__right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+
+  &__winamount-block {
+    padding: 3px 20px;
+    font-size: 13px;
+    color: #fff;
+    background: #2a6e00;
+    border-radius: 12px;
+
+  }
+
+  &__balance {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+
+    span {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 12px;
+      font-weight: 400;
+      margin-left: 4px;
+    }
+  }
+
+  &__menublock {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: $btn-red;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    user-select: none;
+    color: #fff;
+
+    @media (max-width: $mobile) {
+      width: 32px;
+      height: 32px;
+      font-size: 15px;
+    }
+  }
+
+  // ── FUN MODE pill — mobile only (below header) ────────────────────────
+  &__funmode-mobile {
+    display: none;
+
+    @media (max-width: $mobile) {
+      display: flex;
+      justify-content: center;
+      padding: 8px 0 0;
+      flex-shrink: 0;
+    }
+  }
+
+  &__funmode-mobile-mark {
+    background: $orange-gold;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    padding: 5px 32px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  // ── Instruction badge ─────────────────────────────────────────────────
+  &__instruction-badge {
+    background: rgba(21, 23, 25, 0.42);
+    width: 48%;
+    margin: auto;
+    margin-top: 4px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1.8em;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #28A774;
+    transition: color 0.3s;
+
+    @media (max-width: $mobile) {
+      width: 80%;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+  }
+
+  // ── Game body ─────────────────────────────────────────────────────────
+  &__gamebody {
+    padding: 14px 0 0;
+    margin-top: 20px;
+
+    @media (max-width: $mobile) {
+      padding: 0px 10px 0;
+      margin-top: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-top: 50px;
+    }
+  }
+
+  &__game-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__keno-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+
+    @media (max-width: $mobile) {
+      flex: 1;
+      gap: 6px;
+      align-items: flex-start;
+    }
+  }
+
+  &__game-canvas {
+    display: flex;
+    justify-content: center;
+
+    @media (max-width: $mobile) {
+      flex: 1;
+      width: 100%;
+    }
+  }
+
+  // ── Numbers grid ──────────────────────────────────────────────────────
+  &__numbers {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+
+    @media (max-width: $mobile) {
+      width: 100%;
+      gap: 5px;
+    }
+  }
+
+  // Desktop fixed size; mobile: fluid square via padding-bottom trick
+  &__number-wrapper {
+    max-width: 4.5em;
+    max-height: 4.5em;
+    width: 3em;
+    height: 3em;
+
+    @media (max-width: $mobile) {
+      width: 100%;
+      max-width: none;
+      max-height: none;
+      height: 0;
+      padding-bottom: 100%;
+      position: relative;
+    }
+  }
+
+  &__number {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    border-radius: 50%;
+    background: radial-gradient(circle at 74% 90%, #000, #601034);
+    box-shadow: 8px 8px 18px -12px #0a0e1f;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+    font-size: 15px;
+    font-weight: 700;
+    transition: transform 0.12s, background 0.15s, box-shadow 0.15s;
+    border: none;
+    outline: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      margin: 8%;
+      border: 1.5px solid rgba(255, 255, 255, 0.22);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    @media (max-width: $mobile) {
+      position: absolute;
+      inset: 0;
+      font-size: clamp(11px, 3.8vw, 13px);
+    }
+
+    &--selected {
+      background-image: radial-gradient(circle at 74% 90%, #f294b5, #ffffff);
+      color: #3c1200 !important;
+      box-shadow: 10px 10px 20px -14px #0a0e1f;
+
+      &::before {
+        border: 2px solid rgba(255, 0, 0, 0.31);
+      }
+    }
+
+    &--hit {
+      background-image: radial-gradient(circle at 74% 90%, #fe7302, #fdd606);
+      color: #012800 !important;
+      cursor: default;
+    }
+
+    &--miss {
+      border: 2px solid yellow;
+      opacity: 0.45;
+      cursor: default;
+    }
+  }
+
+  // ── Multiplier box ────────────────────────────────────────────────────
+  &__winning-multipliers-box {
+    width: 110px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 8px 6px;
+    gap: 3px;
+    min-height: 200px;
+    background: transparent;
+    margin-left: 6px;
+
+    @media (max-width: $mobile) {
+      width: 83px;
+      min-height: unset;
+      align-self: stretch;
+      margin-left: 0;
+      padding: 6px 4px;
+      gap: 2px;
+    }
+  }
+
+  &__mult-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 6px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 700;
+    transition: background 0.2s;
+
+    &--active {
+      background: rgba(255, 180, 0, 0.25);
+      border-radius: 4px;
+    }
+
+    @media (max-width: $mobile) {
+      padding: 0px 4px;
+      font-size: 10px;
+    }
+  }
+
+  &__mult-match {
+    flex: 0 0 2.6em;
+    height: 2.6em;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 0.65em;
+    line-height: 0.45em;
+
+    &--active {
+      background: radial-gradient(circle at 50% 50%, #f9a119, #f38410);
+      color: #3c0606;
+    }
+
+    @media (max-width: $mobile) {
+      flex: 0 0 2em;
+      height: 2em;
+      font-size: 9px;
+    }
+  }
+
+  &__mult-val {
+    color: #ffffff;
+  }
+
+  // ── Random / Clear ────────────────────────────────────────────────────
+  &__digits-actions {
+    display: flex;
+    gap: 10px;
+    margin: 12px auto;
+    max-width: 480px;
+    width: 100%;
+
+    @media (max-width: $mobile) {
+      gap: 8px;
+      margin: 10px 0;
+      max-width: 100%;
+    }
+  }
+
+  &__digit-action-btn {
+    flex: 1;
+    height: 28px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    background: $btn-red;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    box-shadow: inset 1px 1px rgba(255, 241, 205, 0.2);
+    transition: filter 0.15s;
+
+    &:hover {
+      filter: brightness(1.15);
+    }
+
+    @media (max-width: $mobile) {
+      height: 36px;
+      font-size: 13px;
+      border-radius: 999px;
+    }
+  }
+
+  // ── Game controllers ──────────────────────────────────────────────────
+  &__gamecontrollers {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #6c0b2a;
+    border-radius: 16px;
+    padding: 14px 18px;
+    flex-wrap: wrap;
+    border: 1px solid rgba(255, 180, 50, 0.15);
+    margin-bottom: 0;
+
+    @media (max-width: $mobile) {
+      gap: 8px;
+      padding: 10px 12px 14px;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      border-bottom: none;
+      margin-top: auto; // push to bottom of flex column
+      flex-shrink: 0;
+      border-radius: 12px;
+    }
+  }
+
+  // ── Auto + Bet grouped row ────────────────────────────────────────────
+  &__place-bet-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    @media (max-width: $mobile) {
+      width: 100%;
+    }
+  }
+
+  // ── Auto-bet button ───────────────────────────────────────────────────
+  &__auto-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 40% 35%, #4a8fe0, #1a4fa0);
+    border: 2px solid rgba(100, 160, 255, 0.4);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+    transition: filter 0.15s, transform 0.1s;
+    flex-shrink: 0;
+
+    &:hover {
+      filter: brightness(1.15);
+      transform: scale(1.05);
+    }
+
+    @media (max-width: $mobile) {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+    }
+  }
+
+  // ── Place Bet button ──────────────────────────────────────────────────
+  &__place-bet-btn {
+    border-radius: 30px;
+    width: 300px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 900;
+    cursor: pointer;
+    background: radial-gradient(circle at 50% 50%, #61a503, #2d7500 94%);
+    letter-spacing: 0.5px;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+    box-shadow: 3px 3px 6px #020b1a80, inset -1px -1px rgba(0, 0, 0, 0.32), inset 1px 1px rgba(255, 241, 205, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.9);
+    transition: transform 0.1s, filter 0.15s;
+
+    &:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(2px);
+    }
+
+    &:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: $mobile) {
+      flex: 1; // fills remaining space next to auto-btn
+      width: auto;
+      height: 48px;
+      font-size: 14px;
+      border-radius: 999px;
+    }
+  }
+
+  &__action-title {
+    font-size: 16px;
+    font-weight: 900;
+
+    @media (max-width: $mobile) {
+      font-size: 14px;
+    }
+  }
+
+  // ── Bet amount control ────────────────────────────────────────────────
+  &__controls-amount {
+    background: $game-bg;
+    border: 1px solid rgba(0, 0, 0, 0.53);
+    box-shadow: inset 1px 1px rgba(255, 241, 205, 0.2);
+    border-radius: 30px;
+    width: 300px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px 0 14px;
+    position: relative;
+
+    @media (max-width: $mobile) {
+      width: 100%;
+      height: 46px;
+      padding: 0 10px 0 14px;
+    }
+  }
+
+  &__input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  &__input-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.85);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  &__bet-input {
+    width: 140px;
+    height: 22px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(80, 35, 0, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 800;
+    outline: none;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
+
+    @media (max-width: $mobile) {
+      width: 100px;
+      font-size: 13px;
+    }
+  }
+
+  &__amountactions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    @media (max-width: $mobile) {
+      gap: 5px;
+    }
+  }
+
+  &__amountaction-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(80, 35, 0, 0.7);
+    background: $btn-red;
+    color: #fff0cc;
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: filter 0.15s;
+
+    &--coin {
+      font-size: 15px;
+    }
+
+    &:hover {
+      filter: brightness(1.15);
+    }
+
+    @media (max-width: $mobile) {
+      width: 30px;
+      height: 30px;
+      font-size: 14px;
+    }
+  }
+
+  // ── Stakes popup ──────────────────────────────────────────────────────
+  &__betstakes-box {
+    position: absolute;
+    bottom: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    background: #510c24;
+    border: 2px solid #2b1e0c;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    z-index: 50;
+
+    @media (max-width: $mobile) {
+      width: calc(100% - 24px);
+      bottom: 80px;
+    }
+  }
+
+  &__betstakes-heading {
+    text-align: center;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+    font-size: 15px;
+  }
+
+  &__betstakes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  &__betstake {
+    height: 24px;
+    background: #7f0934;
+    color: #f6daee;
+    border-radius: 999px;
+    text-align: center;
+    font-weight: 700;
+    cursor: pointer;
+    transition: filter 0.15s;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      filter: brightness(1.12);
+    }
+
+    @media (max-width: $mobile) {
+      height: 30px;
+    }
+  }
+
+  // ── Bottom bar — mobile only ──────────────────────────────────────────
+  &__bottom-bar {
+    display: none;
+
+    @media (max-width: $mobile) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      background: #3a0318;
+      padding: 8px 14px;
+      flex-shrink: 0;
+      border-top: 1px solid rgba($orange-gold, 0.2);
+    }
+  }
+
+  &__bottom-game-select {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 5px 12px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
+    cursor: pointer;
+    min-width: 90px;
+  }
+
+  &__bottom-help {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: $orange-gold;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 900;
+    color: #3c0606;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  &__bottom-balance {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    text-align: right;
+
+    span {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 11px;
+      font-weight: 400;
+      margin-left: 3px;
+    }
+  }
+
+  &__bottom-menu {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: $btn-red;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  // ── Win Banner ────────────────────────────────────────────────────────
+  &__win-banner {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -120px);
+    width: calc(100% - 60px);
+    max-width: 480px;
+    height: 66px;
+    display: flex;
+    align-items: center;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 2px solid rgba(80, 200, 60, 0.5);
+    box-shadow: 0 0 0 1px rgba(80, 200, 60, 0.15), 0 8px 32px rgba(0, 0, 0, 0.5);
+    background: #192b08;
+    z-index: 20;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+
+    &.show {
+      transform: translate(-50%, 80px);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    @media (max-width: $mobile) {
+      width: calc(100% - 24px);
+      height: 58px;
+
+      &.show {
+        transform: translate(-50%, 54px);
+      }
+    }
+
+    &__left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      gap: 2px;
+
+      @media (max-width: $mobile) {
+        padding: 0 12px;
+      }
+    }
+
+    &__left-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(190, 255, 165, 0.7);
+    }
+
+    &__left-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+
+      @media (max-width: $mobile) {
+        font-size: 18px;
+      }
+    }
+
+    &__divider {
+      width: 1.5px;
+      height: 36px;
+      background: rgba(80, 200, 60, 0.25);
+      flex-shrink: 0;
+    }
+
+    &__right {
+      height: 100%;
+      min-width: 150px;
+      background: linear-gradient(140deg, #3c9010, #2a6e00);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      gap: 2px;
+      position: relative;
+      border-left: 1.5px solid rgba(80, 200, 60, 0.28);
+
+      @media (max-width: $mobile) {
+        min-width: 120px;
+        padding: 0 12px;
+      }
+    }
+
+    &__star {
+      position: absolute;
+      font-size: 14px;
+      color: #a8ff70;
+      opacity: 0.55;
+      line-height: 1;
+
+      &--tl {
+        top: 8px;
+        left: 10px;
+      }
+
+      &--tr {
+        top: 8px;
+        right: 10px;
+      }
+
+      &--bl {
+        bottom: 8px;
+        left: 10px;
+      }
+
+      &--br {
+        bottom: 8px;
+        right: 10px;
+      }
+    }
+
+    &__right-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(190, 255, 165, 0.8);
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+    }
+
+    &__right-val {
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1;
+      text-shadow: 0 0 14px rgba(90, 255, 50, 0.4);
+
+      @media (max-width: $mobile) {
+        font-size: 22px;
+      }
+    }
+
+    &__close {
+      width: 52px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: rgba(190, 255, 165, 0.55);
+      font-size: 18px;
+      font-weight: 900;
+      border-left: 1px solid rgba(80, 200, 60, 0.18);
+      background: rgba(0, 0, 0, 0.15);
+      user-select: none;
+      transition: color 0.15s, background 0.15s;
+
+      &:hover {
+        color: #fff;
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      @media (max-width: $mobile) {
+        width: 44px;
+      }
+    }
+  }
+}
+
+// ── Game Menu ─────────────────────────────────────────────────────────────────
+.game-menu {
+  position: absolute;
+  right: 10px;
+  top: 40px;
+  z-index: 999;
+
+  @media (max-width: $mobile) {
+    right: 8px;
+    top: 50px;
+  }
+
+  &__card {
+    width: 300px;
+    border-radius: 8px;
+    border-color: #1b1b1b;
+    background-color: #212226;
+    color: #d1d5db;
+    overflow: hidden;
+
+    @media (max-width: $mobile) {
+      width: calc(100vw - 16px);
+      max-width: 340px;
+    }
+  }
+
+  &__header {
+    padding: 6px 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #fff;
+    display: flex;
+    align-items: center;
+  }
+
+  &__sound-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #e0ddc6 !important;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #0003;
+    margin-bottom: 6px;
+    justify-content: space-between;
+  }
+
+  &__list {
+    padding: 5px 10px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #fff !important;
+    cursor: pointer;
+    transition: 0.2s;
+    background: #0003;
+    border-bottom: 1px solid #ffffff1a;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    &--flex {
+      justify-content: space-between;
+    }
+
+    &--active {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: $mobile) {
+      padding: 8px 10px; // taller tap targets
+    }
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__icon {
+    width: 20px;
+    text-align: center;
+    opacity: 0.9;
+  }
+
+  /* Toggle Switch */
+  &__switch {
+    position: relative;
+    width: 40px;
+    height: 22px;
+
+    input {
+      display: none;
+    }
+  }
+
+  &__slider {
+    position: absolute;
+    inset: 0;
+    background: #444;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+  }
+
+  input:checked+&__slider {
+    background: #22c55e;
+  }
+
+  input:checked+&__slider::before {
+    transform: translateX(18px);
+  }
+
+  &__footer {
+    padding: 4px 10px;
+  }
+
+  &__home {
+    text-align: center;
+    font-size: 13px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #9ca3af;
+    padding: 10px 10px;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  &__fair {
+    color: #22c55e;
+  }
+
+  &__brand {
+    opacity: 0.7;
+  }
+}
+

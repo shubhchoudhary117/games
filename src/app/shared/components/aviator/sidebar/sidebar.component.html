@@ -1,0 +1,69 @@
+<div class="sidebar__overlay" *ngIf="isOpen" (click)="close()"></div>
+
+<aside class="sidebar" [class.sidebar--open]="isOpen">
+  <div class="sidebar__header">
+    <img [src]="activeAvatar()" class="sidebar__avatar" />
+
+    <div class="sidebar__user">
+      <span class="sidebar__username">{{ username }}</span>
+    </div>
+
+    <button class="sidebar__avatar-btn" (click)="changeAvtar()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.5">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M20 21a8 8 0 00-16 0" />
+      </svg>
+      Change<br />Avatar
+    </button>
+  </div>
+
+  <div class="sidebar__content">
+    <div class="sidebar__toggles">
+      <div class="sidebar__toggle">
+        <div class="sidebar__toggle-left">
+          <span>Sound</span>
+        </div>
+        <label class="sidebar__switch">
+          <input type="checkbox">
+          <span class="sidebar__slider"></span>
+        </label>
+      </div>
+
+      <div class="sidebar__toggle">
+        <div class="sidebar__toggle-left">
+          <span>Music</span>
+        </div>
+        <label class="sidebar__switch">
+          <input type="checkbox">
+          <span class="sidebar__slider"></span>
+        </label>
+      </div>
+
+      <div class="sidebar__toggle">
+        <div class="sidebar__toggle-left">
+          <span>Animation</span>
+        </div>
+        <label class="sidebar__switch">
+          <input type="checkbox"
+            [checked]="isAnimationEnabled"
+            (change)="toggleAnimation()">
+          <span class="sidebar__slider"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="sidebar__links">
+      <a class="sidebar__link" (click)="showMyBets()">My Bet History</a>
+      <a class="sidebar__link" (click)="showGameLimits()">Game Limits</a>
+      <a class="sidebar__link" (click)="showHowToPlay()">How To Play</a>
+      <a class="sidebar__link" (click)="showGameRules()">Game Rules</a>
+      <a class="sidebar__link" (click)="showGameProvably()">Provably Fair Settings</a>
+    </div>
+
+    <div class="sidebar__footer">
+        <i class="fas fa-home"></i>
+      <a class="sidebar__home">Home</a>
+    </div>
+
+  </div>
+</aside>

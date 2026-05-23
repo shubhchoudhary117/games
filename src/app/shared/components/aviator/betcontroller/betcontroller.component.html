@@ -1,0 +1,82 @@
+<div class="betcontroller">
+    <div class="betcontroller__container">
+
+        @for (panel of panels; track $index) {
+        <div class="betcontroller__controls">
+            <div class="betcontroller__bet-actions-group">
+                <button class="betcontroller__bet-action" [class.active]="panel.activeTab === 'bet'"
+                    [class.inactive]="panel.activeTab !== 'bet'" (click)="panel.activeTab = 'bet'">Bet</button>
+                <button class="betcontroller__bet-action" [class.active]="panel.activeTab === 'auto'"
+                    [class.inactive]="panel.activeTab !== 'auto'" (click)="panel.activeTab = 'auto'">Auto</button>
+            </div>
+
+            <div class="betcontroller__row">
+                <div class="betcontroller__amount-section">
+                    <div class="betcontroller__amountinputgroup">
+                        <button class="betcontroller__counter descrese" [disabled]="disableAmountEdit(panel)"
+                            (click)="descreseAmount(1,panel)">−
+                        </button>
+                        <input type="number" [ngModel]="panel.amount" (ngModelChange)="onAmountChange($event,panel)"
+                            [disabled]="disableAmountEdit(panel)" class="betcontroller__amountinput" />
+
+                        <button class="betcontroller__counter increse" [disabled]="disableAmountEdit(panel)"
+                            (click)="increseAmount(1,panel)">+
+                        </button>
+                    </div>
+
+                    <div class="betcontroller__betstakes">
+                        <button class="betcontroller__stake" type="button" (click)="setBet.emit({ panel, amount: 1 })"
+                            [disabled]="disableAmountEdit(panel)">1</button>
+                        <button class="betcontroller__stake" type="button" (click)="setBet.emit({ panel, amount: 2 })"
+                            [disabled]="disableAmountEdit(panel)">2</button>
+                        <button class="betcontroller__stake" type="button" (click)="setBet.emit({ panel, amount: 5 })"
+                            [disabled]="disableAmountEdit(panel)">5</button>
+                        <button class="betcontroller__stake" type="button" (click)="setBet.emit({ panel, amount: 10 })"
+                            [disabled]="disableAmountEdit(panel)">10</button>
+                    </div>
+                </div>
+                <div class="betcontroller__betplace-buttons">
+                    <button class="betcontroller__betplace-action" [ngClass]="getButtonState(panel).classes"
+                        (click)="toggleAction.emit(panel)">
+                        <span>{{ getButtonState(panel).text }}</span>
+                        <span class="second-span">{{ getButtonState(panel).sub }}</span>
+                    </button>
+                </div>
+            </div>
+            @if (panel.activeTab === 'auto') {
+            <div class="betcontroller__auto-actions">
+
+                <!-- Auto Bet -->
+                <div class="betcontroller__auto-group">
+                    <span>Auto Bet</span>
+                    <label class="betcontroller__switch">
+                        <input type="checkbox" [(ngModel)]="panel.autoBet">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <!-- Auto Cash Out -->
+                <div class="betcontroller__auto-group">
+                    <span>Auto Cash Out</span>
+
+                    <div class="betcontroller__right-section">
+                        <label class="betcontroller__switch">
+                            <input type="checkbox" [(ngModel)]="panel.autoCashOut">
+                            <span class="slider"></span>
+                        </label>
+
+                        <div *ngIf="panel.autoCashOut" class="betcontroller__cashout-box">
+                            <input type="number" [(ngModel)]="panel.autoCashOutMultiplier" step="0.01" min="1.01" />
+                            <span class="close">×</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            }
+        </div>
+        }
+
+    </div>
+</div>
+

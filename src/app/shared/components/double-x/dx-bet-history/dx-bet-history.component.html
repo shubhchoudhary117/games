@@ -1,0 +1,68 @@
+<!-- bet-history-modal.component.html -->
+
+<div class="dx-bh">
+  <div class="dx-bh__container">
+
+    <div class="dx-bh__header">
+      <h2 class="dx-bh__title">My bet history</h2>
+
+      <button class="dx-bh__close" (click)="closeModal()">
+        ✕
+      </button>
+    </div>
+
+    <!-- TABLE HEADER -->
+    <div class="dx-bh__table-header">
+      <span>Date</span>
+      <span>Bet</span>
+      <span>Mult.</span>
+      <span>Cash Out</span>
+      <span></span>
+    </div>
+
+    <!-- LIST -->
+    <div class="dx-bh__list">
+
+      <div
+        class="dx-bh__row"
+        *ngFor="let item of betHistory"
+      >
+        <div class="dx-bh__date">
+          {{ item.date }}
+        </div>
+
+        <div class="dx-bh__bet">
+          $ {{ item.bet }}
+        </div>
+
+        <div class="dx-bh__multiplier">
+          <span
+            class="dx-bh__badge"
+            [class.dx-bh__badge--green]="item.green"
+          >
+            {{ item.mult }}
+          </span>
+        </div>
+
+        <div class="dx-bh__cashout">
+          {{ item.cashout }}
+        </div>
+
+        <div class="dx-bh__status">
+          <div class="dx-bh__status-icon">
+            ✓
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="dx-bh__footer">
+      <button class="dx-bh__load-more-btn">
+        LOAD MORE
+      </button>
+    </div>
+
+  </div>
+</div>

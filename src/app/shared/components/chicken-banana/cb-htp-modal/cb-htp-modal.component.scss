@@ -1,0 +1,149 @@
+.bc-htp-modal {
+    width: 100%;
+    position: fixed;
+    inset: 0;
+    overflow: hidden auto;
+    background: rgba(22, 32, 44, 0.8);
+    backdrop-filter: blur(5px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    z-index: 9999;
+
+    &__container {
+        width: 500px;
+        max-width: 500px;
+        padding: 32px;
+        background: rgb(27, 29, 33);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 30px 30px;
+        position: relative;
+        overflow-y: auto;
+        max-height: 95vh;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 28px;
+        right: 28px;
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: 0.2s ease;
+
+        i {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        &:hover {
+            transform: scale(1.08);
+            opacity: 0.9;
+        }
+    }
+
+    &__title {
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1.1;
+        margin-bottom: 20px;
+        letter-spacing: -0.5px;
+    }
+
+    &__list {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    &__item {
+        display: flex;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    &__number {
+        min-width: 10px;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 1.4;
+    }
+
+    &__content {
+        flex: 1;
+    }
+
+    &__heading {
+        color: #ffffff;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+
+    &__desc {
+        color: #ffffff;
+        opacity: 0.96;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.35;
+        max-width: 760px;
+    }
+
+    /* =========================
+     RESPONSIVE
+  ========================= */
+
+    @media (max-width: 768px) {
+        padding: 14px;
+        width: 97%;
+        margin: auto;
+
+        &__container {
+            padding: 28px 16px;
+            border-radius: 18px;
+            max-height: 70vh;
+        }
+
+        &__close {
+            top: 18px;
+            right: 18px;
+        }
+
+        &__title {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        &__item {
+            gap: 18px;
+        }
+
+        &__number {
+            font-size: 13px;
+        }
+
+        &__heading {
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        &__desc {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+    }
+}

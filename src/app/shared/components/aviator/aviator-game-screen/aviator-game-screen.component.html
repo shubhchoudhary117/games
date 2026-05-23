@@ -1,0 +1,95 @@
+
+<audio #aviatorBgSound loop>
+  <source src="assets/audios/aviator/aviator-bg-sound.m4a" >
+</audio>
+
+
+<audio #aviatorFlaySound >
+  <source src="assets/audios/aviator/aviator-flay-sound.m4a" >
+</audio>
+
+<section class="game-screen" (click)="enableSoundOnce()">
+    <div class="game-screen__header">
+        <div class="game-screen__rounds">
+            <div class="game-screen__rounds-scroll">
+                <div (click)="oepnRoundInfo()" class="game-screen__round" *ngFor="let r of rounds" [ngStyle]="{color: r.color}">
+                    {{r.value}}x
+                </div>
+            </div>
+            <div class="game-screen__allrounds-action" (click)="toggleHistory()">
+                <i class="fa-solid fa-ellipsis"></i>
+            </div>
+        </div>
+        <div class="game-screen__history" *ngIf="showHistory">
+            <div class="game-screen__history-header">
+                <span>Round History</span>
+                <span class="close" (click)="toggleHistory()">✕</span>
+            </div>
+
+            <div class="game-screen__history-list">
+                <span class="item" *ngFor="let r of rounds" [ngStyle]="{color: r.color}">
+                    {{r.value}}x
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="game-screen__aviator-canvas-wrapper">
+        <div class="game-screen__aviator-screen">
+            <canvas #gameCanvas></canvas>
+            <div class="game-screen__screen-overlay">
+                <div class="game-screen__fun-mode-banner">FUN MODE</div>
+                @if (gameState === 'betting') {
+                <div class="game-screen__waiting-prompt">
+                    <div class="game-screen__brand-logo-wrapper">
+                        <div class="UFC">UFC</div>
+                        <div class="logo-divider"></div>
+                        <img src="assets/aviator/plane-1.svg" alt="" class="brand-img">
+                    </div>
+                    <div class="game-screen__partners">Official Partners</div>
+                    <div class="game-screen__progress-bar">
+                        <div class="game-screen__progress-fill" [style.width.%]="(countdown / 6) * 100"></div>
+                    </div>
+                </div>
+                }
+            </div>
+            <div class="game-screen__betin-betout-counters">
+                <div class="game-screen__betin-betout-users">
+                    <img src="assets/aviator/players-images/1.png" class="user1">
+                    <img src="assets/aviator/players-images/1.png" class="user2">
+                    <img src="assets/aviator/players-images/1.png" class="user3">
+                </div>
+                <div class="game-screen__betin-betout-counts">330</div>
+            </div>
+        </div>
+    </div>
+    <div class="game-screen__bet-controllers">
+        <app-betcontroller [panels]="panels" [gameState]="gameState" (toggleAction)="toggleBet($event)"
+        (adjustBet)="adjustBet($event.panel, $event.delta)" (setBet)="setBet($event.panel, $event.amount)"></app-betcontroller>
+    </div>
+</section>
+
+<app-sidebar
+  [username]="'demo_63043'"
+  [isAnimationEnabled]="isAnimationEnabled"
+  (animationChange)="isAnimationEnabled = $event">
+</app-sidebar>
+
+
+<!-- 
+<div class="aviator__win-banner"  [class.show]="showWinCard">
+    <div class="aviator__win-banner__left">
+        <span class="aviator__win-banner__left-label">You have cashed out!</span>
+        <span class="aviator__win-banner__left-val">{{ "1.1X" }}</span>
+    </div>
+    <div class="aviator__win-banner__divider"></div>
+    <div class="aviator__win-banner__right">
+        <span class="aviator__win-banner__star aviator__win-banner__star--tl">★</span>
+        <span class="aviator__win-banner__star aviator__win-banner__star--tr">★</span>
+        <span class="aviator__win-banner__star aviator__win-banner__star--bl">☆</span>
+        <span class="aviator__win-banner__star aviator__win-banner__star--br">☆</span>
+        <span class="aviator__win-banner__right-label">Win USD</span>
+        <span class="aviator__win-banner__right-val">{{cashoutAmount?.toFixed() }}</span>
+    </div>
+    <div class="aviator__win-banner__close">✕</div>
+</div> -->

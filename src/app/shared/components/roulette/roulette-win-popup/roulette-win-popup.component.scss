@@ -1,0 +1,91 @@
+// src/app/components/win-popup/win-popup.component.scss
+.win-popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: linear-gradient(135deg, #111008, #1e1e08);
+  border: 3px solid var(--gold);
+  border-radius: 14px;
+  padding: 18px 32px;
+  text-align: center;
+  z-index: 100;
+  min-width: 180px;
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              border-color 0.2s,
+              box-shadow 0.2s;
+
+  &.show { transform: translate(-50%, -50%) scale(1); }
+
+  &.win-state {
+    border-color: var(--gold);
+    box-shadow: 0 0 40px rgba(201, 168, 76, 0.35);
+  }
+  &.lose-state {
+    border-color: #555;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  }
+}
+
+.popup-label {
+  font-size: 11px;
+  color: #888;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.win-num {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(52px, 11vw, 78px);
+  font-weight: 700;
+  line-height: 1;
+
+  &.red   { color: #ee3322; text-shadow: 0 0 20px rgba(238,51,34,0.5); }
+  &.black { color: #e8e8e8; text-shadow: 0 0 12px rgba(232,232,232,0.3); }
+  &.green { color: #22cc66; text-shadow: 0 0 20px rgba(34,204,102,0.5); }
+}
+
+.win-color {
+  font-size: 14px;
+  color: #aaa;
+  margin-top: 4px;
+}
+
+.win-result {
+  margin-top: 12px;
+  padding: 8px 16px;
+  border-radius: 8px;
+
+  &.win  { background: rgba(34,160,80,0.2); border: 1px solid rgba(34,160,80,0.4); }
+  &.lose { background: rgba(200,40,40,0.15); border: 1px solid rgba(200,40,40,0.3); }
+}
+
+.win-result-label {
+  font-size: 11px;
+  letter-spacing: 1px;
+  &.win  { color: #6be89a; }
+  &.lose { color: #e88888; }
+}
+
+.win-result-amt {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  &.win  { color: #22cc66; }
+  &.lose { color: #ee5555; font-size: 18px; }
+}
+
+.win-bal-after {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--gold);
+  font-family: 'Oswald', sans-serif;
+  letter-spacing: 1px;
+}
+
+.win-bal-val {
+  color: #f0d060;
+  font-weight: 700;
+}

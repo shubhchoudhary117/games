@@ -1,0 +1,19 @@
+<div class="catfished-image-card">
+
+  <img class="catfished-img" [src]="img" />
+
+  <div class="catfished-image-card-info-layer"
+       [ngClass]="isCatfished ? 'catfished' : 'real'">
+  </div>
+
+  <div class="profile-type"
+       [ngClass]="isCatfished ? 'catfished' : 'real'">
+    {{ isCatfished ? 'Catfish Profile' : 'Real Profile' }}
+  </div>
+
+  <div class="number-of-like"
+       [ngClass]="isCatfished ? 'catfished' : 'real'">
+    {{ index + 1 }}
+  </div>
+
+</div>

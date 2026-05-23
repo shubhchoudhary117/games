@@ -1,0 +1,133 @@
+
+
+
+@mixin DisplayFlexWithSpaceBetween{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin DisplayFlex{
+    display: flex;
+    align-items: center;
+}
+@mixin linier-gradient-for-history-table{
+    background-image: linear-gradient(309deg, #121416 0%, #353a40 100%), linear-gradient(131deg, rgba(172, 172, 172, .4) 0%, transparent 50%, rgba(0, 0, 0, .4) 100%);
+    border-radius: 10px;
+}
+
+.bet-history-table{
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+}
+.bet-history-table::-webkit-scrollbar{
+    display: none;
+}
+.bet-history-table-actions{
+    display: flex;
+    align-items: center;
+}
+.table-action-btn{
+    width: 120px;
+    height: 35px;
+    background: linear-gradient(294deg, #17191c 0%, #32383e 100%);
+    border-radius: 11px;
+    padding: 1px;
+    box-shadow: -4px -4px 16px rgba(195, 200, 205, .08), 4px 4px 18px rgba(0, 0, 0, .5);
+    border: none;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 400;
+    border-radius: 8px;
+    margin-right: 10px; 
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none;
+    border: none;
+}
+.table-action-btn.active {
+    background-image: linear-gradient(282deg, #2c333a 126%, #1c1e22 25%);
+    border: 1px solid #171a1e;
+    box-shadow: inset -2px -2px 10px rgba(255, 255, 255, .05), inset 2px 3px 10px #070709;
+}
+
+.bet-history-table{
+    width: 100%;
+    background-image: linear-gradient(309deg, #121416 0%, #353a40 100%), linear-gradient(131deg, rgba(172, 172, 172, .4) 0%, transparent 50%, rgba(0, 0, 0, .4) 100%);
+    border-radius: 10px;
+    margin-top: 10px;
+    padding-bottom: 20px;
+    @include linier-gradient-for-history-table;
+}
+.bet-history-table-thead{
+    width: 100%;
+    height: 35px;
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top:0px;
+    @include linier-gradient-for-history-table;
+    z-index: 555;
+}
+
+.bet-history-th{
+    width: 33.3%;
+    color: #fff;
+    text-wrap: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 400;
+}
+.bet-history-table-tbody{
+    width: 100%;
+    min-height: 200px;
+    position: relative;
+}
+.loader{
+    color: #fff !important;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+   
+}
+.bet-history-tr{
+    width: 100%;
+    min-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid #333;
+}
+.bet-history-tr:last-child{
+    border-bottom: 1px solid #333;
+}
+.bet-history-td{
+    width: 33.3%;
+    color: #fff;
+    text-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+
+@media screen and (max-width:768px) {
+    .table-action-btn{
+        width: 100px;
+        height: 35px;
+       font-size: 13px;
+    }
+    .bet-history-th{
+        font-size: 13px;
+        font-family: var(--font-family);
+    }
+    .bet-history-td{
+        font-size: 12px;
+    }
+}

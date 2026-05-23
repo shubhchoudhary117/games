@@ -1,0 +1,35 @@
+<div class="dice-container">
+
+  <!-- LEFT DICE -->
+  <div class="dice-wrapper blue-glow">
+    <div
+      class="dice"
+      [class.spinning]="spinning"
+      [style.transition]="spinning ? 'transform ' + spinDuration + 'ms cubic-bezier(.17,.67,.32,1.35)' : 'transform 0.3s ease'"
+      [style.transform]="dice1Transform">
+      <div class="face front"></div>
+      <div class="face back"></div>
+      <div class="face right"></div>
+      <div class="face left"></div>
+      <div class="face top"></div>
+      <div class="face bottom"></div>
+    </div>
+  </div>
+
+  <!-- RIGHT DICE -->
+  <div class="dice-wrapper purple-glow">
+    <div
+      class="dice"
+      [class.spinning]="spinning"
+      [style.transition]="spinning ? 'transform ' + spinDuration + 'ms cubic-bezier(.17,.67,.32,1.35)' : 'transform 0.3s ease'"
+      [style.transform]="dice2Transform">
+      <div class="face front"></div>
+      <div class="face back"></div>
+      <div class="face right"></div>
+      <div class="face left"></div>
+      <div class="face top"></div>
+      <div class="face bottom"></div>
+    </div>
+  </div>
+
+</div>

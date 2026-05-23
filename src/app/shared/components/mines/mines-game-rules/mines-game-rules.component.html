@@ -1,0 +1,24 @@
+<div class="game-rules-modal" [ngClass]="showRulesModal ? 'show' : 'hide'">
+
+    <span class="rules-close-icon" (click)="closeModal()">✖</span>
+
+    <div class="game-rules-list">
+        <div class="game-rule" *ngFor="let Rule of Game_Rules">
+
+            <div class="rule-heading">
+                {{ Rule.title }}
+            </div>
+            <ng-container >
+                <div class="rule-step" *ngFor="let Step of Rule.steps">
+                    {{ Step }}
+                </div>
+            </ng-container>
+
+            <div class="rule-step" *ngIf="Rule.description">
+                {{ Rule.description }}
+            </div>
+
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="timer-container">
+  <div 
+    class="timer-progress"
+    [ngStyle]="{
+      background: 'conic-gradient(rgb(243 176 15) ' + progressPercentage + '%, rgba(0,0,0,0.8) ' + progressPercentage + '% 100%)'
+    }"
+  >
+    <div class="timer-content">
+      <span class="time">{{ timeLeft }}</span>
+    </div>
+  </div>
+</div>

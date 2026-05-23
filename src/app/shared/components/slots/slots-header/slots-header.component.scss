@@ -1,0 +1,435 @@
+// ─── THEME TOKENS (matches the game's red/gold palette) ────────
+$red-deep:      #1a0202;
+$red-mid:       #3a0808;
+$red-panel:     #5c0f0f;
+$red-bright:    #c0392b;
+$red-border:    #8b1a1a;
+
+$gold:          #f0b429;
+$gold-light:    #ffe068;
+$gold-dim:      #c8860a;
+$gold-muted:    #7a4e0a;
+
+$text-gold:     #f9d67a;
+$text-light:    #fff5e0;
+$text-muted:    #c49a6c;
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Noto+Sans+JP:wght@400;500&display=swap');
+
+// ─── HOST ──────────────────────────────────────────────────────
+:host {
+  display: block;
+  width: 100%;
+}
+
+// ─── HEADER SHELL ─────────────────────────────────────────────
+.slots-header {
+  background:
+    linear-gradient(180deg, #2a0505 0%, #1a0202 40%, #200404 100%);
+    height: 64px;
+ 
+
+  &__topline {
+    height: 3px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      $gold-dim 15%,
+      $gold-light 40%,
+      $gold 50%,
+      $gold-light 60%,
+      $gold-dim 85%,
+      transparent 100%
+    );
+  }
+
+  &__bottomline {
+    height: 2px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba($gold-dim, 0.5) 20%,
+      rgba($gold, 0.7) 50%,
+      rgba($gold-dim, 0.5) 80%,
+      transparent 100%
+    );
+  }
+
+  &__inner {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0rem 1.25rem;
+    height: 64px;
+    position: relative;
+  }
+
+  &__center {
+    position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+}
+
+// ─── LOGO (LEFT) ───────────────────────────────────────────────
+.slots-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.logo-pillar {
+  width: 5px;
+  height: 44px;
+  border-radius: 3px;
+  background: linear-gradient(180deg, $gold-light, $gold-dim, $gold-light);
+  margin-right: 0.7rem;
+  box-shadow: 0 0 8px rgba($gold, 0.4);
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 11px;
+    height: 5px;
+    background: $gold;
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba($gold, 0.5);
+  }
+  &::before { top: -2px; }
+  &::after  { bottom: -2px; }
+}
+
+.logo-content {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.logo-icon {
+  width: 44px;
+  height: 44px;
+  filter: drop-shadow(0 0 8px rgba($gold, 0.5));
+  animation: logo-float 3s ease-in-out infinite;
+
+  svg { width: 100%; height: 100%; }
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+
+  &__main {
+    font-family: 'Cinzel', serif;
+    font-size: 1.25rem;
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    color: $gold-light;
+    text-shadow:
+      0 0 10px rgba($gold, 0.6),
+      0 1px 3px rgba(0,0,0,0.8);
+    background: linear-gradient(180deg, $gold-light 30%, $gold-dim 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  &__sub {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    color: $text-muted;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+}
+
+// ─── CENTER ORNAMENT ───────────────────────────────────────────
+.center-ornament {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.5;
+}
+
+.ornament-line {
+  display: block;
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, $gold-dim, transparent);
+}
+
+.ornament-diamond {
+  font-size: 0.55rem;
+  color: $gold;
+}
+
+// ─── BALANCE BOX ───────────────────────────────────────────────
+.balance-box {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, rgba($red-panel, 0.9), rgba($red-mid, 0.95));
+  border: 1.5px solid;
+  border-color: $gold-dim $gold-muted $gold-muted $gold-dim;
+  border-radius: 8px;
+  padding: 0.45rem 0.85rem 0.45rem 0.65rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 0 rgba($gold-light, 0.1),
+    0 2px 8px rgba(0,0,0,0.5);
+
+  // Shimmer sweep
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg,
+      transparent 35%,
+      rgba($gold-light, 0.06) 50%,
+      transparent 65%
+    );
+    animation: shimmer 4s ease-in-out infinite;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    opacity: 0.9;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  &__label {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 0.58rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: $text-muted;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+
+  &__value {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: $gold-light;
+    letter-spacing: 0.06em;
+    text-shadow: 0 0 8px rgba($gold, 0.4);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+// ─── MENU BUTTON ──────────────────────────────────────────────
+.menu-wrap {
+  position: relative;
+}
+
+.menu-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 35px;
+  height: 35px;
+  background: linear-gradient(135deg, rgba($red-panel, 0.9), rgba($red-mid, 0.95));
+  border: 1.5px solid $gold-dim;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  transition: all 0.2s;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba($gold, 0.1), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  &:hover {
+    border-color: $gold;
+    box-shadow: 0 0 12px rgba($gold, 0.3), 0 2px 8px rgba(0,0,0,0.5);
+
+    &::before { opacity: 1; }
+
+    .menu-btn__bar {
+      background: $gold-light;
+    }
+  }
+
+  &--open {
+    border-color: $gold;
+    background: linear-gradient(135deg, rgba($red-bright, 0.3), rgba($red-panel, 0.9));
+
+    .menu-btn__bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .menu-btn__bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .menu-btn__bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  }
+
+  &__bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: $gold;
+    border-radius: 2px;
+    transition: all 0.25s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  }
+}
+
+// ─── DROPDOWN MENU ────────────────────────────────────────────
+.menu-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 200px;
+  background: linear-gradient(160deg, #2e0606, #1a0202);
+  border: 1.5px solid $gold-dim;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.8),
+    0 0 0 1px rgba($gold, 0.05),
+    inset 0 1px 0 rgba($gold-light, 0.1);
+  opacity: 0;
+  transform: translateY(-8px) scale(0.96);
+  transform-origin: top right;
+  pointer-events: none;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 200;
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.9rem;
+    border-bottom: 1px solid rgba($gold-dim, 0.3);
+    background: rgba($gold, 0.05);
+  }
+
+  &__title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: $text-gold;
+    text-transform: uppercase;
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    color: $text-muted;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.15s;
+
+    &:hover { color: $gold; }
+  }
+
+  &__nav {
+    padding: 0.3rem 0;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.6rem 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    text-decoration: none;
+    border-bottom: 1px solid rgba($gold-dim, 0.08);
+
+    &:last-child { border-bottom: none; }
+
+    &:hover {
+      background: rgba($gold, 0.07);
+
+      .menu-item__label { color: $gold-light; }
+      .menu-item__arrow { color: $gold; transform: translateX(2px); }
+    }
+  }
+}
+
+.menu-item__icon {
+  font-size: 1rem;
+  width: 22px;
+  text-align: center;
+}
+
+.menu-item__label {
+  flex: 1;
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: $text-light;
+  transition: color 0.15s;
+}
+
+.menu-item__arrow {
+  font-size: 1rem;
+  color: $text-muted;
+  transition: color 0.15s, transform 0.15s;
+}
+
+// ─── BACKDROP ─────────────────────────────────────────────────
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+
+// ─── ANIMATIONS ───────────────────────────────────────────────
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-3px); }
+}
+
+@keyframes shimmer {
+  0%   { transform: translateX(-100%); }
+  60%, 100% { transform: translateX(200%); }
+}
+
+// ─── RESPONSIVE ───────────────────────────────────────────────
+@media (max-width: 480px) {
+  .slots-header__inner { padding: 0.5rem 0.75rem; }
+  .center-ornament { display: none; }
+  .logo-pillar { height: 36px; }
+  .logo-text__main { font-size: 1rem; }
+  .balance-box__value { font-size: 0.82rem; }
+}

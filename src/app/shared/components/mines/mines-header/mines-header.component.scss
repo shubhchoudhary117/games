@@ -1,0 +1,237 @@
+@mixin DisplayFlexWithSpaceBetween {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin DisplayFlex {
+    display: flex;
+    align-items: center;
+}
+
+@mixin linier-gradient-for-history-table {
+    background-image: linear-gradient(309deg, #121416 0%, #353a40 100%), linear-gradient(131deg, rgba(172, 172, 172, .4) 0%, transparent 50%, rgba(0, 0, 0, .4) 100%);
+    border-radius: 10px;
+}
+
+.game-header {
+    width: 100%;
+}
+
+.game-header-nav {
+    width: 90%;
+    margin: auto;
+    @include DisplayFlexWithSpaceBetween
+}
+
+.game-nav-left {
+    @include DisplayFlex
+}
+
+.game-logo {
+    @include DisplayFlex
+}
+
+.game-nav-right {
+    @include DisplayFlex
+}
+
+.balance-wallet-box {
+    min-height: 30px;
+    min-width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(315deg, #24282c 0%, #141619 100%);
+    border-radius: .375rem;
+    box-shadow: inset -.125rem -.125rem .75rem rgba(255, 255, 255, .06), inset .125rem .1875rem .5rem rgba(7, 7, 9, .8);
+}
+
+.wallet-icon-wrapper {
+    font-size: 15px !important;
+    color: #fff !important;
+    margin-top: 2px;
+    margin-right: 4px;
+}
+
+.wallet-balance {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+
+}
+
+
+
+@media screen and (max-width:768px) {
+    .game-logo-img {
+        height: 40px;
+    }
+
+    .game-header-nav {
+        width: 95%;
+        margin: auto;
+    }
+
+    .balance-wallet-box {
+        min-height: 30px;
+        min-width: 100px;
+    }
+
+    .setting-icon {
+        font-size: 18px;
+    }
+
+}
+
+.setting-icon-wrapper {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(315deg, #24282c 0%, #141619 100%);
+    border-radius: 50%;
+    box-shadow: inset -.125rem -.125rem .75rem rgba(255, 255, 255, .06), inset .125rem .1875rem .5rem rgba(7, 7, 9, .8);
+    margin-left: 10px;
+
+    i {
+        font-size: 18px;
+        color: #929496;
+        cursor: pointer;
+    }
+}
+
+
+
+.profile-modal {
+    width: 300px;
+    margin: auto;
+    z-index: 7777;
+    position: absolute;
+    top: -100%;
+    right: 10px;
+    opacity: 0;
+    transition: all 0.4s ease;
+    background: linear-gradient(320deg, #17191c, #2a2f34);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+
+    /* ✨ Shadow */
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.5),
+        0 2px 6px rgba(0, 0, 0, 0.3);
+
+    overflow: hidden;
+}
+
+
+.profile-modal.active {
+    top: 55px;
+    opacity: 1;
+}
+
+
+.profile-modal.close {
+    top: -100%;
+    opacity: 0;
+}
+
+.profile-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.profile-details {
+    display: flex;
+    align-items: center;
+}
+
+.profile-avtar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
+    box-shadow: 0 0 8px rgba(210, 109, 61, 0.5);
+}
+
+.profile-username {
+    color: #d26d3d;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.profile-close-icon {
+    font-size: 22px !important;
+    color: #929496;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.profile-close-icon:hover {
+    color: #fff;
+    transform: rotate(90deg);
+}
+
+.profile-settings-list {
+    width: 100%;
+    padding: 10px 6px;
+    background-color: transparent;
+    box-sizing: border-box;
+}
+
+.profile-setting {
+    width: 100%;
+    margin: auto;
+    padding: 10px 12px;
+    background: #101112;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.profile-setting:hover {
+    transform: translateY(-2px);
+    background: #151719;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
+}
+
+.profile-setting.LIGHT>.setting-name {
+    color: #000 !important;
+    font-weight: 600;
+}
+
+.setting-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #b0b3b6;
+}
+
+.profile-setting-icon {
+    font-size: 20px !important;
+    color: #929496;
+    margin-right: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.profile-setting-icon:hover {
+    color: #d26d3d;
+    transform: scale(1.1);
+}
+
+.profile-setting.LIGHT>.profile-setting-icon {
+    color: #000 !important;
+}

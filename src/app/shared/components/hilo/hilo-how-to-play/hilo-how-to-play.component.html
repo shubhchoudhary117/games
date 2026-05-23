@@ -1,0 +1,37 @@
+<div class="htp-modal__backdrop" (click)="closeHowToPlay()">
+  
+  <div class="htp-modal__card" (click)="$event.stopPropagation()">
+
+    <div class="htp-modal__header">
+      <h2 class="htp-modal__title">HOW TO PLAY</h2>
+      <button class="htp-modal__close" (click)="closeHowToPlay()">✕</button>
+    </div>
+
+    <div class="htp-modal__body">
+
+      <div class="htp-modal__brand">⇅ 🂠 HI LO</div>
+
+      <div class="htp-modal__demo">
+        <div class="htp-modal__card-demo htp-modal__card-demo--big"></div>
+        <div class="htp-modal__card-demo htp-modal__card-demo--small"></div>
+      </div>
+
+      <div class="htp-modal__controls">
+        <div class="htp-modal__btn htp-modal__btn--low">⌄</div>
+        <div class="htp-modal__hand">☞</div>
+        <div class="htp-modal__btn htp-modal__btn--high">⌃</div>
+      </div>
+
+      <p class="htp-modal__text">
+        Guess whether the next card will be <strong>higher or lower</strong> than the current one.
+      </p>
+
+      <p class="htp-modal__text">
+        Place your bet, choose <strong>HIGH OR SAME</strong> or <strong>LOW OR SAME</strong>, and reveal the next card.
+        Each correct guess increases your cashout multiplier. Cash out anytime after a correct guess!
+      </p>
+
+    </div>
+
+  </div>
+</div>

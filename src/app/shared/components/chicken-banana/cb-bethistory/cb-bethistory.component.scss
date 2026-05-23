@@ -1,0 +1,211 @@
+.bc-bh-modal {
+  width: 100%;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden auto;
+  background: rgba(22, 32, 44, 0.8);
+  backdrop-filter: blur(5px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px;
+
+  font-family: "Poppins", sans-serif;
+
+  &__container {
+    width: 100%;
+    max-width: 470px;
+    min-height: 365px;
+
+    background: linear-gradient(180deg,
+        #171b27 0%,
+        #121722 100%);
+
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+
+    padding: 28px 28px 22px;
+
+    position: relative;
+
+    box-shadow:
+      0 10px 30px rgba(0, 0, 0, 0.45),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* =========================
+     CLOSE BUTTON
+  ========================= */
+
+  &__close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+
+    width: 24px;
+    height: 24px;
+
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    transition: 0.2s ease;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+
+      width: 22px;
+      height: 2px;
+
+      border-radius: 20px;
+      background: #fff;
+    }
+
+    &::before {
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      transform: rotate(-45deg);
+    }
+  }
+
+  /* =========================
+     TITLE
+  ========================= */
+
+  &__title {
+    color: #ffffff;
+
+    font-size: 20px;
+    font-weight: 700;
+
+    margin-bottom: 28px;
+  }
+
+  /* =========================
+     TABLE
+  ========================= */
+
+  &__table {
+    width: 100%;
+    flex: 1;
+  }
+
+  &__table-head {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+
+    padding: 0 12px;
+
+    margin-bottom: 16px;
+  }
+
+  &__head-item {
+    color: rgba(255, 255, 255, 0.72);
+
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__table-body {
+    width: 100%;
+    min-height: 180px;
+  }
+
+  /* =========================
+     EMPTY STATE
+  ========================= */
+
+  &__empty {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: rgba(255, 255, 255, 0.2);
+
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  /* =========================
+     BUTTON
+  ========================= */
+
+  &__footer {
+    margin-top: auto;
+    padding-top: 18px;
+  }
+
+  &__load-btn {
+    width: 100%;
+    height: 40px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #2d6a39;
+
+    color: rgba(255, 255, 255, 0.45);
+
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    &:hover {
+      filter: brightness(1.08);
+    }
+
+    &:active {
+      transform: scale(0.99);
+    }
+  }
+
+  @media (max-width: 768px) {
+    &__container {
+      max-width: 95%;
+      min-height: 330px;
+
+      padding: 24px 18px 18px;
+    }
+
+    &__title {
+      font-size: 18px;
+      margin-bottom: 22px;
+    }
+
+    &__head-item {
+      font-size: 12px;
+    }
+
+    &__table-body {
+      min-height: 160px;
+    }
+
+    &__load-btn {
+      height: 38px;
+      font-size: 13px;
+    }
+  }
+}

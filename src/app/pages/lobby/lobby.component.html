@@ -1,0 +1,46 @@
+<section class="lobby">
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__logo">
+        <div class="header__logo-icon">G</div>
+        <div class="header__logo-text">
+          <span>Guru</span><span>Games</span>
+        </div>
+      </div>
+
+      <div class="header__time">{{ currentTime }}</div>
+    </div>
+  </header>
+  <div class="lobby__container">
+    <div class="lobby__breadcrumb">
+      Home / <span>Games</span>
+    </div>
+    <div class="lobby__title">Our Games</div>
+    <div class="games__grid">
+      <div
+        *ngFor="let item of filteredGames"
+        class="game-card"
+        [routerLink]="item.path"
+      >
+        <div class="game-card__media">
+          <img
+            [src]="item.img"
+            [alt]="item.name"
+            class="game-card__image"
+          />
+
+          <div class="game-card__overlay">
+            <button class="game-card__button">Play</button>
+          </div>
+        </div>
+
+        <div class="game-card__content">
+          <div class="game-card__title">
+            {{ item.name }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

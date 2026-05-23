@@ -1,0 +1,455 @@
+.game-main-screen_ {
+    width: 100%;
+    height: 100vh;
+}
+
+.game-main-screen-container_ {
+    width: 100%;
+}
+
+.wheel-section_ {
+    width: 100%;
+    height: 40vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    transition: all 0.5s ease-in-out;
+    background-image: url("../../../../public/assets/crazy-wheel/GIFS/4.gif");
+}
+
+
+.wheel-timing_ {
+    position: absolute;
+    left: 10px;
+    top: 12px;
+}
+
+.wheel-section-wheel-wrapper_ {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease-in-out;
+}
+
+// .game-place-bets-section_ {
+//     width: 100%;
+//     height: 70vh;
+//     background-image: linear-gradient(#1c342a, #837c4a);
+// }
+
+/* Bet Section Transition */
+.game-place-bets-section_ {
+    width: 100%;
+    height: 70vh;
+    background: linear-gradient(to bottom,
+            #a8621a, rgba(176, 116, 43, 0.7),
+           
+        );
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: height 0.5s ease-in-out;
+}
+
+
+.game-place-bets-chips-section-container_ {
+    width: 100%;
+    padding-top: 5px;
+}
+
+.wheel-beting-number-chips-container_ {
+    width: 100%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-beting-number-chip_ {
+    width: 34px;
+    height: 34px;
+    object-fit: fill;
+    margin: 0px 3px;
+    transition: transform 0.5s ease-in-out;
+    transform: scale(0.9);
+
+    &:active {
+        transform: scale(1.3);
+    }
+
+    &:hover {
+        transform: scale(1.3);
+    }
+}
+
+/* Chip Animations */
+.wheel-beting-number-chip_ {
+    width: 34px;
+    height: 34px;
+    object-fit: fill;
+    margin: 0px 3px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transform: scale(0.9);
+
+    &:active {
+        transform: scale(1.3);
+    }
+
+    &:hover {
+        transform: scale(1.3);
+    }
+}
+
+
+
+.single-chip_ {
+    width: 90%;
+    margin: auto;
+    margin-top: 3px;
+    transition: all 0.4s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+    transform-origin: center center;
+}
+
+.single-chip-image {
+    width: 100%;
+    max-height: 40px;
+    object-fit: fill;
+}
+
+// Bet money cares
+.bet-money-cards_ {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    /* Bet Money Cards Container */
+    transition: all 0.5s ease-out;
+
+}
+
+.bet-money-card_ {
+    width: 31%;
+    margin: 3px;
+    transition: all 0.3s ease;
+    transform-origin: bottom center;
+    .bet-money-card-image_ {
+        max-height: 53px;
+        width: 100%;
+    }
+}
+
+.odds-event-betson-all-container_ {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3px;
+}
+
+.odd-even-all-chip-wrapper_ {
+    width: 80px;
+
+    .odd-even-all-chip-img_ {
+        width: 100%;
+    }
+}
+
+
+
+.undo-redo-2x-menu-section_ {
+    width: 100%;
+    margin-top: 3px;
+}
+
+.undo-redo-2x-menu-section-container_ {
+    width: 90%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 3px;
+}
+
+.undo-action-group_ {
+    display: flex;
+    align-items: center;
+
+    .undo-action-label_ {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .undo-action-button_ {
+        background-color: #194131;
+        width: 30px;
+        height: 30px;
+        display: inline-block;
+        width: 30px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 50%;
+        color: #439072;
+        margin-left: 5px;
+        margin-right: 5px;
+        text-decoration: none;
+    }
+}
+
+.bet-chip-selection-box_ {
+    width: 40%;
+}
+
+.bet-chip-selection-box-wrapper_ {
+    width: 100%;
+}
+
+.middle-chip-btn_ {
+    background-color: transparent;
+    margin-top: -2px;
+
+    .bet-chip-image_ {
+        width: 45px;
+        height: 45px;
+        object-fit: fill;
+
+    }
+}
+
+.circular-menu-container_ {
+    display: flex;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.odds-event-betson-all-container_.active-wheel {
+    display: none;
+}
+
+.odd-even-all-chip-wrapper_ {
+    width: 80px;
+
+    .odd-even-all-chip-img_ {
+        width: 100%;
+    }
+}
+
+
+.balance-and-total-bet-amount-section_ {
+    width: 98%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    .balance-group_ {
+        display: flex;
+        align-items: center;
+
+        .balance-label_ {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .balance-value_ {
+            font-size: 14px;
+            color: yellow;
+            margin-left: 5px;
+        }
+    }
+
+    .total-bet-amount-group_ {
+        display: flex;
+        align-items: center;
+
+        .total-bet-amount-label_ {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .total-bet-amount-value_ {
+            font-size: 14px;
+            color: yellow;
+            margin-left: 5px;
+        }
+    }
+}
+
+
+
+
+
+// when wheel is start then minimize images and zoom out
+
+
+/* Active Wheel State */
+.wheel-section_.active-wheel {
+    height: 48vh;
+    animation: wheelActivePulse 2s infinite alternate;
+}
+
+/* Pulse animation for active wheel */
+@keyframes wheelActivePulse {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* When wheel is active */
+.wheel-section_.active-wheel .wheel-section-wheel-wrapper_ {
+    animation: wheelZoomIn 0.5s forwards;
+}
+
+/* When wheel becomes inactive */
+.wheel-section_:not(.active-wheel) .wheel-section-wheel-wrapper_ {
+    animation: wheelZoomOut 0.5s forwards;
+}
+
+@keyframes wheelZoomIn {
+    0% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes wheelZoomOut {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(0.9);
+    }
+}
+
+.wheel-beting-number-chips-container_.active-wheel {
+    display: none;
+}
+
+
+.game-place-bets-section_.active-wheel {
+    position: relative;
+    height: 52vh;
+    background: linear-gradient(
+        to bottom,
+        #1d4f32,
+        #00431d,  /* top soft green */
+        #1d4f32   /* bottom darker green */
+      );
+      backdrop-filter: blur(4px); /* optional for softening */
+      -webkit-backdrop-filter: blur(4px);
+      transition: height 0.5s ease-in-out;
+    opacity: 0.9;
+}
+
+
+
+.single-chip_.active-wheel {
+    width: 90%;
+    margin: auto;
+    margin-top: 5px;
+    animation: chipBounce 0.8s ease-in-out both;
+    .single-chip-image{
+        opacity: 0.5;
+    }
+    
+}
+
+@keyframes chipBounce {
+    0% {
+        transform: scale(0.8);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+
+.bet-money-cards_.active-wheel {
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    animation: containerRise 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    .bet-money-card_ {
+        margin: 2px;
+        .bet-money-card-image_ {
+            max-height: 50px;
+            margin: 0px;
+            opacity: 0.5;
+            animation: containerRise 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+    }
+}
+@keyframes containerRise {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+.bet-money-card_.active-wheel {
+    width: 32%;
+    height: 50px;
+    margin-bottom: 6px;
+    animation: cardPopIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+    animation-delay: calc(var(--card-index) * 0.1s);
+}
+
+.bet-money-card_.active-wheel .bet-money-card-image_ {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease;
+}
+
+.bet-money-card_.active-wheel:hover .bet-money-card-image_ {
+    transform: scale(1.05);
+}
+
+@keyframes cardPopIn {
+    0% {
+        transform: scale(0.7) translateY(30px);
+        opacity: 0;
+    }
+
+    80% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+}
+
+.undo-redo--2x-menu-section_.active-wheel {
+    display: none;
+}
+
+.circular-menu-container_.active-wheel {
+    display: none;
+}

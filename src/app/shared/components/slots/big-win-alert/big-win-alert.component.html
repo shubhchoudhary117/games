@@ -1,0 +1,21 @@
+
+<div class="big-win-alert" [style.opacity]="scale">
+
+  <div class="big-win-alert__container">
+    <div class="big-win-alert__glow"></div>
+    <div
+      class="big-win-alert__content"
+      [style.transform]="'scale(' + scale + ')'"
+    >
+      <img
+        src="/images/slot/bigwin.webp"
+        alt="Big Win"
+        class="big-win-alert__image"
+      />
+      <span class="big-win-alert__value">
+        {{ formattedAnimatedValue }}
+      </span>
+    </div>
+
+  </div>
+</div>

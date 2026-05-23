@@ -1,0 +1,123 @@
+.bet-history {
+  width: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  &__modal {
+    position: relative;
+    width: 70%;
+    max-width: 70%;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #1b1c1d;
+    border-radius: 16px;
+    color: #fff;
+    overflow: hidden;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid #2a2c2f;
+  }
+
+  &__title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  &__close {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: none;
+    background: #2a2c2f;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  &__table {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 50px;
+    padding: 12px 20px;
+    font-size: 14px;
+
+    &--head {
+      color: #8c8f93;
+      border-bottom: 1px solid #2a2c2f;
+    }
+  }
+
+  &__body {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+
+  &__row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr 50px;
+    padding: 14px 20px;
+    align-items: center;
+    border-bottom: 1px solid #232528;
+
+    &:nth-child(even) {
+      background: #17181a;
+    }
+
+    &:nth-child(odd) {
+      background: #141517;
+    }
+  }
+
+  &__cell {
+    font-size: 15px;
+
+    span {
+      color: #8c8f93;
+      font-size: 13px;
+      margin-left: 4px;
+    }
+  }
+
+  &__time {
+    color: #a5a7aa;
+  }
+
+  &__green {
+    color: #2bdc4f;
+    font-weight: 600;
+  }
+
+  &__status {
+    text-align: right;
+    color: #2bdc4f;
+    font-size: 18px;
+  }
+}
+
+
+@media screen and (max-width:768px) {
+  .bet-history {
+    width: 100%;
+    position: absolute;
+    inset: 0;
+    z-index: 1000;
+
+
+    &__modal {
+      position: relative;
+      width: 97%;
+      max-width: 98%;
+    }
+  }
+}

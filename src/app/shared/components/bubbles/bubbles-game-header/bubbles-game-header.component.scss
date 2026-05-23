@@ -1,0 +1,150 @@
+.bubbles-game-header {
+    width: 100%;
+    background: linear-gradient(rgba(34, 34, 34, 0.5) 0%, rgba(34, 34, 34, 0) 100%);
+    height: 2.5rem;
+
+    &__nav {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0px 20px;
+    }
+
+    &__balance {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        color: #e6e6e6;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.4;
+
+        span {
+            font-size: 18px;
+            font-weight: 700;
+            color: #e6e6e6;
+            margin-left: 10px;
+        }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__action-btn {
+        background: transparent;
+        cursor: pointer;
+        outline: none;
+        border: none;
+        width: 24px;
+        height: 24px;
+    }
+
+    &__action-icon {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+
+.bubbles-game {
+    &__menucard {
+        position: fixed;
+        top: 40px;
+        right: 20px;
+        width: 260px;
+        border-radius: 18px;
+        padding: 12px;
+        background: rgba(18, 37, 141, 0.55);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(0, 180, 255, 0.25);
+        box-shadow:
+            0 8px 30px rgba(0, 0, 0, 0.4),
+            0 0 12px rgba(0, 224, 255, 0.25);
+        z-index: 200;
+
+        animation: menuFade 0.25s ease;
+    }
+
+    &__menucard-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+    }
+
+    &__username-with-avtar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 700;
+        color: #fff;
+        font-size: 14px;
+    }
+
+    &__user-avtar {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 2px solid rgba(0, 224, 255, 0.5);
+        box-shadow: 0 0 10px rgba(0, 224, 255, 0.4);
+    }
+
+    &__menus {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    &__menu-row {
+        padding: 10px 12px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        color: #cde8ff;
+        font-size: 13px;
+        transition: all 0.2s ease;
+
+        background: rgba(255, 255, 255, 0.04);
+
+        &:hover {
+            background: rgba(0, 224, 255, 0.12);
+            color: #fff;
+            transform: translateX(4px);
+            box-shadow: 0 0 10px rgba(0, 224, 255, 0.25);
+        }
+    }
+
+    &__menu-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    &__menu-icon {
+        font-size: 14px;
+        color: #00e0ff;
+    }
+
+    // animation
+    @keyframes menuFade {
+        from {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+}

@@ -1,0 +1,80 @@
+<div class="ls" [class.ls--exit]="isComplete">
+
+  <!-- Animated lava background -->
+  <div class="ls__bg">
+    <div class="ls__lava-top"></div>
+    <div class="ls__lava-mid"></div>
+  </div>
+
+  <!-- Floating fire particles -->
+  <div class="ls__particles">
+    <span
+      *ngFor="let p of particles"
+      class="ls__particle"
+      [style.left]="p.left"
+      [style.animationDelay]="p.delay"
+      [style.animationDuration]="p.duration"
+      [style.width]="p.size"
+      [style.height]="p.size">
+    </span>
+  </div>
+
+  <!-- Ember sparks -->
+  <div class="ls__embers">
+    <span
+      *ngFor="let e of embers"
+      class="ls__ember"
+      [style.left]="e.left"
+      [style.top]="e.top"
+      [style.animationDelay]="e.delay">
+    </span>
+  </div>
+
+  <!-- Lava rocks bottom -->
+  <div class="ls__rocks">
+    <div class="ls__rock ls__rock--1"></div>
+    <div class="ls__rock ls__rock--2"></div>
+    <div class="ls__rock ls__rock--3"></div>
+    <div class="ls__rock ls__rock--4"></div>
+    <div class="ls__rock ls__rock--5"></div>
+    <div class="ls__rock ls__rock--6"></div>
+  </div>
+
+  <!-- Lava flow cracks -->
+  <div class="ls__cracks">
+    <div class="ls__crack ls__crack--1"></div>
+    <div class="ls__crack ls__crack--2"></div>
+    <div class="ls__crack ls__crack--3"></div>
+  </div>
+
+  <!-- Main content -->
+  <div class="ls__content">
+
+    <!-- Stone title plaque -->
+    <div class="ls__plaque">
+      <div class="ls__plaque-inner">
+        <div class="ls__flame ls__flame--left">🔥</div>
+        <h1 class="ls__title">40 HOT SEVEN</h1>
+        <div class="ls__flame ls__flame--right">🔥</div>
+      </div>
+      <div class="ls__plaque-lava"></div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="ls__bar-wrap">
+      <div class="ls__bar-stone">
+        <div class="ls__bar-track">
+          <div class="ls__bar-fill" [style.width.%]="progress">
+            <div class="ls__bar-glow"></div>
+            <div class="ls__bar-shine"></div>
+          </div>
+        </div>
+        <div class="ls__bar-lava-left"></div>
+        <div class="ls__bar-lava-right"></div>
+      </div>
+      <div class="ls__bar-percent">{{ progress }}%</div>
+    </div>
+
+  </div>
+
+</div>

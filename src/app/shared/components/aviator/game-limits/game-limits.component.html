@@ -1,0 +1,27 @@
+
+<div class="game-limits-modal-overlay" [class.show]="isVisible" (click)="onClose()">
+<div class="game-limits-modal" (click)="$event.stopPropagation()">
+    <div class="game-limits-modal__header">
+        <span class="game-limits-modal__title">Game Limits</span>
+        <button class="game-limits-modal__close-btn" aria-label="Close" (click)="onClose()">
+            &#x2715;
+        </button>
+    </div>
+    <div class="game-limits-modal__body">
+        <div class="game-limits-modal__limits-box">
+            <div class="game-limits-modal__row">
+                <div class="game-limits-modal__limit-label">Minimum Bet USD:</div>
+                <div class="game-limits-modal__limit-val">0.10</div>
+            </div>
+            <div class="game-limits-modal__row">
+                <div class="game-limits-modal__limit-label">Maximum Bet USD:</div>
+                <div class="game-limits-modal__limit-val">100.00</div>
+            </div>
+            <div class="game-limits-modal__row">
+                <div class="game-limits-modal__limit-label">Maximum Win for one Bet USD:</div>
+                <div class="game-limits-modal__limit-val">10,000.00</div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

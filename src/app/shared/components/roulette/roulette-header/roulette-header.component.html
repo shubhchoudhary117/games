@@ -1,0 +1,16 @@
+<!-- src/app/components/topbar/topbar.component.html -->
+<div class="topbar">
+  <h1>AUTO ROULETTE VR</h1>
+
+  <div class="balance-box">
+    <span class="balance-label">BALANCE</span>
+    <span class="balance-amt" [class.broke]="rs.broke()">
+      {{ rs.formatNum(rs.balance()) }}
+    </span>
+    <button class="refill-btn" *ngIf="rs.broke()" (click)="rs.refillBalance()">REFILL</button>
+  </div>
+
+  <button class="rules-btn" (click)="showRules()">
+    Rules
+  </button>
+</div>
