@@ -15,47 +15,6 @@
 
   <main class="dice-game__container">
 
-    <!-- ── ROUND SECTION ── -->
-    <div class="dice-game__round-section">
-
-      <div class="dice-game__rounds-info">
-        <div class="dice-game__total-rounds">Round #{{ roundNumber }}</div>
-        <div class="dice-game__round-live">Live</div>
-      </div>
-
-      <div class="dice-game__round-timer-box">
-        <span class="timer-label">
-          @if (roundPhase === 'spinning') { Spinning... }
-          @else if (roundPhase === 'result') { Result! }
-          @else { Betting closes in }
-        </span>
-
-        @if (roundPhase === 'betting') {
-          <span class="beting-round-time">{{ timerDisplay }}<span>s</span></span>
-        }
-        @if (roundPhase === 'result' && lastResult) {
-          <span class="beting-round-time result-total">{{ lastResult.total }}</span>
-        }
-        @if (roundPhase === 'spinning') {
-          <span class="beting-round-time">...</span>
-        }
-      </div>
-
-      <div class="dice-game__betting-status">
-        <span class="bo-l" [class.closed]="!isBettingOpen">
-          {{ isBettingOpen ? 'Betting Open' : 'Betting Closed' }}
-        </span>
-        <span class="pyb">
-          @if (roundPhase === 'spinning') { Dice rolling... }
-          @else if (roundPhase === 'result' && lastResult) {
-            {{ lastResult.dice1 }} + {{ lastResult.dice2 }} = {{ lastResult.total }}
-          }
-          @else { Place your bet }
-        </span>
-      </div>
-
-    </div>
-
     <!-- ── RECENT RESULTS ── -->
     <div class="dice-game__recent-results-container">
       <div class="dice-game__recent-results-title">Recent results</div>
@@ -69,15 +28,40 @@
     <!-- ── VIEWPORT ── -->
     <div class="dice-game__viewport">
 
-      <!-- Dice Canvas -->
       <div class="dice-game__dice-spin-box">
+
+        <!-- BETTING OVERLAY — only during betting phase -->
+        @if (roundPhase === 'betting') {
+          <div class="dice-game__spinbox-overlay">
+            <div class="dice-game__round-label">Round #{{ roundNumber }}</div>
+            <div class="dice-game__status-label">
+              {{ isBettingOpen ? 'Betting Open' : 'Betting Closed' }}
+            </div>
+            <div class="dice-game__progress-track">
+              <div class="dice-game__progress-bar" [style.width.%]="progressPercent"></div>
+            </div>
+          </div>
+        }
+
+        <!-- COUNTDOWN — only during countdown phase -->
+        @if (roundPhase === 'countdown') {
+          <div class="dice-game__countdown">
+            <span class="dice-game__countdown-num" [class.pop-in]="countdownAnimating">
+              {{ countdownValue }}
+            </span>
+          </div>
+        }
+
+        <!-- DICE CANVAS — always mounted -->
         <app-dice-canvas
           #diceCanvas
+          [class.canvas-hidden]="roundPhase === 'betting' || roundPhase === 'countdown'"
           [dice1Value]="dice1"
           [dice2Value]="dice2"
           [spinDuration]="3000"
           (spinEnd)="onSpinEnd($event)">
         </app-dice-canvas>
+
       </div>
 
       <!-- ── SUM BETTING ── -->
@@ -90,14 +74,12 @@
               [class.has-bet]="getBetTotal('sum_' + item.digit) > 0"
               [class.winning-cell]="isWinningCell('sum_' + item.digit)"
               (click)="addPendingBet('sum_' + item.digit)">
-
               @if (getBetTotal('sum_' + item.digit) > 0) {
                 <div class="bet-chip-overlay">
                   <img [src]="getLastChipImg('sum_' + item.digit)" class="bet-chip-img" />
                   <span class="bet-chip-amount">{{ getBetTotal('sum_' + item.digit) }}</span>
                 </div>
               }
-
               <span class="digit">{{ item.digit }}</span>
               <span class="digit-x">x{{ item.x }}</span>
             </div>
@@ -108,7 +90,6 @@
       <!-- ── PAIR DIGITS ── -->
       <div class="dice-game__pairs-digits-groups">
 
-        <!-- First Dice -->
         <div class="dice-game__pair-digit-group">
           <div class="dice-game__digits-group-title">FIRST DICE (1st)</div>
           <div class="dice-game__digits-group-grid">
@@ -118,14 +99,12 @@
                 [class.has-bet]="getBetTotal('d1_' + first.digit) > 0"
                 [class.winning-cell]="isWinningCell('d1_' + first.digit)"
                 (click)="addPendingBet('d1_' + first.digit)">
-
                 @if (getBetTotal('d1_' + first.digit) > 0) {
                   <div class="bet-chip-overlay">
                     <img [src]="getLastChipImg('d1_' + first.digit)" class="bet-chip-img" />
                     <span class="bet-chip-amount">{{ getBetTotal('d1_' + first.digit) }}</span>
                   </div>
                 }
-
                 <span class="digit">{{ first.digit }}</span>
                 <span class="digit-x">x{{ first.x }}</span>
               </div>
@@ -133,11 +112,9 @@
           </div>
         </div>
 
-        <!-- Even / Odd -->
         <div class="dice-game__even-odds-dice">
           <div class="dice-game__even-odd-dice-title">EVEN / ODD</div>
           <div class="dice-game__even-odd-digit-grid">
-
             <div
               class="dice-game__even-odd-box"
               [class.has-bet]="getBetTotal('eo_odd') > 0"
@@ -152,7 +129,6 @@
               <span class="label">ODD</span>
               <span class="digit-x">x1.90</span>
             </div>
-
             <div
               class="dice-game__even-odd-box"
               [class.has-bet]="getBetTotal('eo_even') > 0"
@@ -167,11 +143,9 @@
               <span class="label">EVEN</span>
               <span class="digit-x">x1.90</span>
             </div>
-
           </div>
         </div>
 
-        <!-- Second Dice -->
         <div class="dice-game__pair-digit-group">
           <div class="dice-game__digits-group-title">SECOND DICE (2nd)</div>
           <div class="dice-game__digits-group-grid">
@@ -181,14 +155,12 @@
                 [class.has-bet]="getBetTotal('d2_' + second.digit) > 0"
                 [class.winning-cell]="isWinningCell('d2_' + second.digit)"
                 (click)="addPendingBet('d2_' + second.digit)">
-
                 @if (getBetTotal('d2_' + second.digit) > 0) {
                   <div class="bet-chip-overlay">
                     <img [src]="getLastChipImg('d2_' + second.digit)" class="bet-chip-img" />
                     <span class="bet-chip-amount">{{ getBetTotal('d2_' + second.digit) }}</span>
                   </div>
                 }
-
                 <span class="digit">{{ second.digit }}</span>
                 <span class="digit-x">x{{ second.x }}</span>
               </div>
@@ -204,17 +176,14 @@
       <div class="dice-game__controllers-row">
 
         <div class="dice-game__controllers-left">
-          <button
-            class="dice-game__clear-btn"
-            (click)="clearBets()"
-            [disabled]="!isBettingOpen">
+          <button class="dice-game__clear-btn" (click)="clearBets()" [disabled]="!isBettingOpen">
             <i class="fa-regular fa-trash-can"></i>
             <span>Clear</span>
           </button>
         </div>
 
         <div class="dice-game__controllers-mid">
-          <div class="dice-game__betting-chips">
+          <div class="dice-game__betting-chips" [class.disabled]="roundPhase=='spinning'">
             @for (chip of chips; track chip.value) {
               <div
                 class="dice-game__betting-chip"
@@ -242,7 +211,6 @@
 
       </div>
 
-      <!-- Total pending bet display -->
       @if (getTotalBetAmount() > 0) {
         <div class="dice-game__bet-summary">
           <span>Total Bet:</span>
@@ -255,7 +223,6 @@
         </div>
       }
 
-      <!-- ── PLACE BET BUTTON ── -->
       <div class="dice-game__place-bet-actions">
         <button
           class="dice-game__place-bet-btn"
@@ -263,14 +230,13 @@
           [class.has-pending]="hasPendingBets && isBettingOpen"
           [disabled]="!isBettingOpen || !hasPendingBets"
           (click)="placeBetAction()">
-
           <span class="place-bet-title">
-            @if (!isBettingOpen && roundPhase === 'spinning') { Dice Rolling... }
-            @else if (!isBettingOpen && roundPhase === 'result') { Round Over! }
+            @if (roundPhase === 'spinning') { Dice Rolling... }
+            @else if (roundPhase === 'countdown') { Get Ready... }
+            @else if (roundPhase === 'result') { Round Over! }
             @else if (hasPendingBets) { Place your bets! }
             @else { Select a bet first }
           </span>
-
           <span class="place-bet-subtitle">
             @if (isBettingOpen && hasPendingBets) {
               Confirm &#8377;{{ getTotalBetAmount() | number }} — Closes in {{ timerDisplay }}s
@@ -280,7 +246,6 @@
               Next round starting soon...
             }
           </span>
-
         </button>
       </div>
 
