@@ -1,16 +1,17 @@
 <section class="dice-game">
   <header class="dice-header">
-    <div class="dice-header__left">
-      <button class="dice-header__menu"><i class="fas fa-bars"></i></button>
-    </div>
     <div class="dice-header__logo">
       <img src="assets/dice-game/dice-game-logo.png" alt="" class="dice-header__logo-img">
     </div>
-    <div class="dice-header__balance-box">
-      <img src="assets/dice-game/dollar.png" alt="" class="coin-icon">
-      <i class="fa-solid fa-indian-rupee-sign"></i>
-      <span class="balance">{{ balance | number }}</span>
+    <div class="dice-header__right">
+      <div class="dice-header__balance-box">
+        <img src="assets/dice-game/dollar.png" alt="" class="coin-icon">
+        <i class="fa-solid fa-indian-rupee-sign"></i>
+        <span class="balance">{{ balance | number }}</span>
+      </div>
+        <button class="dice-header__menu"><i class="fas fa-bars"></i></button>
     </div>
+
   </header>
 
   <main class="dice-game__container">

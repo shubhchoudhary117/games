@@ -71,14 +71,18 @@ export class DiceGameComponent implements OnInit, OnDestroy {
   private winAutoHideTimeout: any = null;
 
   // ── Recent Results ───────────────────────────────────────
-  recentResults: { value: number; colorClass: string }[] = [
-    { value: 11, colorClass: 'green' },
-    { value: 4, colorClass: 'red' },
-    { value: 12, colorClass: 'gold' },
-    { value: 9, colorClass: 'purple' },
-    { value: 6, colorClass: '' },
-    { value: 5, colorClass: 'red' },
-  ];
+ recentResults: { value: number; colorClass: string }[] = [
+  { value: 7, colorClass: 'gold' },
+  { value: 6, colorClass: 'blue' },
+  { value: 9, colorClass: 'purple' },
+  { value: 9, colorClass: 'purple-dark' },
+  { value: 8, colorClass: 'purple' },
+  { value: 7, colorClass: 'gold' },
+  { value: 9, colorClass: 'purple' },
+  { value: 3, colorClass: 'red' },
+  { value: 7, colorClass: 'gold' },
+  { value: 7, colorClass: 'gold' },
+];
 
   // ── Chips ─────────────────────────────────────────────────
   chips = [
