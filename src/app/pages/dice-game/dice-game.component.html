@@ -20,7 +20,7 @@
       <div class="dice-game__recent-results-title">Recent results</div>
       <div class="dice-game__recent-results-list">
         @for (r of recentResults; track $index) {
-          <div class="dice-game__recent-result-box {{ r.colorClass }}">{{ r.value }}</div>
+        <div class="dice-game__recent-result-box {{ r.colorClass }}">{{ r.value }}</div>
         }
       </div>
     </div>
@@ -32,34 +32,29 @@
 
         <!-- BETTING OVERLAY — only during betting phase -->
         @if (roundPhase === 'betting') {
-          <div class="dice-game__spinbox-overlay">
-            <div class="dice-game__round-label">Round #{{ roundNumber }}</div>
-            <div class="dice-game__status-label">
-              {{ isBettingOpen ? 'Betting Open' : 'Betting Closed' }}
-            </div>
-            <div class="dice-game__progress-track">
-              <div class="dice-game__progress-bar" [style.width.%]="progressPercent"></div>
-            </div>
+        <div class="dice-game__spinbox-overlay">
+          <div class="dice-game__round-label">Round #{{ roundNumber }}</div>
+          <div class="dice-game__status-label">
+            {{ isBettingOpen ? 'Betting Open' : 'Betting Closed' }}
           </div>
+          <div class="dice-game__progress-track">
+            <div class="dice-game__progress-bar" [style.width.%]="progressPercent"></div>
+          </div>
+        </div>
         }
 
         <!-- COUNTDOWN — only during countdown phase -->
         @if (roundPhase === 'countdown') {
-          <div class="dice-game__countdown">
-            <span class="dice-game__countdown-num" [class.pop-in]="countdownAnimating">
-              {{ countdownValue }}
-            </span>
-          </div>
+        <div class="dice-game__countdown">
+          <span class="dice-game__countdown-num" [class.pop-in]="countdownAnimating">
+            {{ countdownValue }}
+          </span>
+        </div>
         }
 
         <!-- DICE CANVAS — always mounted -->
-        <app-dice-canvas
-          #diceCanvas
-          [class.canvas-hidden]="roundPhase === 'betting' || roundPhase === 'countdown'"
-          [dice1Value]="dice1"
-          [dice2Value]="dice2"
-          [spinDuration]="3000"
-          (spinEnd)="onSpinEnd($event)">
+        <app-dice-canvas #diceCanvas [class.canvas-hidden]="roundPhase === 'betting' || roundPhase === 'countdown'"
+          [dice1Value]="dice1" [dice2Value]="dice2" [spinDuration]="3000" (spinEnd)="onSpinEnd($event)">
         </app-dice-canvas>
 
       </div>
@@ -69,20 +64,17 @@
         <div class="dice-game__betting-digits-title">SUM (Predict total)</div>
         <div class="dice-game__digits-grid">
           @for (item of bettingSumDigits; track item.id) {
-            <div
-              class="dice-game__betting-digit-box"
-              [class.has-bet]="getBetTotal('sum_' + item.digit) > 0"
-              [class.winning-cell]="isWinningCell('sum_' + item.digit)"
-              (click)="addPendingBet('sum_' + item.digit)">
-              @if (getBetTotal('sum_' + item.digit) > 0) {
-                <div class="bet-chip-overlay">
-                  <img [src]="getLastChipImg('sum_' + item.digit)" class="bet-chip-img" />
-                  <span class="bet-chip-amount">{{ getBetTotal('sum_' + item.digit) }}</span>
-                </div>
-              }
-              <span class="digit">{{ item.digit }}</span>
-              <span class="digit-x">x{{ item.x }}</span>
+          <div class="dice-game__betting-digit-box" [class.has-bet]="getBetTotal('sum_' + item.digit) > 0"
+            [class.winning-cell]="isWinningCell('sum_' + item.digit)" (click)="addPendingBet('sum_' + item.digit)">
+            @if (getBetTotal('sum_' + item.digit) > 0) {
+            <div class="bet-chip-overlay">
+              <img [src]="getLastChipImg('sum_' + item.digit)" class="bet-chip-img" />
+              <span class="bet-chip-amount">{{ getBetTotal('sum_' + item.digit) }}</span>
             </div>
+            }
+            <span class="digit">{{ item.digit }}</span>
+            <span class="digit-x">x{{ item.x }}</span>
+          </div>
           }
         </div>
       </div>
@@ -94,20 +86,17 @@
           <div class="dice-game__digits-group-title">FIRST DICE (1st)</div>
           <div class="dice-game__digits-group-grid">
             @for (first of pairFirstDigits; track first.id) {
-              <div
-                class="dice-game__pair-digit-box"
-                [class.has-bet]="getBetTotal('d1_' + first.digit) > 0"
-                [class.winning-cell]="isWinningCell('d1_' + first.digit)"
-                (click)="addPendingBet('d1_' + first.digit)">
-                @if (getBetTotal('d1_' + first.digit) > 0) {
-                  <div class="bet-chip-overlay">
-                    <img [src]="getLastChipImg('d1_' + first.digit)" class="bet-chip-img" />
-                    <span class="bet-chip-amount">{{ getBetTotal('d1_' + first.digit) }}</span>
-                  </div>
-                }
-                <span class="digit">{{ first.digit }}</span>
-                <span class="digit-x">x{{ first.x }}</span>
+            <div class="dice-game__pair-digit-box" [class.has-bet]="getBetTotal('d1_' + first.digit) > 0"
+              [class.winning-cell]="isWinningCell('d1_' + first.digit)" (click)="addPendingBet('d1_' + first.digit)">
+              @if (getBetTotal('d1_' + first.digit) > 0) {
+              <div class="bet-chip-overlay">
+                <img [src]="getLastChipImg('d1_' + first.digit)" class="bet-chip-img" />
+                <span class="bet-chip-amount">{{ getBetTotal('d1_' + first.digit) }}</span>
               </div>
+              }
+              <span class="digit">{{ first.digit }}</span>
+              <span class="digit-x">x{{ first.x }}</span>
+            </div>
             }
           </div>
         </div>
@@ -115,30 +104,24 @@
         <div class="dice-game__even-odds-dice">
           <div class="dice-game__even-odd-dice-title">EVEN / ODD</div>
           <div class="dice-game__even-odd-digit-grid">
-            <div
-              class="dice-game__even-odd-box"
-              [class.has-bet]="getBetTotal('eo_odd') > 0"
-              [class.winning-cell]="isWinningCell('eo_odd')"
-              (click)="addPendingBet('eo_odd')">
+            <div class="dice-game__even-odd-box" [class.has-bet]="getBetTotal('eo_odd') > 0"
+              [class.winning-cell]="isWinningCell('eo_odd')" (click)="addPendingBet('eo_odd')">
               @if (getBetTotal('eo_odd') > 0) {
-                <div class="bet-chip-overlay">
-                  <img [src]="getLastChipImg('eo_odd')" class="bet-chip-img" />
-                  <span class="bet-chip-amount">{{ getBetTotal('eo_odd') }}</span>
-                </div>
+              <div class="bet-chip-overlay">
+                <img [src]="getLastChipImg('eo_odd')" class="bet-chip-img" />
+                <span class="bet-chip-amount">{{ getBetTotal('eo_odd') }}</span>
+              </div>
               }
               <span class="label">ODD</span>
               <span class="digit-x">x1.90</span>
             </div>
-            <div
-              class="dice-game__even-odd-box"
-              [class.has-bet]="getBetTotal('eo_even') > 0"
-              [class.winning-cell]="isWinningCell('eo_even')"
-              (click)="addPendingBet('eo_even')">
+            <div class="dice-game__even-odd-box" [class.has-bet]="getBetTotal('eo_even') > 0"
+              [class.winning-cell]="isWinningCell('eo_even')" (click)="addPendingBet('eo_even')">
               @if (getBetTotal('eo_even') > 0) {
-                <div class="bet-chip-overlay">
-                  <img [src]="getLastChipImg('eo_even')" class="bet-chip-img" />
-                  <span class="bet-chip-amount">{{ getBetTotal('eo_even') }}</span>
-                </div>
+              <div class="bet-chip-overlay">
+                <img [src]="getLastChipImg('eo_even')" class="bet-chip-img" />
+                <span class="bet-chip-amount">{{ getBetTotal('eo_even') }}</span>
+              </div>
               }
               <span class="label">EVEN</span>
               <span class="digit-x">x1.90</span>
@@ -150,29 +133,132 @@
           <div class="dice-game__digits-group-title">SECOND DICE (2nd)</div>
           <div class="dice-game__digits-group-grid">
             @for (second of pairSecondDigits; track second.id) {
-              <div
-                class="dice-game__pair-digit-box"
-                [class.has-bet]="getBetTotal('d2_' + second.digit) > 0"
-                [class.winning-cell]="isWinningCell('d2_' + second.digit)"
-                (click)="addPendingBet('d2_' + second.digit)">
-                @if (getBetTotal('d2_' + second.digit) > 0) {
-                  <div class="bet-chip-overlay">
-                    <img [src]="getLastChipImg('d2_' + second.digit)" class="bet-chip-img" />
-                    <span class="bet-chip-amount">{{ getBetTotal('d2_' + second.digit) }}</span>
-                  </div>
-                }
-                <span class="digit">{{ second.digit }}</span>
-                <span class="digit-x">x{{ second.x }}</span>
+            <div class="dice-game__pair-digit-box" [class.has-bet]="getBetTotal('d2_' + second.digit) > 0"
+              [class.winning-cell]="isWinningCell('d2_' + second.digit)" (click)="addPendingBet('d2_' + second.digit)">
+              @if (getBetTotal('d2_' + second.digit) > 0) {
+              <div class="bet-chip-overlay">
+                <img [src]="getLastChipImg('d2_' + second.digit)" class="bet-chip-img" />
+                <span class="bet-chip-amount">{{ getBetTotal('d2_' + second.digit) }}</span>
               </div>
+              }
+              <span class="digit">{{ second.digit }}</span>
+              <span class="digit-x">x{{ second.x }}</span>
+            </div>
             }
           </div>
         </div>
+      </div>
 
+      <!-- Win Popup -->
+      <div class="win-overlay" *ngIf="showWinPopup" (click)="closeWinPopup()">
+        <div class="win-slip" (click)="$event.stopPropagation()">
+
+          <div class="slip-header">
+            <div class="win-badge">
+              <i class="ti ti-trophy"></i> You won!
+            </div>
+            <div class="win-amount">₹ {{ totalWinAmount | number }}</div>
+            <div class="win-label">total winnings this round</div>
+          </div>
+
+          <div class="slip-body">
+            <div class="round-info">
+              <span>Round #{{ roundNumber }}</span>
+              <span>Result</span>
+            </div>
+
+            <div class="dice-row">
+              <div class="dice-face">{{ lastResult?.dice1 }}</div>
+              <span class="dice-plus">+</span>
+              <div class="dice-face">{{ lastResult?.dice2 }}</div>
+              <span class="dice-plus">=</span>
+              <div class="dice-total-num">{{ lastResult?.total }}</div>
+            </div>
+
+            <hr class="divider">
+
+            <div class="bet-row" *ngFor="let entry of winEntries">
+              <div class="bet-key">
+                <span class="bet-label">{{ entry.label }}</span>
+                <span class="bet-pill">×{{ entry.multiplier }}</span>
+              </div>
+              <div class="bet-amounts">
+                <span class="bet-amt">₹{{ entry.betAmt | number }}</span>
+                <span class="bet-win">+₹{{ entry.winAmt | number }}</span>
+              </div>
+            </div>
+
+            <div class="summary-row">
+              <div>
+                <div class="summary-label">Total bet</div>
+                <div class="summary-num">₹{{ totalBetInWin | number }}</div>
+              </div>
+              <div class="right">
+                <div class="summary-label">Net profit</div>
+                <div class="summary-val">+₹{{ totalWinAmount - totalBetInWin | number }}</div>
+              </div>
+            </div>
+
+            <button class="collect-btn" (click)="closeWinPopup()">
+              Collect & continue
+            </button>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Win Popup -->
+      <div class="win-overlay" *ngIf="showWinPopup">
+        <div class="win-sparkles" id="winSparkles"></div>
+
+        <div class="win-card" [class.win-card--out]="winClosing">
+          <div class="win-card__head">
+            <div class="win-head-stars">
+              <span class="wstar">&#9733;</span>
+              <span class="you-won">YOU WON!</span>
+              <span class="wstar">&#9733;</span>
+            </div>
+            <div class="total-win-lbl">TOTAL WIN</div>
+            <div class="win-big-amt">&#8377; {{ animatedWin | number }}</div>
+            <div class="win-head-arc"></div>
+          </div>
+
+          <div class="win-card__body">
+            <div class="win-chips-row">
+              <div class="win-chip" *ngFor="let e of winEntries; let i = index"
+                [style.animation-delay]="(i * 0.07) + 's'">
+                <div class="win-ball" [style.background]="getBallGradient(e)"
+                  [style.box-shadow]="'0 0 16px ' + getBallColor(e) + 'bb'">
+                  {{ e.resultVal }}
+                </div>
+                <span class="win-chip-mult" [style.color]="getBallHiColor(e)">×{{ e.multiplier }}</span>
+                <span class="win-chip-win">₹{{ e.winAmt | number }}</span>
+              </div>
+            </div>
+
+            <div class="win-divider"></div>
+
+            <div class="win-stats">
+              <div class="win-stat">
+                <span class="win-stat-n green">{{ winEntries.length }}</span>
+                <span class="win-stat-lbl">CORRECT<br>PREDICTIONS</span>
+              </div>
+              <div class="win-stat">
+                <span class="win-stat-lbl">TOTAL<br>MULTIPLIER</span>
+                <span class="win-stat-n gold">×{{ totalMultiplier }}</span>
+              </div>
+            </div>
+
+            <div class="win-timer-wrap">
+              <div class="win-timer-bar" [class.draining]="showWinPopup"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- ── BET CONTROLLERS ── -->
-    <div class="dice-game__betcontrollers">
+    <div class="dice-game__betcontrollers" [class.disabled]="roundPhase=='spinning'">
       <div class="dice-game__controllers-row">
 
         <div class="dice-game__controllers-left">
@@ -183,22 +269,18 @@
         </div>
 
         <div class="dice-game__controllers-mid">
-          <div class="dice-game__betting-chips" [class.disabled]="roundPhase=='spinning'">
+          <div class="dice-game__betting-chips">
             @for (chip of chips; track chip.value) {
-              <div
-                class="dice-game__betting-chip"
-                [class.chip-selected]="selectedChip?.value === chip.value"
-                (click)="selectChip(chip)">
-                <img [src]="chip.img" [alt]="chip.value" class="dice-game__chip-img">
-              </div>
+            <div class="dice-game__betting-chip" [class.chip-selected]="selectedChip?.value === chip.value"
+              (click)="selectChip(chip)">
+              <img [src]="chip.img" [alt]="chip.value" class="dice-game__chip-img">
+            </div>
             }
           </div>
         </div>
 
         <div class="dice-game__controllers-right">
-          <button
-            class="dice-game__repeat-btn"
-            (click)="repeatBet()"
+          <button class="dice-game__repeat-btn" (click)="repeatBet()"
             [disabled]="!isBettingOpen || repeatBetTotal === 0">
             <span class="repeat-label">
               <i class="fa-solid fa-arrow-rotate-right"></i> Repeat Bet
@@ -212,23 +294,20 @@
       </div>
 
       @if (getTotalBetAmount() > 0) {
-        <div class="dice-game__bet-summary">
-          <span>Total Bet:</span>
-          <span class="bet-total-amt">
-            <i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalBetAmount() | number }}
-          </span>
-          @if (hasPendingBets) {
-            <span style="color:#aaa; font-size:11px;">(click Place Bet to confirm)</span>
-          }
-        </div>
+      <div class="dice-game__bet-summary">
+        <span>Total Bet:</span>
+        <span class="bet-total-amt">
+          <i class="fa-solid fa-indian-rupee-sign"></i> {{ getTotalBetAmount() | number }}
+        </span>
+        @if (hasPendingBets) {
+        <span style="color:#aaa; font-size:11px;">(click Place Bet to confirm)</span>
+        }
+      </div>
       }
 
       <div class="dice-game__place-bet-actions">
-        <button
-          class="dice-game__place-bet-btn"
-          [class.closed]="!isBettingOpen"
-          [class.has-pending]="hasPendingBets && isBettingOpen"
-          [disabled]="!isBettingOpen || !hasPendingBets"
+        <button class="dice-game__place-bet-btn" [class.closed]="!isBettingOpen"
+          [class.has-pending]="hasPendingBets && isBettingOpen" [disabled]="!isBettingOpen || !hasPendingBets"
           (click)="placeBetAction()">
           <span class="place-bet-title">
             @if (roundPhase === 'spinning') { Dice Rolling... }
@@ -239,11 +318,11 @@
           </span>
           <span class="place-bet-subtitle">
             @if (isBettingOpen && hasPendingBets) {
-              Confirm &#8377;{{ getTotalBetAmount() | number }} — Closes in {{ timerDisplay }}s
+            Confirm &#8377;{{ getTotalBetAmount() | number }} — Closes in {{ timerDisplay }}s
             } @else if (isBettingOpen) {
-              Betting will close in {{ timerDisplay }}s
+            Betting will close in {{ timerDisplay }}s
             } @else {
-              Next round starting soon...
+            Next round starting soon...
             }
           </span>
         </button>
