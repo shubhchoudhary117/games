@@ -11,21 +11,24 @@
 }
 
 .dice-wrapper {
-    width: 160px;
-    height: 160px;
+    width: 180px;
+    height: 180px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 50%;
     overflow: hidden;
-   
+    z-index: 2;
 }
 
 
+
+
+
 .dice {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     position: relative;
     transform-style: preserve-3d;
     z-index: 10;
@@ -35,8 +38,8 @@
 
 .face {
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: linear-gradient(145deg, #ffffff 0%, #dddddd 100%);
     border-radius: 18px;
     border: 2px solid #ececec;
@@ -48,104 +51,92 @@
 
 /* ================= 3D POSITIONS ================= */
 
-.front  { transform: rotateY(0deg)    translateZ(40px); }
-.back   { transform: rotateY(180deg)  translateZ(40px); }
-.right  { transform: rotateY(90deg)   translateZ(40px); }
-.left   { transform: rotateY(-90deg)  translateZ(40px); }
-.top    { transform: rotateX(90deg)   translateZ(40px); }
-.bottom { transform: rotateX(-90deg)  translateZ(40px); }
+.front  { transform: rotateY(0deg)    translateZ(50px); }
+.back   { transform: rotateY(180deg)  translateZ(50px); }
+.right  { transform: rotateY(90deg)   translateZ(50px); }
+.left   { transform: rotateY(-90deg)  translateZ(50px); }
+.top    { transform: rotateX(90deg)   translateZ(50px); }
+.bottom { transform: rotateX(-90deg)  translateZ(50px); }
 
 /* ================= DOTS via ::before (main dot) + ::after (extra dots) ================= */
-/* --- FACE 1 --- */
+
+/* --- FACE 1 (front) --- ONE red dot center --- */
 .front::before {
     content: "";
-    width: 16px;
-    height: 16px;
+    width: 22px; height: 22px;
     border-radius: 50%;
     background: #d82222;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    left: 50%; top: 50%;
     transform: translate(-50%, -50%);
+    box-shadow: inset -3px -3px 5px rgba(0,0,0,0.3), inset 2px 2px 3px rgba(255,255,255,0.2);
 }
 
-/* --- FACE 2 --- */
+/* --- FACE 2 (right) --- TWO black dots diagonal --- */
 .right::before {
     content: "";
-    width: 13px;
-    height: 13px;
+    width: 18px; height: 18px;
     border-radius: 50%;
     background: #111;
     position: absolute;
-    left: 18px;
-    top: 18px;
-    box-shadow: 28px 28px #111;
+    left: 24px; top: 24px;
+    box-shadow: 38px 38px #111;
 }
 
-/* --- FACE 3 --- */
+/* --- FACE 3 (top) --- THREE black dots diagonal --- */
 .top::before {
     content: "";
-    width: 13px;
-    height: 13px;
+    width: 18px; height: 18px;
     border-radius: 50%;
     background: #111;
     position: absolute;
-    left: 16px;
-    top: 16px;
-    box-shadow:
-        16px 16px #111,
-        32px 32px #111;
+    left: 20px; top: 20px;
+    box-shadow: 20px 20px #111, 40px 40px #111;
 }
 
-/* --- FACE 4 --- */
+/* --- FACE 4 (bottom) --- FOUR red dots corners --- */
 .bottom::before {
     content: "";
-    width: 13px;
-    height: 13px;
+    width: 18px; height: 18px;
     border-radius: 50%;
     background: #d82222;
     position: absolute;
-    left: 16px;
-    top: 16px;
+    left: 20px; top: 20px;
     box-shadow:
-        32px 0 #d82222,
-        0 32px #d82222,
-        32px 32px #d82222;
+        40px 0   #d82222,
+        0   40px #d82222,
+        40px 40px #d82222;
 }
 
-/* --- FACE 5 --- */
+/* --- FACE 5 (left) --- FIVE black dots --- */
 .left::before {
     content: "";
-    width: 13px;
-    height: 13px;
+    width: 18px; height: 18px;
     border-radius: 50%;
     background: #111;
     position: absolute;
-    left: 15px;
-    top: 15px;
+    left: 18px; top: 18px;
     box-shadow:
-        30px 0 #111,
-        0 30px #111,
-        30px 30px #111,
-        15px 15px #111;
+        42px 0   #111,
+        0   42px #111,
+        42px 42px #111,
+        21px 21px #111;
 }
 
-/* --- FACE 6 --- */
+/* --- FACE 6 (back) --- SIX black dots --- */
 .back::before {
     content: "";
-    width: 13px;
-    height: 13px;
+    width: 18px; height: 18px;
     border-radius: 50%;
     background: #111;
     position: absolute;
-    left: 15px;
-    top: 10px;
+    left: 18px; top: 14px;
     box-shadow:
-        30px 0 #111,
-        0 22px #111,
-        30px 22px #111,
-        0 44px #111,
-        30px 44px #111;
+        42px 0    #111,
+        0    28px #111,
+        42px 28px #111,
+        0    56px #111,
+        42px 56px #111;
 }
 
 /* ================= MOBILE ================= */
