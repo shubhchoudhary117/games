@@ -100,7 +100,8 @@
     }
 
     .mines-and-multipliers-section {
-        width: 100%;
+        width: 93%;
+        margin: auto;
     }
 }
 
@@ -161,7 +162,8 @@
 
 @media screen and (max-width:768px) {
     .game-multipliers-container {
-        width: 100%;
+        width: 93%;
+        margin: auto;
     }
 
     .game-multipliers-container::-webkit-scrollbar {
