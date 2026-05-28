@@ -34,7 +34,7 @@ export class MinesComponent {
   initialBetAmount: number = 100;
   autoSelectedBoxes: Set<number> = new Set();
   isAutoRunning: boolean = false;
-  autoAllLoading: boolean = false;   
+  autoAllLoading: boolean = false;
   autoCurrentRound: number = 0;
   autoTotalRounds: number = 0;
   autoRoundBetweenDelay: number = 1800;
@@ -111,6 +111,23 @@ export class MinesComponent {
       if (this.autoSelectedBoxes.size >= this.maxAutoSelectBoxes) return;
       this.autoSelectedBoxes.add(index);
     }
+
+    this.gemsFound++;
+
+    const mults = this.getMultipliers(this.mines);
+
+    this.multiplier = mults[Math.min(this.gemsFound - 1, mults.length - 1)];
+
+    const crosindex = this.gemsFound - 1;
+
+    if (this.multiplierCrossed[crosindex] !== undefined) {
+      this.multiplierCrossed[crosindex] = true;
+    }
+
+    this.scrollToActiveMultiplier(
+      crosindex
+    );
+
     this.autoSelectedBoxes = new Set(this.autoSelectedBoxes);
   }
 
@@ -191,8 +208,7 @@ export class MinesComponent {
         }
 
         return {
-          mineId: i,
-          isSafe: true
+          mineId: i,isSafe: true
         };
 
       });
@@ -215,29 +231,20 @@ export class MinesComponent {
   }
 
   private autoHandleWin() {
-
     const winnings = Math.round(this.betAmount * this.multiplier);
-
     this.balance += winnings;
-
     this.winingAmount = winnings;
-
     this.currentMineIndex = Math.max(0, this.gemsFound - 1);
-
     this.showGameOverBox = false;
-
     this.showWinBox = true;
 
-    // WIN RULE
     this.updateBetAmount(
       this.increaseOnWinType,
       this.increaseOnWinPercent
     );
 
     setTimeout(() => {
-
       this.showWinBox = false;
-
       setTimeout(() => {
         this.runAutoRound();
       }, 400);
@@ -248,25 +255,18 @@ export class MinesComponent {
   private autoHandleLoss() {
 
     this.winingAmount = 0;
-
     this.currentMineIndex = 0;
-
     this.showGameOverBox = true;
-
     this.showWinBox = true;
 
-    // LOSS RULE
     this.updateBetAmount(
       this.increaseOnLoseType,
       this.increaseOnLosePercent
     );
 
     setTimeout(() => {
-
       this.showWinBox = false;
-
       this.showGameOverBox = false;
-
       setTimeout(() => {
         this.runAutoRound();
       }, 400);
@@ -322,145 +322,80 @@ export class MinesComponent {
   }
 
   handleMineClick(mine: any, index: number) {
-
     if (!this.gameIsStart) return;
-
     const sessionId = this.gameSessionId;
-
     this.soundService.play(this.mineAudio);
-
     this.showMineProgress = {
       action: true,
       id: mine.mineId
     };
 
     setTimeout(() => {
-
-      /* OLD GAME CALLBACK BLOCK */
       if (
         sessionId !== this.gameSessionId
       ) return;
 
-      this.showMineProgress = {
-        action: false,
-        id: ""
+      this.showMineProgress = {action: false,id: ""
+
       };
 
       if (this.minePositions.has(index)) {
-
         this.revealAllTiles();
-
         this.gameIsStart = false;
-
         setTimeout(() => {
-
           if (
             sessionId !== this.gameSessionId
           ) return;
-
           this.winingAmount = 0;
-
           this.currentMineIndex = 0;
-
           this.showGameOverBox = true;
-
           this.showWinBox = true;
-
           setTimeout(() => {
-
-            if (
-              sessionId !==
-              this.gameSessionId
-            ) return;
-
+            if (sessionId !==this.gameSessionId) return;
             this.resetGame();
-
           }, 2000);
-
         }, 500);
 
       } else {
-
         this.soundService.play(
           this.dimondAudio
         );
 
         this.gemsFound++;
+        const mults = this.getMultipliers(this.mines);
+        this.multiplier = mults[Math.min(this.gemsFound - 1, mults.length - 1)];
+        const crosindex = this.gemsFound - 1;
 
-        const mults =
-          this.getMultipliers(this.mines);
-
-        this.multiplier =
-          mults[
-          Math.min(
-            this.gemsFound - 1,
-            mults.length - 1
-          )
-          ];
-
-        const crosindex =
-          this.gemsFound - 1;
-
-        if (
-          this.multiplierCrossed[crosindex]
-          !== undefined
-        ) {
-          this.multiplierCrossed[
-            crosindex
-          ] = true;
+        if (this.multiplierCrossed[crosindex] !== undefined) {
+          this.multiplierCrossed[crosindex] = true;
         }
 
-        this.scrollToActiveMultiplier(
-          crosindex
-        );
-
+        this.scrollToActiveMultiplier(crosindex);
         this.minesProfiles =
           this.minesProfiles.map(
-            (item, i) =>
-              i === index
-                ? {
-                  ...item,
-                  isDimond: true
-                }
-                : item
-          );
+            (item, i) => i === index ? { ...item, isDimond: true } : item);
       }
 
-    }, 800);
+    }, 300);
   }
 
   cashOut() {
-
     this.gameSessionId++;
-
-    const winnings =
-      Math.round(
-        this.betAmount *
-        this.multiplier
-      );
+    const winnings =Math.round(this.betAmount *this.multiplier);
 
     this.balance += winnings;
-
     this.winingAmount = winnings;
-
     this.currentMineIndex =
       Math.max(
         0,
         this.gemsFound - 1
       );
-
     this.showGameOverBox = false;
-
     this.showWinBox = true;
-
     this.gameIsStart = false;
-
     this.revealAllTiles();
-
     setTimeout(() => {
-
       this.resetGame();
-
     }, 2000);
   }
 
@@ -471,23 +406,14 @@ export class MinesComponent {
   }
 
   resetGame() {
-
     this.showWinBox = false;
-
     this.showGameOverBox = false;
-
     this.autoAllLoading = false;
-
     this.winingAmount = 0;
-
     this.currentMineIndex = 0;
-
     this.gemsFound = 0;
-
     this.multiplier = 1.0;
-
     this.minePositions = new Set();
-
     this.showMineProgress = {
       action: false,
       id: ""
@@ -542,13 +468,10 @@ export class MinesComponent {
     this.autoAllLoading = false;
     this.autoCurrentRound = 0;
     this.autoTotalRounds = 0;
-    // reset auto settings
     this.autoBetRounds = 10;
     this.increaseOnWinPercent = 0;
     this.increaseOnLosePercent = 0;
-    // reset selected tiles
     this.autoSelectedBoxes = new Set();
-    // reset bet amount
     this.betAmount = this.initialBetAmount;
     this.gameIsStart = false;
     this.showWinBox = false;
@@ -574,16 +497,13 @@ export class MinesComponent {
 
     // reset multipliers
     this.multiplierCrossed = [];
-
     this.fillInitialMultipliers();
   }
 
 
   revealAllTiles() {
     const updatedProfiles = [];
-
     for (let i = 0; i < 25; i++) {
-
       // bomb
       if (this.minePositions.has(i)) {
         updatedProfiles.push({
@@ -614,7 +534,6 @@ export class MinesComponent {
         });
       }
     }
-
     this.minesProfiles = [...updatedProfiles];
   }
 
@@ -624,11 +543,8 @@ export class MinesComponent {
   }
 
   updateBetAmount(type: 'increase' | 'decrease', percent: number) {
-
     if (percent <= 0) return;
-
     const changeAmount = (this.betAmount * percent) / 100;
-
     if (type === 'increase') {
       this.betAmount =
         Math.round((this.betAmount + changeAmount) * 100) / 100;

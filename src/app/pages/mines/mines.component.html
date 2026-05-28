@@ -9,10 +9,13 @@
       <div class="mines-and-multipliers-section">
 
         <div class="game-multipliers-container" #multipliersContainer>
-          <div *ngFor="let m of multipliers; let i = index" class="mine-multiplier"
-            [class.fill_]="multiplierCrossed[i]">
+          <div *ngFor="let m of multipliers; let i = index" class="mine-multiplier" [ngClass]="{
+              'crossed-multi': i < gemsFound - 1,
+              'current': i === gemsFound - 1 &&( gameIsStart || isAutoBet )
+            }">
             {{ m }}x
           </div>
+        
         </div>
 
 
