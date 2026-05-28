@@ -23,38 +23,103 @@
   </nav>
 </header>
 
-<!-- Profile Modal -->
-<div class="profile-modal" [ngClass]="showProfileModal ? 'active' : 'close'">
-
-  <div class="profile-header">
-    <div class="profile-details">
-      <img src="assets/mines/avtars/profileAvatar.png" class="profile-avtar" />
-      <div class="profile-username">Shubham Choudhary</div>
+<!-- mine-menu-card.component.html -->
+<div class="mine-menu-card" *ngIf="showProfileModal">
+  <div class="mine-menu-card__container">
+    <!-- Header -->
+    <div class="mine-menu-card__header">
+      <h2 class="mine-menu-card__title">Settings</h2>
+      <button class="mine-menu-card__close-btn" (click)="closeMenu()">
+        ✕
+      </button>
+    </div>
+    <!-- Nickname -->
+    <div class="mine-menu-card__nickname-box">
+      <span class="mine-menu-card__nickname-label">
+        Nickname
+      </span>
+      <h3 class="mine-menu-card__nickname">
+        Satisfied Prawn
+      </h3>
     </div>
 
-    <i class="fas fa-times profile-close-icon" (click)="showProfileModal = false"></i>
-  </div>
+    <!-- Limits Button -->
+    <button class="mine-menu-card__menu-btn" (click)="toggleLimits()">
+      <div class="mine-menu-card__menu-left">
+        <div class="mine-menu-card__icon">⦿</div>
+        <span>Limits</span>
+      </div>
+      <span>+</span>
+    </button>
 
-  <div class="profile-settings-list">
+    <button class="mine-menu-card__menu-btn" (click)="toggleRules()">
+      <div class="mine-menu-card__menu-left">
+        <div class="mine-menu-card__icon">
+          📄
+        </div>
+        <span>Rules</span>
+      </div>
+      <span>+</span>
+    </button>
 
     <!-- Sound -->
-    <div class="profile-setting">
-      <div class="setting-name">Sound</div>
-
-      <i *ngIf="soundIsOn" class="fas fa-volume-up profile-setting-icon" (click)="handleSoundSetting()"></i>
-
-      <i *ngIf="!soundIsOn" class="fas fa-volume-mute profile-setting-icon" (click)="handleSoundSetting()"></i>
+    <div class="mine-menu-card__sound-row">
+      <div class="mine-menu-card__sound-icon">
+    <i class="fa-solid fa-volume-high"></i>
+      </div>
+      <input type="range" min="0" max="100" [value]="soundService.volume" (input)="onVolumeChange($event)"
+        class="mine-menu-card__slider" />
     </div>
-
-    <!-- Rules -->
-    <div class="profile-setting">
-      <div class="setting-name">Game Rules</div>
-      <i class="fas fa-bars profile-setting-icon" (click)="showRulesModal = true"></i>
-    </div>
-
   </div>
 </div>
 
 
-<app-mines-game-rules (close)="closeGameRules()" [showRulesModal]="showRulesModal">
-</app-mines-game-rules>
+
+
+<!-- limits-modal.component.html -->
+<!-- mine-limits.component.html -->
+
+<div class="mine-limits" *ngIf="showLimits">
+  <div class="mine-limits__overlay" (click)="toggleLimits()"></div>
+  <div class="mine-limits__modal">
+    <div class="mine-limits__header">
+      <h2 class="mine-limits__title">
+        Limits
+      </h2>
+      <button class="mine-limits__close-btn" (click)="toggleLimits()">✕</button>
+    </div>
+
+    <div class="mine-limits__cards">
+      <div class="mine-limits__mini-box">
+        <span class="mine-limits__label">
+          Min bet
+        </span>
+        <h3 class="mine-limits__value">
+          $0.1
+        </h3>
+      </div>
+
+      <!-- Max Bet -->
+      <div class="mine-limits__mini-box">
+        <span class="mine-limits__label">
+          Max bet
+        </span>
+        <h3 class="mine-limits__value">
+          $100
+        </h3>
+      </div>
+      <!-- Max Profit -->
+      <div class="mine-limits__mini-box">
+        <span class="mine-limits__label">
+          Max Profit
+        </span>
+        <h3 class="mine-limits__value">
+          $10000
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-mines-game-rules *ngIf="showRules" (close)="closeGameRules()"></app-mines-game-rules>

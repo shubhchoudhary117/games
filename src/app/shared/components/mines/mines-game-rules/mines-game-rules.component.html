@@ -1,24 +1,36 @@
-<div class="game-rules-modal" [ngClass]="showRulesModal ? 'show' : 'hide'">
-
-    <span class="rules-close-icon" (click)="closeModal()">✖</span>
-
-    <div class="game-rules-list">
-        <div class="game-rule" *ngFor="let Rule of Game_Rules">
-
-            <div class="rule-heading">
-                {{ Rule.title }}
-            </div>
-            <ng-container >
-                <div class="rule-step" *ngFor="let Step of Rule.steps">
-                    {{ Step }}
+<div class="mine-rules__overlay" (click)="closeModal()">
+    <div class="mine-rules" (click)="$event.stopPropagation()">
+        <div class="mine-rules__modal">
+            <div class="mine-rules__header">
+                <div class="mine-rules__title">
+                    Rules
                 </div>
-            </ng-container>
-
-            <div class="rule-step" *ngIf="Rule.description">
-                {{ Rule.description }}
+                <button class="mine-rules__close-btn" (click)="closeModal()">✕</button>
             </div>
 
-        </div>
+            <div class="mine-rules__top-content">
+                Turn on your sixth sense and find all
+                the gems without hitting a mine! .
+            </div>
 
+            <div class="mine-rules__accordion-item" *ngFor="let item of accordions; let i = index">
+                <div class="mine-rules__accordion-header" (click)="toggleAccordion(i)">
+                    <div class="mine-rules__accordion-title">
+                        {{ item.title }}
+                    </div>
+                    <div class="mine-rules__accordion-arrow" [ngClass]="{
+              'mine-rules__accordion-arrow--rotate':
+              item.isOpen}">⌄</div>
+                </div>
+                <div class="mine-rules__accordion-body" [ngClass]="{'mine-rules__accordion-body--open': item.isOpen}">
+                    <div class="mine-rules__accordion-content">
+                        <div class="mine-rules__point" *ngFor="let point of item.points">
+                            <span class="mine-rules__dot"></span>
+                            {{ point }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

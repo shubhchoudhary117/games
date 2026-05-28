@@ -3,6 +3,7 @@ import { MinesHeaderComponent } from "../../shared/components/mines/mines-header
 import { DecimalPipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MinesBethistoryComponent } from "../../shared/components/mines/mines-bethistory/mines-bethistory.component";
+import { MineSoundService } from './mine.sound.service';
 
 @Component({
   selector: 'app-mines',
@@ -28,17 +29,34 @@ export class MinesComponent {
   winingAmount: number = 0;
   currentMineIndex: number = 0;
   multiplierCrossed: boolean[] = [];
+  isAutoBet: boolean = false;
+  autoBetRounds: number = 10;
+  initialBetAmount: number = 100;
+  autoSelectedBoxes: Set<number> = new Set();
+  isAutoRunning: boolean = false;
+  autoAllLoading: boolean = false;   
+  autoCurrentRound: number = 0;
+  autoTotalRounds: number = 0;
+  autoRoundBetweenDelay: number = 1800;
+  gameSessionId = 0;
+  increaseOnWinType: 'increase' | 'decrease' = 'increase';
+  increaseOnLoseType: 'increase' | 'decrease' = 'increase';
+  increaseOnWinPercent: number = 100;
+  increaseOnLosePercent: number = 100;
 
   @ViewChild('mineAudio') mineAudio!: ElementRef<HTMLAudioElement>;
-  @ViewChild('dimondAudio') dimondAudio!: ElementRef<HTMLAudioElement>
+  @ViewChild('dimondAudio') dimondAudio!: ElementRef<HTMLAudioElement>;
   @ViewChild('multipliersContainer') multipliersRef!: ElementRef;
+  @ViewChild('buttonClickAudio') ButtonClickAudio!: ElementRef<HTMLAudioElement>;
 
+  constructor(
+    public soundService: MineSoundService
+  ) { }
 
   ngOnInit() {
-    this.multipliers = this.getMultipliers(this.mines)
+    this.multipliers = this.getMultipliers(this.mines);
   }
 
-  // ── Computed multiplier table based on mine count ──────────────
   getMultipliers(minesCount: number): number[] {
     const safeTiles = 25 - minesCount;
     const mults: number[] = [];
@@ -50,9 +68,6 @@ export class MinesComponent {
     return mults;
   }
 
-
-
-  // ── Derived getters for template ───────────────────────────────
   get gemPercent(): number {
     const safe = 25 - this.mines;
     const remaining = safe - this.gemsFound;
@@ -71,92 +86,381 @@ export class MinesComponent {
     return this.minesProfiles.filter(m => m.isDimond || m.isBomb).length;
   }
 
-  get nextMultiplier(): number {
-    const mults = this.getMultipliers(this.mines);
-    return mults[Math.min(this.gemsFound, mults.length - 1)] ?? 1;
+  get maxAutoSelectBoxes(): number {
+    return 25 - this.mines;
   }
 
-  // ── Game start ─────────────────────────────────────────────────
-  gameStartHandler() {
-    this.gameIsStart = true;
+  get canStartAutoBet(): boolean {
+    return this.autoBetRounds > 0 && this.autoSelectedBoxes.size > 0 && !this.isAutoRunning;
+  }
+
+  setAutoBet(val: boolean) {
+    if (this.isAutoRunning || this.gameIsStart) return;
+    this.isAutoBet = val;
+    if (!val) {
+      this.autoSelectedBoxes = new Set();
+      this.minesProfiles = Array(25).fill(null).map((_, i) => ({ mineId: i }));
+    }
+  }
+
+  handleAutoBoxSelect(index: number) {
+    if (!this.isAutoBet || this.isAutoRunning || this.autoAllLoading) return;
+    if (this.autoSelectedBoxes.has(index)) {
+      this.autoSelectedBoxes.delete(index);
+    } else {
+      if (this.autoSelectedBoxes.size >= this.maxAutoSelectBoxes) return;
+      this.autoSelectedBoxes.add(index);
+    }
+    this.autoSelectedBoxes = new Set(this.autoSelectedBoxes);
+  }
+
+  isAutoSelected(index: number): boolean {
+    return this.autoSelectedBoxes.has(index);
+  }
+
+  startAutoBet() {
+    if (!this.canStartAutoBet) return;
+    if (this.balance < this.betAmount) return;
+    this.soundService.play(this.ButtonClickAudio);
+    this.isAutoRunning = true;
+    this.autoCurrentRound = 0;
+    this.autoTotalRounds = this.autoBetRounds;
+    this.initialBetAmount = this.betAmount;
+
+    this.runAutoRound();
+  }
+
+  private runAutoRound() {
+    if (!this.isAutoRunning) return;
+    if (this.autoCurrentRound >= this.autoTotalRounds) {
+      this.resetAutoBetStates();
+      this.stopAutoBet();
+      return;
+    }
+    if (this.balance < this.betAmount) {
+      this.stopAutoBet();
+      return;
+    }
+
+    this.autoCurrentRound++;
+
+    // Reset for this round
     this.gemsFound = 0;
     this.multiplier = 1.0;
     this.balance -= this.betAmount;
     this.multipliers = this.getMultipliers(this.mines);
+    this.multiplierCrossed = Array(this.multipliers.length).fill(false);
+    this.showWinBox = false;
+    this.showGameOverBox = false;
 
+    // Place mines randomly
     this.minePositions = new Set<number>();
     while (this.minePositions.size < this.mines) {
       this.minePositions.add(Math.floor(Math.random() * 25));
     }
 
-    this.minesProfiles = Array(25).fill(null).map((_, i) => ({ mineId: i }));
-    this.multiplierCrossed = Array(this.multipliers.length).fill(false);
+    // Step 1: Show loader on ALL 25 boxes for 3 seconds
+    this.autoAllLoading = true;
+    this.minesProfiles = Array(25).fill(null).map((_, i) => ({ mineId: i, isLoading: true }));
+
+    // Step 2: After 3 seconds — reveal all 25 at once
+    setTimeout(() => {
+      if (!this.isAutoRunning) return;
+
+      this.autoAllLoading = false;
+
+      const selectedArr = Array.from(this.autoSelectedBoxes);
+      const hitBomb = selectedArr.some(idx => this.minePositions.has(idx));
+      const safeSelected = selectedArr.filter(idx => !this.minePositions.has(idx));
+
+      // Reveal ALL 25 boxes simultaneously
+      this.minesProfiles = Array(25).fill(null).map((_, i) => {
+
+        if (this.minePositions.has(i)) {
+          return {
+            mineId: i,
+            isBomb: true
+          };
+        }
+
+        if (this.autoSelectedBoxes.has(i)) {
+          return {
+            mineId: i,
+            isDimond: true
+          };
+        }
+
+        return {
+          mineId: i,
+          isSafe: true
+        };
+
+      });
+
+      if (hitBomb) {
+        this.gemsFound = safeSelected.length;
+        this.multiplier = 1.0;
+        setTimeout(() => this.autoHandleLoss(), 700);
+      } else {
+        const mults = this.getMultipliers(this.mines);
+        this.gemsFound = selectedArr.length;
+        this.multiplier = mults[Math.min(this.gemsFound - 1, mults.length - 1)] ?? 1.0;
+        for (let i = 0; i < this.gemsFound; i++) {
+          if (this.multiplierCrossed[i] !== undefined) this.multiplierCrossed[i] = true;
+        }
+        this.scrollToActiveMultiplier(this.gemsFound - 1);
+        setTimeout(() => this.autoHandleWin(), 700);
+      }
+    }, 3000);
   }
 
-  // ── Mine cell click ────────────────────────────────────────────
-  handleMineClick(mine: any, index: number) {
-    this.mineAudio?.nativeElement?.play();
-    this.showMineProgress = { action: true, id: mine.mineId };
+  private autoHandleWin() {
+
+    const winnings = Math.round(this.betAmount * this.multiplier);
+
+    this.balance += winnings;
+
+    this.winingAmount = winnings;
+
+    this.currentMineIndex = Math.max(0, this.gemsFound - 1);
+
+    this.showGameOverBox = false;
+
+    this.showWinBox = true;
+
+    // WIN RULE
+    this.updateBetAmount(
+      this.increaseOnWinType,
+      this.increaseOnWinPercent
+    );
 
     setTimeout(() => {
-      this.showMineProgress = { action: false, id: "" };
+
+      this.showWinBox = false;
+
+      setTimeout(() => {
+        this.runAutoRound();
+      }, 400);
+
+    }, this.autoRoundBetweenDelay);
+  }
+
+  private autoHandleLoss() {
+
+    this.winingAmount = 0;
+
+    this.currentMineIndex = 0;
+
+    this.showGameOverBox = true;
+
+    this.showWinBox = true;
+
+    // LOSS RULE
+    this.updateBetAmount(
+      this.increaseOnLoseType,
+      this.increaseOnLosePercent
+    );
+
+    setTimeout(() => {
+
+      this.showWinBox = false;
+
+      this.showGameOverBox = false;
+
+      setTimeout(() => {
+        this.runAutoRound();
+      }, 400);
+
+    }, this.autoRoundBetweenDelay);
+  }
+
+  stopAutoBet() {
+    this.isAutoRunning = false;
+    this.autoAllLoading = false;
+    this.gameIsStart = false;
+    this.showWinBox = false;
+    this.showGameOverBox = false;
+    this.autoCurrentRound = 0;
+    this.gemsFound = 0;
+    this.multiplier = 1.0;
+    this.minePositions = new Set();
+    this.showMineProgress = { action: false, id: "" };
+    this.minesProfiles = Array(25).fill(null).map((_, i) => ({ mineId: i }));
+    this.fillInitialMultipliers();
+    this.resetAutoBetStates();
+  }
+
+  // ── Manual game ────────────────────────────────────────────────
+  gameStartHandler() {
+    this.gameSessionId++;
+    const sessionId = this.gameSessionId;
+    this.resetGame();
+    this.gameIsStart = true;
+    this.gemsFound = 0;
+    this.multiplier = 1.0;
+    this.balance -= this.betAmount;
+    this.soundService.play(this.ButtonClickAudio);
+    this.multipliers =
+      this.getMultipliers(this.mines);
+    this.minePositions = new Set<number>();
+    while (
+      this.minePositions.size < this.mines
+    ) {
+      this.minePositions.add(
+        Math.floor(Math.random() * 25)
+      );
+    }
+    this.minesProfiles = Array(25)
+      .fill(null)
+      .map((_, i) => ({
+        mineId: i
+      }));
+
+    this.multiplierCrossed =
+      Array(this.multipliers.length)
+        .fill(false);
+  }
+
+  handleMineClick(mine: any, index: number) {
+
+    if (!this.gameIsStart) return;
+
+    const sessionId = this.gameSessionId;
+
+    this.soundService.play(this.mineAudio);
+
+    this.showMineProgress = {
+      action: true,
+      id: mine.mineId
+    };
+
+    setTimeout(() => {
+
+      /* OLD GAME CALLBACK BLOCK */
+      if (
+        sessionId !== this.gameSessionId
+      ) return;
+
+      this.showMineProgress = {
+        action: false,
+        id: ""
+      };
 
       if (this.minePositions.has(index)) {
-        this.minesProfiles = this.minesProfiles.map((item, i) => {
-          if (this.minePositions.has(i)) return { ...item, isBomb: true };
-          return item;
-        });
+
+        this.revealAllTiles();
 
         this.gameIsStart = false;
 
         setTimeout(() => {
-          this.minesProfiles = this.minesProfiles.map((item, i) => {
-            if (this.minePositions.has(i)) return { ...item, isBomb: true };
-            return item;
-          });
-          this.gameIsStart = false;
+
+          if (
+            sessionId !== this.gameSessionId
+          ) return;
+
           this.winingAmount = 0;
+
           this.currentMineIndex = 0;
+
           this.showGameOverBox = true;
+
           this.showWinBox = true;
 
           setTimeout(() => {
-              this.resetGame()
+
+            if (
+              sessionId !==
+              this.gameSessionId
+            ) return;
+
+            this.resetGame();
+
           }, 2000);
-        }, 300);
+
+        }, 500);
 
       } else {
-        // GEM found
-        this.dimondAudio?.nativeElement?.play();
-        this.gemsFound++;
-        const mults = this.getMultipliers(this.mines);
-        this.multiplier = mults[Math.min(this.gemsFound - 1, mults.length - 1)];
-        const crosindex = this.gemsFound - 1;
 
-        if (this.multiplierCrossed[crosindex] !== undefined) {
-          this.multiplierCrossed[crosindex] = true;
-        }
-        this.scrollToActiveMultiplier(crosindex);
-
-        this.minesProfiles = this.minesProfiles.map((item, i) =>
-          i === index ? { ...item, isDimond: true } : item
+        this.soundService.play(
+          this.dimondAudio
         );
+
+        this.gemsFound++;
+
+        const mults =
+          this.getMultipliers(this.mines);
+
+        this.multiplier =
+          mults[
+          Math.min(
+            this.gemsFound - 1,
+            mults.length - 1
+          )
+          ];
+
+        const crosindex =
+          this.gemsFound - 1;
+
+        if (
+          this.multiplierCrossed[crosindex]
+          !== undefined
+        ) {
+          this.multiplierCrossed[
+            crosindex
+          ] = true;
+        }
+
+        this.scrollToActiveMultiplier(
+          crosindex
+        );
+
+        this.minesProfiles =
+          this.minesProfiles.map(
+            (item, i) =>
+              i === index
+                ? {
+                  ...item,
+                  isDimond: true
+                }
+                : item
+          );
       }
+
     }, 800);
   }
 
-  // ── Cash out (only available after 1+ gems found) ──────────────
   cashOut() {
-    const winnings = Math.round(this.betAmount * this.multiplier);
+
+    this.gameSessionId++;
+
+    const winnings =
+      Math.round(
+        this.betAmount *
+        this.multiplier
+      );
+
     this.balance += winnings;
-    this.gameIsStart = false;
+
     this.winingAmount = winnings;
-    this.currentMineIndex = Math.max(0, this.gemsFound - 1);
+
+    this.currentMineIndex =
+      Math.max(
+        0,
+        this.gemsFound - 1
+      );
+
     this.showGameOverBox = false;
+
     this.showWinBox = true;
 
+    this.gameIsStart = false;
+
+    this.revealAllTiles();
+
     setTimeout(() => {
+
       this.resetGame();
+
     }, 2000);
   }
 
@@ -166,17 +470,34 @@ export class MinesComponent {
     this.resetGame();
   }
 
-  // ── Full state reset ───────────────────────────────────────────
   resetGame() {
+
     this.showWinBox = false;
+
     this.showGameOverBox = false;
+
+    this.autoAllLoading = false;
+
     this.winingAmount = 0;
+
     this.currentMineIndex = 0;
+
     this.gemsFound = 0;
+
     this.multiplier = 1.0;
+
     this.minePositions = new Set();
-    this.showMineProgress = { action: false, id: "" };
-    this.minesProfiles = Array(25).fill(null).map(() => ({}));
+
+    this.showMineProgress = {
+      action: false,
+      id: ""
+    };
+
+    this.minesProfiles = Array(25)
+      .fill(null)
+      .map((_, i) => ({
+        mineId: i
+      }));
     this.fillInitialMultipliers();
   }
 
@@ -194,18 +515,129 @@ export class MinesComponent {
     setTimeout(() => {
       const container = this.multipliersRef?.nativeElement;
       const items = container?.querySelectorAll('.mine-multiplier');
-
       if (items && items[index]) {
-        items[index].scrollIntoView({
-          behavior: 'smooth',
-          block: 'nearest',
-          inline: 'center'
-        });
+        items[index].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
       }
-    }, 50); 
+    }, 50);
   }
 
-  fillInitialMultipliers(){
-    this.multipliers=this.getMultipliers(this.mines);
+  fillInitialMultipliers() {
+    this.multipliers = this.getMultipliers(this.mines);
+  }
+
+  resetOnWin() {
+    this.betAmount = this.initialBetAmount;
+    this.increaseOnWinPercent = 0;
+  }
+
+  resetOnLose() {
+    this.betAmount = this.initialBetAmount;
+    this.increaseOnLosePercent = 0;
+  }
+
+
+  resetAutoBetStates() {
+    // auto states
+    this.isAutoRunning = false;
+    this.autoAllLoading = false;
+    this.autoCurrentRound = 0;
+    this.autoTotalRounds = 0;
+    // reset auto settings
+    this.autoBetRounds = 10;
+    this.increaseOnWinPercent = 0;
+    this.increaseOnLosePercent = 0;
+    // reset selected tiles
+    this.autoSelectedBoxes = new Set();
+    // reset bet amount
+    this.betAmount = this.initialBetAmount;
+    this.gameIsStart = false;
+    this.showWinBox = false;
+    this.showGameOverBox = false;
+    this.gemsFound = 0;
+    this.multiplier = 1.0;
+    this.winingAmount = 0;
+    this.currentMineIndex = 0;
+
+    // reset mines
+    this.minePositions = new Set();
+    this.showMineProgress = {
+      action: false,
+      id: ""
+    };
+
+    // reset board
+    this.minesProfiles = Array(25)
+      .fill(null)
+      .map((_, i) => ({
+        mineId: i
+      }));
+
+    // reset multipliers
+    this.multiplierCrossed = [];
+
+    this.fillInitialMultipliers();
+  }
+
+
+  revealAllTiles() {
+    const updatedProfiles = [];
+
+    for (let i = 0; i < 25; i++) {
+
+      // bomb
+      if (this.minePositions.has(i)) {
+        updatedProfiles.push({
+          mineId: i,
+          isBomb: true,
+          isDimond: false,
+          isSafe: false
+        });
+      }
+
+      // already opened diamond
+      else if (this.minesProfiles[i]?.isDimond) {
+        updatedProfiles.push({
+          mineId: i,
+          isDimond: true,
+          isBomb: false,
+          isSafe: false
+        });
+      }
+
+      // remaining safe tiles
+      else {
+        updatedProfiles.push({
+          mineId: i,
+          isSafe: true,
+          isBomb: false,
+          isDimond: false
+        });
+      }
+    }
+
+    this.minesProfiles = [...updatedProfiles];
+  }
+
+
+  get remainingRounds(): number {
+    return Math.max(this.autoBetRounds - this.autoCurrentRound, 0);
+  }
+
+  updateBetAmount(type: 'increase' | 'decrease', percent: number) {
+
+    if (percent <= 0) return;
+
+    const changeAmount = (this.betAmount * percent) / 100;
+
+    if (type === 'increase') {
+      this.betAmount =
+        Math.round((this.betAmount + changeAmount) * 100) / 100;
+    } else {
+      this.betAmount =
+        Math.max(
+          1,
+          Math.round((this.betAmount - changeAmount) * 100) / 100
+        );
+    }
   }
 }
