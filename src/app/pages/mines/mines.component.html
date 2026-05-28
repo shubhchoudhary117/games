@@ -15,17 +15,17 @@
             }">
             {{ m }}x
           </div>
-        
+
         </div>
 
 
-        
+
         <div class="mines-container">
           <!-- MANUAL MODE -->
           <ng-container *ngIf="!isAutoBet">
             <button *ngFor="let item of minesProfiles; let i = index"
               [disabled]="item?.isBomb || item?.isDimond || !gameIsStart || showMineProgress.action" class="mine-box"
-              (click)="handleMineClick(item, i)">
+              (click)="handleMineClick(item, i)" [class.diamond-glow]="item?.isDimond" [class.bomb-glow]="item?.isBomb">
 
               <div *ngIf="showMineProgress.action && showMineProgress.id === item.mineId" class="progress-wrapper">
                 <img src="assets/mines/game-icons/Progress_Mine_Loader.svg" class="mine-loader">
@@ -56,9 +56,9 @@
                 </div>
 
                 <!-- Gem / Bomb after round reveal -->
-            <div *ngIf="!(showMineProgress.action && showMineProgress.id == item.mineId)" class="mine-box-inner_"
-              [ngClass]="{ 'is_Bomb': item?.isBomb, 'is_Dimond': item?.isDimond, 'is_Safe': item?.isSafe }">
-            </div>
+                <div *ngIf="!(showMineProgress.action && showMineProgress.id == item.mineId)" class="mine-box-inner_"
+                  [ngClass]="{ 'is_Bomb': item?.isBomb, 'is_Dimond': item?.isDimond, 'is_Safe': item?.isSafe }">
+                </div>
 
                 <div *ngIf="!isAutoSelected(i) && !item?.isDimond && !item?.isBomb" class="mine-box-inner_">
                 </div>
@@ -138,27 +138,28 @@
 
           <!-- AUTO BET CONTROLS -->
           <ng-container *ngIf="isAutoBet">
-          <div class="auto-bet-rounds-input-wrapper">
-            <div class="autobet-rounds-label">
-              Number of Rounds
+            <div class="auto-bet-rounds-input-wrapper">
+              <div class="autobet-rounds-label">
+                Number of Rounds
+              </div>
+              <input type="number" class="autobet-rounds-input" min="1" [disabled]="isAutoRunning"
+                [value]="isAutoRunning ? remainingRounds : autoBetRounds"
+                (input)="autoBetRounds = +$any($event.target).value">
             </div>
-            <input type="number" class="autobet-rounds-input" min="1" [disabled]="isAutoRunning"
-              [value]="isAutoRunning ? remainingRounds : autoBetRounds" (input)="autoBetRounds = +$any($event.target).value">
-          </div>
 
             <div class="auto-bet-profit-loss-wrapper" [class.disabled]="gameIsStart || isAutoRunning">
               <div class="auto-bet-condition-row">
                 <div class="condition-label">When Winning</div>
                 <div class="condition-controls">
-                <button class="condition-btn increase" [class.active]="increaseOnWinType === 'increase'"
-                  (click)="increaseOnWinType = 'increase'">
-                  Increase by                
-                </button>
+                  <button class="condition-btn increase" [class.active]="increaseOnWinType === 'increase'"
+                    (click)="increaseOnWinType = 'increase'">
+                    Increase by
+                  </button>
 
-                <button class="condition-btn decrease" [class.active]="increaseOnWinType === 'decrease'"
-                  (click)="increaseOnWinType = 'decrease'">
-                  Decrease by
-                </button>
+                  <button class="condition-btn decrease" [class.active]="increaseOnWinType === 'decrease'"
+                    (click)="increaseOnWinType = 'decrease'">
+                    Decrease by
+                  </button>
                   <div class="condition-input-box">
                     <input type="number" [(ngModel)]="increaseOnWinPercent" [disabled]="isAutoRunning"
                       class="condition-input" min="0" />
@@ -170,14 +171,14 @@
               <div class="auto-bet-condition-row">
                 <div class="condition-label">When Losing</div>
                 <div class="condition-controls">
-                <button class="condition-btn increase" [class.active]="increaseOnLoseType === 'increase'"
-                  (click)="increaseOnLoseType = 'increase'">
-                  Increase by
-                </button>
-                <button class="condition-btn decrease" [class.active]="increaseOnLoseType === 'decrease'"
-                  (click)="increaseOnLoseType = 'decrease'">
-                  Decrease by
-                </button>
+                  <button class="condition-btn increase" [class.active]="increaseOnLoseType === 'increase'"
+                    (click)="increaseOnLoseType = 'increase'">
+                    Increase by
+                  </button>
+                  <button class="condition-btn decrease" [class.active]="increaseOnLoseType === 'decrease'"
+                    (click)="increaseOnLoseType = 'decrease'">
+                    Decrease by
+                  </button>
                   <div class="condition-input-box">
                     <input type="number" [(ngModel)]="increaseOnLosePercent" [disabled]="isAutoRunning"
                       class="condition-input" min="0" />
@@ -194,7 +195,7 @@
               </button>
 
               <button *ngIf="isAutoRunning" (click)="stopAutoBet()" class="start-btn auto-start-btn">
-              <span class="auto-btn-label">Stop Auto Bet</span>
+                <span class="auto-btn-label">Stop Auto Bet</span>
               </button>
             </div>
           </ng-container>
