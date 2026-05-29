@@ -478,7 +478,7 @@ $tablet: 768px;
     // ── Gaddi Stack Effect ────────────────────────────────────────────────────────
      &__gaddi-stack {
        position: absolute;
-       bottom: -5px; // ← bottom pe
+       bottom: -3px; // ← bottom pe
        left: 50%;
        transform: translateX(-50%);
        width: 90px;
@@ -489,7 +489,7 @@ $tablet: 768px;
        @media (max-width: $mobile) {
          width: 68px;
          height: 98px;
-         bottom: -8px;
+         bottom: -3px;
        }
      }
   
