@@ -61,7 +61,6 @@ export class HiloGameComponent {
     bet: 2,
     step: 0,
     multiplier: 1,
-    // ── KEY CHANGE: load a random card immediately on init ──
     currentCard: this.randomCardStatic(),
     nextCard: null,
     history: [],
@@ -91,7 +90,7 @@ export class HiloGameComponent {
   @ViewChild('betPlaceAudioRef') betPlaceAudio!: ElementRef<HTMLAudioElement>;
   @ViewChild('cashoutAudioRef') cashoutAudio!: ElementRef<HTMLAudioElement>;
   @ViewChild('openCardAudioRef') openCardAudio!: ElementRef<HTMLAudioElement>;
-
+  @ViewChild('historyScrollRef') historyScrollRef!: ElementRef<HTMLDivElement>;
 
 
 
@@ -119,8 +118,8 @@ export class HiloGameComponent {
     this.showStakes = false;
   }
 
-  toggleStakes(){
-    this.showStakes=!this.showStakes;
+  toggleStakes() {
+    this.showStakes = !this.showStakes;
   }
 
 
@@ -324,6 +323,7 @@ export class HiloGameComponent {
     else win = next.rankValue <= cur.rankValue;
 
     this.state.history.push({ card: cur, guess: direction, won: win });
+    this.scrollHistoryToLeft();
 
     if (win) {
       this.state.step++;
@@ -386,6 +386,7 @@ export class HiloGameComponent {
     this.nextPrepared = false;
     this.state.gameStarted = false;
     this.cardFlying = false;
+    this.resetHistoryScroll();
     this.cdr.markForCheck();
   }
 
@@ -397,5 +398,24 @@ export class HiloGameComponent {
   private _later(ms: number, fn: () => void): void {
     const t = setTimeout(fn, ms);
     this._timers.push(t);
+  }
+
+  private scrollHistoryToLeft() {
+    if (!this.historyScrollRef) return;
+    const el = this.historyScrollRef.nativeElement;
+    requestAnimationFrame(() => {
+      el.scrollTo({
+        left: el.scrollWidth,
+        behavior: 'smooth'
+      });
+    });
+  }
+  private resetHistoryScroll() {
+    if (!this.historyScrollRef) return;
+    const el = this.historyScrollRef.nativeElement;
+    el.scrollTo({
+      left: 0,
+      behavior: 'smooth'
+    });
   }
 }

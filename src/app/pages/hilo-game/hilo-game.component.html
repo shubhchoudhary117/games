@@ -34,7 +34,7 @@
         <div class="hilo__gamebody">
           <div class="hilo__bodyrow">
             <div class="hilo__gamehistory">
-              <div class="hilo__history-inner">
+              <div class="hilo__history-inner" #historyScrollRef>
                 <ng-container *ngFor="let entry of state.history">
                   <div class="hilo__mini-card" [class.red]="isRed(entry.card)">
                     <span class="hilo__mini-rank">{{ entry.card.rank }}</span>

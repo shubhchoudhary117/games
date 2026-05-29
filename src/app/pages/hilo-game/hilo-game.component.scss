@@ -18,7 +18,7 @@ $tablet: 768px;
 
 .hilo {
   width: 100%;
-  min-height: 100svh; 
+  min-height: 100svh;
   background: #1a0e00;
   display: flex;
   align-items: center;
@@ -277,13 +277,12 @@ $tablet: 768px;
     overflow-x: auto;
     overflow-y: hidden;
 
-    &::-webkit-scrollbar {
-      height: 4px;
-    }
+    scroll-behavior: smooth;
 
-    &::-webkit-scrollbar-thumb {
-      background: rgba(255, 200, 100, 0.3);
-      border-radius: 4px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
     }
 
     @media (max-width: $mobile) {
@@ -1507,6 +1506,7 @@ $tablet: 768px;
     }
   }
 }
+
 .hilo__card-fly-in {
   animation: hiloCardFlyIn 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
   z-index: 5;
