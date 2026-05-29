@@ -75,21 +75,28 @@
               </div>
             </div>
 
-            <div class="hilo__card-slot hilo__card-slot--next">
-              <div class="hilo__card-inner gaddi" [class.flipped]="nextFlipped">
-                <div class="hilo__card-back"></div>
-                <div class="hilo__card-face" [class.red]="state.nextCard && isRed(state.nextCard)"
-                  *ngIf="state.nextCard">
-                  <span class="hilo__card-corner hilo__card-corner--tl">{{ state.nextCard.rank }}</span>
-                  <span class="hilo__card-rank">{{ state.nextCard.rank }}</span>
-                  <span class="hilo__card-suit">{{ state.nextCard.suit.symbol }}</span>
-                  <span class="hilo__card-corner hilo__card-corner--br">{{ state.nextCard.rank }}</span>
-                </div>
-                <div class="hilo__card-face hilo__card-face--placeholder" *ngIf="!state.nextCard && !nextPrepared">
-                  <span class="hilo__card-rank" style="opacity:0.3">?</span>
-                </div>
+          <div class="hilo__card-slot hilo__card-slot--next">
+            <!-- Gaddi ke neeche wali fake cards (stack effect) -->
+            <div class="hilo__gaddi-stack">
+              <div class="hilo__gaddi-card hilo__gaddi-card--3"></div>
+              <div class="hilo__gaddi-card hilo__gaddi-card--2"></div>
+              <div class="hilo__gaddi-card hilo__gaddi-card--1"></div>
+            </div>
+          
+            <!-- Actual playable card -->
+            <div class="hilo__card-inner gaddi" [class.flipped]="nextFlipped" [class.hilo__card--lost]="nextCardLost">
+              <div class="hilo__card-back"></div>
+              <div class="hilo__card-face" [class.red]="state.nextCard && isRed(state.nextCard)" *ngIf="state.nextCard">
+                <span class="hilo__card-corner hilo__card-corner--tl">{{ state.nextCard.rank }}</span>
+                <span class="hilo__card-rank">{{ state.nextCard.rank }}</span>
+                <span class="hilo__card-suit">{{ state.nextCard.suit.symbol }}</span>
+                <span class="hilo__card-corner hilo__card-corner--br">{{ state.nextCard.rank }}</span>
+              </div>
+              <div class="hilo__card-face hilo__card-face--placeholder" *ngIf="!state.nextCard && !nextPrepared">
+                <span class="hilo__card-rank" style="opacity:0.3">?</span>
               </div>
             </div>
+          </div>
           </div>
 
           <div class="hilo__card-load-action">

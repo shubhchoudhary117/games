@@ -74,6 +74,7 @@ export class HiloGameComponent {
   showStakes = false;
   cardFlying = false;
   isLoading = true;
+  nextCardLost = false;
 
   amountStakes = [
     0.10, 0.20,
@@ -356,7 +357,10 @@ export class HiloGameComponent {
       this.cdr.markForCheck();
 
     } else {
-      await this.delay(400);
+      this.nextCardLost = true;
+      this.cdr.markForCheck();
+      await this.delay(1500);
+      this.nextCardLost = false;
       this.state.phase = 'crashed';
       this.state.animating = false;
       this.cdr.markForCheck();
@@ -392,6 +396,7 @@ export class HiloGameComponent {
     this.nextPrepared = false;
     this.state.gameStarted = false;
     this.cardFlying = false;
+    this.nextCardLost = false;
     this.resetHistoryScroll();
     this.cdr.markForCheck();
   }
