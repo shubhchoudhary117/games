@@ -5,6 +5,7 @@ import { HiloGameLimitsComponent } from "../../shared/components/hilo/hilo-game-
 import { HiloGameRulesComponent } from "../../shared/components/hilo/hilo-game-rules/hilo-game-rules.component";
 import { HiloHowToPlayComponent } from "../../shared/components/hilo/hilo-how-to-play/hilo-how-to-play.component";
 import { HiliBethistoryComponent } from "../../shared/components/hilo/hili-bethistory/hili-bethistory.component";
+import { HiloSoundService } from './services/hilo.sound.service';
 
 export type Suit = { symbol: string; color: 'red' | 'black' };
 export type Card = { rank: string; rankValue: number; suit: Suit };
@@ -72,6 +73,7 @@ export class HiloGameComponent {
   nextFlipped = false;
   nextPrepared = false;
   showStakes = false;
+  cardFlying = false;
 
   amountStakes = [
     0.10, 0.20,
@@ -94,7 +96,10 @@ export class HiloGameComponent {
 
 
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public hiloSoundService: HiloSoundService
+  ) { }
 
   ngOnInit(): void { }
 
@@ -283,7 +288,7 @@ export class HiloGameComponent {
     this.state.gameStarted = true;
     this.currentFlipped = true;
     this.cdr.markForCheck();
-    this.betPlaceAudio.nativeElement.play();
+    this.hiloSoundService.play(this.betPlaceAudio);
   }
 
   handleAction(): void {
@@ -304,7 +309,7 @@ export class HiloGameComponent {
     this.state.nextCard = next;
     this.nextFlipped = false;
     this.nextPrepared = true;
-    this.openCardAudio.nativeElement.play();
+    this.hiloSoundService.play(this.openCardAudio);
     this.cdr.markForCheck();
     await this.delay(80);
 
@@ -324,10 +329,20 @@ export class HiloGameComponent {
       this.state.step++;
       this.state.multiplier = this.calcMultiplier(this.state.step);
 
+      // Pehle card data aur flipped set karo
       this.state.currentCard = next;
       this.currentFlipped = true;
+      this.cdr.markForCheck();
 
-      await this.delay(200);
+      // Ek tick baad fly trigger karo taaki Angular DOM update kar sake
+      await this.delay(20);
+
+      this.cardFlying = true;
+      this.cdr.markForCheck();
+
+      await this.delay(520); // animation duration
+
+      this.cardFlying = false;
       this.nextFlipped = false;
       this.nextPrepared = false;
       this.state.nextCard = null;
@@ -348,7 +363,7 @@ export class HiloGameComponent {
     const winnings = this.cashoutValue;
     this.state.balance = parseFloat((this.state.balance + winnings).toFixed(2));
     this.state.phase = 'cashedout';
-    this.cashoutAudio.nativeElement.play();
+    this.hiloSoundService.play(this.cashoutAudio);
     this.cdr.markForCheck();
     this.showWinCard = true;
     this.resetGame();
@@ -370,6 +385,7 @@ export class HiloGameComponent {
     this.nextFlipped = false;
     this.nextPrepared = false;
     this.state.gameStarted = false;
+    this.cardFlying = false;
     this.cdr.markForCheck();
   }
 

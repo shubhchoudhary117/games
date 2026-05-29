@@ -60,10 +60,10 @@
           <!-- ── CARD CANVAS ─────────────────────────────────────── -->
           <div class="hilo__game-canvas">
             <div class="hilo__card-slot hilo__card-slot--current">
-              <div class="hilo__card-inner" [class.flipped]="currentFlipped">
+          <div class="hilo__card-inner" [class.flipped]="currentFlipped">
                 <div class="hilo__card-back"></div>
                 <div class="hilo__card-face" [class.red]="state.currentCard && isRed(state.currentCard)"
-                  *ngIf="state.currentCard">
+                  *ngIf="state.currentCard" [class.hilo__card-fly-in]="cardFlying">
                   <span class="hilo__card-corner hilo__card-corner--tl">{{ state.currentCard.rank }}</span>
                   <span class="hilo__card-rank">{{ state.currentCard.rank }}</span>
                   <span class="hilo__card-suit">{{ state.currentCard.suit.symbol }}</span>
@@ -175,7 +175,8 @@
                     <span>Sound</span>
                   </div>
                   <label class="game-menu__switch">
-                    <input type="checkbox">
+                  <input type="checkbox" [checked]="hiloSoundService.isSoundEnabled"
+                    (change)="hiloSoundService.toggleSound($any($event.target).checked)">
                     <span class="game-menu__slider"></span>
                   </label>
                 </div>

@@ -43,6 +43,8 @@ export class MinesComponent {
   increaseOnLoseType: 'increase' | 'decrease' = 'increase';
   increaseOnWinPercent: number = 100;
   increaseOnLosePercent: number = 100;
+  errroMessage: string = "";
+  showToaster: boolean = false;
 
   @ViewChild('mineAudio') mineAudio!: ElementRef<HTMLAudioElement>;
   @ViewChild('dimondAudio') dimondAudio!: ElementRef<HTMLAudioElement>;
@@ -208,7 +210,7 @@ export class MinesComponent {
         }
 
         return {
-          mineId: i,isSafe: true
+          mineId: i, isSafe: true
         };
 
       });
@@ -286,6 +288,7 @@ export class MinesComponent {
     this.minePositions = new Set();
     this.showMineProgress = { action: false, id: "" };
     this.minesProfiles = Array(25).fill(null).map((_, i) => ({ mineId: i }));
+    this.resetMultiplierScroll();
     this.fillInitialMultipliers();
     this.resetAutoBetStates();
   }
@@ -322,7 +325,10 @@ export class MinesComponent {
   }
 
   handleMineClick(mine: any, index: number) {
-    if (!this.gameIsStart) return;
+    if (!this.gameIsStart) {
+      this.handleToaster('please press "Start Game"');
+      return;
+    };
     const sessionId = this.gameSessionId;
     this.soundService.play(this.mineAudio);
     this.showMineProgress = {
@@ -335,13 +341,15 @@ export class MinesComponent {
         sessionId !== this.gameSessionId
       ) return;
 
-      this.showMineProgress = {action: false,id: ""
+      this.showMineProgress = {
+        action: false, id: ""
 
       };
 
       if (this.minePositions.has(index)) {
         this.revealAllTiles();
         this.gameIsStart = false;
+        this.resetMultiplierScroll();
         setTimeout(() => {
           if (
             sessionId !== this.gameSessionId
@@ -351,7 +359,7 @@ export class MinesComponent {
           this.showGameOverBox = true;
           this.showWinBox = true;
           setTimeout(() => {
-            if (sessionId !==this.gameSessionId) return;
+            if (sessionId !== this.gameSessionId) return;
             this.resetGame();
           }, 2000);
         }, 500);
@@ -381,7 +389,7 @@ export class MinesComponent {
 
   cashOut() {
     this.gameSessionId++;
-    const winnings =Math.round(this.betAmount *this.multiplier);
+    const winnings = Math.round(this.betAmount * this.multiplier);
 
     this.balance += winnings;
     this.winingAmount = winnings;
@@ -393,6 +401,7 @@ export class MinesComponent {
     this.showGameOverBox = false;
     this.showWinBox = true;
     this.gameIsStart = false;
+    this.resetMultiplierScroll();
     this.revealAllTiles();
     setTimeout(() => {
       this.resetGame();
@@ -402,6 +411,7 @@ export class MinesComponent {
   gameCancelHandler() {
     this.balance += this.betAmount;
     this.gameIsStart = false;
+    this.resetMultiplierScroll();
     this.resetGame();
   }
 
@@ -555,5 +565,66 @@ export class MinesComponent {
           Math.round((this.betAmount - changeAmount) * 100) / 100
         );
     }
+  }
+
+
+  handleToaster(message: string) {
+    this.errroMessage = message;
+    this.showToaster = true;
+
+    setTimeout(() => {
+      this.showToaster = false;
+    }, 2000);
+  }
+
+
+  resetMultiplierScroll() {
+    setTimeout(() => {
+      const container = this.multipliersRef?.nativeElement;
+
+      if (!container) return;
+
+      container.scrollTo({
+        left: 0,
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 50);
+  }
+
+
+  setMines(value: number) {
+    this.updateMines(value);
+  }
+
+  increaseMines() {
+    this.updateMines(this.mines + 1);
+  }
+
+  decreaseMines() {
+    this.updateMines(this.mines - 1);
+  }
+
+  onMinesInput(value: number) {
+    this.updateMines(Number(value));
+  }
+
+  private clampMines(value: number): number {
+    const min = 1;
+    const max = 20; 
+
+    return Math.max(min, Math.min(max, value || min));
+  }
+
+  private updateMines(value: number) {
+    if (this.gameIsStart || this.isAutoRunning) return;
+    const newValue = this.clampMines(value);
+    if (this.mines === newValue) return;
+
+    this.mines = newValue;
+    this.multipliers = this.getMultipliers(this.mines);
+    this.gemsFound = 0;
+    this.multiplier = 1.0;
+    this.multiplierCrossed = [];
   }
 }

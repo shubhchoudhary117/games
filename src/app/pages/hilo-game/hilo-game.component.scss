@@ -1507,3 +1507,24 @@ $tablet: 768px;
     }
   }
 }
+.hilo__card-fly-in {
+  animation: hiloCardFlyIn 0.52s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  z-index: 5;
+}
+
+@keyframes hiloCardFlyIn {
+  0% {
+    transform: rotateY(180deg) translateX(130px) scale(0.9);
+    opacity: 0.75;
+  }
+
+  65% {
+    transform: rotateY(180deg) translateX(-8px) scale(1.04);
+    opacity: 1;
+  }
+
+  100% {
+    transform: rotateY(180deg) translateX(0px) scale(1);
+    opacity: 1;
+  }
+}

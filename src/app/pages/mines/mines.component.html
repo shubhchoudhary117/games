@@ -21,12 +21,10 @@
 
 
         <div class="mines-container">
-          <!-- MANUAL MODE -->
           <ng-container *ngIf="!isAutoBet">
             <button *ngFor="let item of minesProfiles; let i = index"
-              [disabled]="item?.isBomb || item?.isDimond || !gameIsStart || showMineProgress.action" class="mine-box"
+              [disabled]="item?.isBomb || item?.isDimond ||  showMineProgress.action" class="mine-box"
               (click)="handleMineClick(item, i)" [class.diamond-glow]="item?.isDimond" [class.bomb-glow]="item?.isBomb">
-
               <div *ngIf="showMineProgress.action && showMineProgress.id === item.mineId" class="progress-wrapper">
                 <img src="assets/mines/game-icons/Progress_Mine_Loader.svg" class="mine-loader">
               </div>
@@ -118,22 +116,18 @@
 
           <!-- Mines count -->
           <div class="bet-amount-controllers mines" [class.disabled]="gameIsStart || isAutoRunning">
-            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning"
-              (click)="!gameIsStart && !isAutoRunning && (mines = 3)">3</div>
-            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning"
-              (click)="!gameIsStart && !isAutoRunning && (mines = 5)">5</div>
-            <button class="bet-action-button mines" [disabled]="gameIsStart || isAutoRunning"
-              (click)="mines = mines + 1">+</button>
+            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning" (click)="setMines(3)">3
+            </div>
+            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning" (click)="setMines(5)">5 </div>
+            <button class="bet-action-button mines" [disabled]="gameIsStart || isAutoRunning" (click)="increaseMines()">+</button>
             <div class="bet-amount-group mines">
               <div class="bet-amount-label mines">Mines</div>
-              <input class="bet-amount-input mines" [(ngModel)]="mines" [disabled]="gameIsStart || isAutoRunning">
+              <input class="bet-amount-input mines" [(ngModel)]="mines" [disabled]="gameIsStart || isAutoRunning"
+                (ngModelChange)="onMinesInput($event)">
             </div>
-            <button class="bet-action-button mines" [disabled]="gameIsStart || isAutoRunning"
-              (click)="mines = mines - 1">-</button>
-            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning"
-              (click)="!gameIsStart && !isAutoRunning && (mines = 10)">10</div>
-            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning"
-              (click)="!gameIsStart && !isAutoRunning && (mines = 20)">20</div>
+            <button class="bet-action-button mines" [disabled]="gameIsStart || isAutoRunning" (click)="decreaseMines()">- </button>
+            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning" (click)="setMines(10)">10</div>
+            <div class="bet-action-button" [class.disabled]="gameIsStart || isAutoRunning" (click)="setMines(20)">20</div>
           </div>
 
           <!-- AUTO BET CONTROLS -->
@@ -238,6 +232,12 @@
 
     <div class="bet-histories-section">
       <app-mines-bethistory></app-mines-bethistory>
+    </div>
+
+    <div class="error-popup" [ngClass]="{ visible: showToaster }">
+      <div class="message">
+        {{ errroMessage }}
+      </div>
     </div>
   </main>
 </div>
