@@ -60,7 +60,7 @@
           <!-- ── CARD CANVAS ─────────────────────────────────────── -->
           <div class="hilo__game-canvas">
             <div class="hilo__card-slot hilo__card-slot--current">
-          <div class="hilo__card-inner" [class.flipped]="currentFlipped">
+              <div class="hilo__card-inner" [class.flipped]="currentFlipped">
                 <div class="hilo__card-back"></div>
                 <div class="hilo__card-face" [class.red]="state.currentCard && isRed(state.currentCard)"
                   *ngIf="state.currentCard" [class.hilo__card-fly-in]="cardFlying">
@@ -146,82 +146,82 @@
                     {{ stake | number:'1.2-2' }}
                   </div>
                 </div>
-                </div>
-
               </div>
 
-              <button class="hilo__place-bet-btn" [class.cashout-state]="actionBtnClass === 'cashout-state'"
-                [disabled]="actionBtnDisabled" (click)="handleAction()">
-                <span class="hilo__action-title">{{ actionLabel }}</span>
-                <span class="hilo__action-val" *ngIf="actionBtnClass === 'cashout-state'">{{ cashoutValueText }}</span>
-              </button>
             </div>
 
+            <button class="hilo__place-bet-btn" [class.cashout-state]="actionBtnClass === 'cashout-state'"
+              [disabled]="actionBtnDisabled" (click)="handleAction()">
+              <span class="hilo__action-title">{{ actionLabel }}</span>
+              <span class="hilo__action-val" *ngIf="actionBtnClass === 'cashout-state'">{{ cashoutValueText }}</span>
+            </button>
           </div>
 
+        </div>
 
 
 
 
-          <div class="game-menu" *ngIf="showMenu">
-            <div class="game-menu__card">
-              <div class="game-menu__header">
-                demo_30024
-              </div>
-              <div class="game-menu__list">
-                <div class="game-menu__sound-container">
-                  <div class="game-menu__left">
-                    <span class="game-menu__icon"><i class="fa-solid fa-volume-high"></i></span>
-                    <span>Sound</span>
-                  </div>
-                  <label class="game-menu__switch">
+
+        <div class="game-menu" *ngIf="showMenu">
+          <div class="game-menu__card">
+            <div class="game-menu__header">
+              demo_30024
+            </div>
+            <div class="game-menu__list">
+              <div class="game-menu__sound-container">
+                <div class="game-menu__left">
+                  <span class="game-menu__icon"><i class="fa-solid fa-volume-high"></i></span>
+                  <span>Sound</span>
+                </div>
+                <label class="game-menu__switch">
                   <input type="checkbox" [checked]="hiloSoundService.isSoundEnabled"
                     (change)="hiloSoundService.toggleSound($any($event.target).checked)">
-                    <span class="game-menu__slider"></span>
-                  </label>
-                </div>
-                <div class="game-menu__item" (click)="openBethistory()">
-                  <span class="game-menu__icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
-                  Bet History
-                </div>
-                <div class="game-menu__item" (click)="openGameLimits()">
-                  <span class="game-menu__icon"><i class="fa-solid fa-money-bill"></i></span>
-                  Game Limits
-                </div>
-                <div class="game-menu__item" (click)="openHowToPlay()">
-                  <span class="game-menu__icon"><i class="fa-regular fa-circle-question"></i></span>
-                  How to Play
-                </div>
-                <div class="game-menu__item" (click)="openGameRules()">
-                  <span class="game-menu__icon"><i class="fa-solid fa-scroll"></i></span>
-                  Game Rules
-                </div>
+                  <span class="game-menu__slider"></span>
+                </label>
               </div>
-              <div class="game-menu__footer">
-                <div class="game-menu__home">
-                  <i class="fas fa-home"></i> Back to Home
-                </div>
-                <div class="game-menu__bottom">
-                  <span class="game-menu__fair">🛡️ Provably Fair Game</span>
-                  <span class="game-menu__brand">© GURUGAMES</span>
-                </div>
+              <div class="game-menu__item" (click)="openBethistory()">
+                <span class="game-menu__icon"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                Bet History
+              </div>
+              <div class="game-menu__item" (click)="openGameLimits()">
+                <span class="game-menu__icon"><i class="fa-solid fa-money-bill"></i></span>
+                Game Limits
+              </div>
+              <div class="game-menu__item" (click)="openHowToPlay()">
+                <span class="game-menu__icon"><i class="fa-regular fa-circle-question"></i></span>
+                How to Play
+              </div>
+              <div class="game-menu__item" (click)="openGameRules()">
+                <span class="game-menu__icon"><i class="fa-solid fa-scroll"></i></span>
+                Game Rules
+              </div>
+            </div>
+            <div class="game-menu__footer">
+              <div class="game-menu__home">
+                <i class="fas fa-home"></i> Back to Home
+              </div>
+              <div class="game-menu__bottom">
+                <span class="game-menu__fair">🛡️ Provably Fair Game</span>
+                <span class="game-menu__brand">© GURUGAMES</span>
               </div>
             </div>
           </div>
-
-          <app-hilo-game-limits *ngIf="showGameLimits" (close)="closeGameLimits()">
-          </app-hilo-game-limits>
-
-          <app-hilo-game-rules *ngIf="showGameRules" (close)="closeGameRules()">
-          </app-hilo-game-rules>
-
-          <app-hilo-how-to-play *ngIf="showHowToPlay" (close)="closeHowToPlay()">
-          </app-hilo-how-to-play>
-
-          <app-hili-bethistory *ngIf="showBetHistory" (close)="closeBethistory()">
-          </app-hili-bethistory>
         </div>
+
+        <app-hilo-game-limits *ngIf="showGameLimits" (close)="closeGameLimits()">
+        </app-hilo-game-limits>
+
+        <app-hilo-game-rules *ngIf="showGameRules" (close)="closeGameRules()">
+        </app-hilo-game-rules>
+
+        <app-hilo-how-to-play *ngIf="showHowToPlay" (close)="closeHowToPlay()">
+        </app-hilo-how-to-play>
+
+        <app-hili-bethistory *ngIf="showBetHistory" (close)="closeBethistory()">
+        </app-hili-bethistory>
       </div>
+    </div>
   </main>
 </section>
 
@@ -242,4 +242,46 @@
     <span class="hilo__win-banner__right-val">{{ cashoutValueText }}</span>
   </div>
   <div class="hilo__win-banner__close" (click)="resetGame()">✕</div>
+</div>
+
+
+
+<!-- LOADER SCREEN -->
+<div class="hilo-loader" [class.hilo-loader--hidden]="!isLoading">
+  <div class="hilo-loader__bg"></div>
+
+  <div class="hilo-loader__content">
+    <!-- Card suits decoration -->
+    <div class="hilo-loader__suits">
+      <span class="hilo-loader__suit hilo-loader__suit--spade">♠</span>
+      <span class="hilo-loader__suit hilo-loader__suit--heart">♥</span>
+      <span class="hilo-loader__suit hilo-loader__suit--club">♣</span>
+      <span class="hilo-loader__suit hilo-loader__suit--diamond">♦</span>
+    </div>
+
+    <!-- Main card animation -->
+    <div class="hilo-loader__card-wrap">
+      <div class="hilo-loader__card hilo-loader__card--back"></div>
+      <div class="hilo-loader__card hilo-loader__card--front">
+        <span class="hilo-loader__card-corner hilo-loader__card-corner--tl">A</span>
+        <span class="hilo-loader__card-rank">A</span>
+        <span class="hilo-loader__card-suit-big">♠</span>
+        <span class="hilo-loader__card-corner hilo-loader__card-corner--br">A</span>
+      </div>
+    </div>
+
+    <!-- Title -->
+    <div class="hilo-loader__title">
+      <span class="hilo-loader__title-hi">HI</span>
+      <span class="hilo-loader__title-divider">/</span>
+      <span class="hilo-loader__title-lo">LO</span>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="hilo-loader__bar-wrap">
+      <div class="hilo-loader__bar"></div>
+    </div>
+
+    <div class="hilo-loader__label">Loading game...</div>
+  </div>
 </div>

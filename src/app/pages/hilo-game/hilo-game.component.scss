@@ -1528,3 +1528,361 @@ $tablet: 768px;
     opacity: 1;
   }
 }
+
+
+
+// ── HILO LOADER ──────────────────────────────────────────────────────────────
+.hilo-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  opacity: 1;
+  visibility: visible;
+
+  &--hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  // Dark radial background matching game theme
+  &__bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 40%, #c47a10, #7a3c00 55%, #1a0e00 100%);
+    z-index: 0;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  // ── Floating suits ──────────────────────────────────────────────────────
+  &__suits {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__suit {
+    position: absolute;
+    font-size: 40px;
+    opacity: 0.08;
+    animation: hiloLoaderFloat 3s ease-in-out infinite;
+
+    &--spade {
+      top: -80px;
+      left: -120px;
+      animation-delay: 0s;
+      color: #fff;
+      font-size: 56px;
+    }
+
+    &--heart {
+      top: -60px;
+      right: -110px;
+      animation-delay: 0.6s;
+      color: #e05050;
+      font-size: 48px;
+    }
+
+    &--club {
+      bottom: -80px;
+      left: -100px;
+      animation-delay: 1.2s;
+      color: #fff;
+      font-size: 44px;
+    }
+
+    &--diamond {
+      bottom: -70px;
+      right: -90px;
+      animation-delay: 1.8s;
+      color: #e05050;
+      font-size: 50px;
+    }
+  }
+
+  // ── Card flip animation ─────────────────────────────────────────────────
+  &__card-wrap {
+    width: 110px;
+    height: 160px;
+    position: relative;
+    perspective: 800px;
+    animation: hiloLoaderCardBounce 1.8s ease-in-out infinite;
+  }
+
+  &__card {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    animation: hiloLoaderCardFlip 1.8s ease-in-out infinite;
+
+    &--back {
+      background: linear-gradient(135deg, #0252e7, #0336aa);
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 8px;
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        background: repeating-linear-gradient(45deg,
+            rgba(255, 255, 255, 0.04) 0px,
+            rgba(255, 255, 255, 0.04) 2px,
+            transparent 2px,
+            transparent 9px);
+      }
+    }
+
+    &--front {
+      background: #faf8f2;
+      border: 2px solid rgba(180, 150, 100, 0.4);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transform: rotateY(180deg);
+      animation: hiloLoaderCardFlip 1.8s ease-in-out infinite;
+    }
+  }
+
+  &__card-rank {
+    font-size: 36px;
+    font-weight: 900;
+    color: #1a1a2a;
+    line-height: 1;
+  }
+
+  &__card-suit-big {
+    font-size: 44px;
+    color: #1a1a2a;
+    line-height: 1;
+  }
+
+  &__card-corner {
+    position: absolute;
+    font-size: 13px;
+    font-weight: 900;
+    color: #1a1a2a;
+
+    &--tl {
+      top: 7px;
+      left: 9px;
+    }
+
+    &--br {
+      bottom: 7px;
+      right: 9px;
+      transform: rotate(180deg);
+    }
+  }
+
+  // ── Title ───────────────────────────────────────────────────────────────
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: hiloLoaderFadeUp 0.6s ease both;
+    animation-delay: 0.3s;
+  }
+
+  &__title-hi {
+    font-size: 48px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(255, 180, 50, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+    letter-spacing: 2px;
+    font-family: 'Barlow', sans-serif;
+  }
+
+  &__title-divider {
+    font-size: 40px;
+    font-weight: 300;
+    color: rgba(255, 200, 80, 0.6);
+    margin-top: -4px;
+  }
+
+  &__title-lo {
+    font-size: 48px;
+    font-weight: 900;
+    color: #fb9c23;
+    text-shadow: 0 0 30px rgba(255, 130, 0, 0.7), 0 4px 12px rgba(0, 0, 0, 0.4);
+    letter-spacing: 2px;
+    font-family: 'Barlow', sans-serif;
+  }
+
+  // ── Progress bar ────────────────────────────────────────────────────────
+  &__bar-wrap {
+    width: 220px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+  }
+
+  &__bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #fb9c23, #ffd050);
+    border-radius: 999px;
+    animation: hiloLoaderProgress 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    box-shadow: 0 0 10px rgba(255, 160, 30, 0.6);
+  }
+
+  // ── Label ───────────────────────────────────────────────────────────────
+  &__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 220, 150, 0.7);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    animation: hiloLoaderPulse 1.2s ease-in-out infinite;
+    font-family: 'Barlow', sans-serif;
+  }
+}
+
+// ── Loader Keyframes ──────────────────────────────────────────────────────────
+
+@keyframes hiloLoaderCardFlip {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  40% {
+    transform: rotateY(0deg);
+  }
+
+  50% {
+    transform: rotateY(90deg);
+  }
+
+  60% {
+    transform: rotateY(180deg);
+  }
+
+  90% {
+    transform: rotateY(180deg);
+  }
+
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+
+// front card needs reverse
+.hilo-loader__card--front {
+  animation: hiloLoaderCardFlipFront 1.8s ease-in-out infinite !important;
+}
+
+@keyframes hiloLoaderCardFlipFront {
+  0% {
+    transform: rotateY(180deg);
+  }
+
+  40% {
+    transform: rotateY(180deg);
+  }
+
+  50% {
+    transform: rotateY(90deg);
+  }
+
+  60% {
+    transform: rotateY(0deg);
+  }
+
+  90% {
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes hiloLoaderCardBounce {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes hiloLoaderFloat {
+
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(8deg);
+  }
+}
+
+@keyframes hiloLoaderProgress {
+  0% {
+    width: 0%;
+  }
+
+  20% {
+    width: 25%;
+  }
+
+  50% {
+    width: 60%;
+  }
+
+  80% {
+    width: 85%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes hiloLoaderFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hiloLoaderPulse {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}

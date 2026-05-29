@@ -73,6 +73,7 @@ export class HiloGameComponent {
   nextPrepared = false;
   showStakes = false;
   cardFlying = false;
+  isLoading = true;
 
   amountStakes = [
     0.10, 0.20,
@@ -100,7 +101,12 @@ export class HiloGameComponent {
     public hiloSoundService: HiloSoundService
   ) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.isLoading = false;
+      this.cdr.markForCheck();
+    }, 2800); 
+   }
 
   ngOnDestroy(): void {
     this._timers.forEach(clearTimeout);
