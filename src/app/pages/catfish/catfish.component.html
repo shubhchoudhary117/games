@@ -3,185 +3,288 @@
 <audio #catfishedAudio src="assets/audios/catfish/catfished.mp3"></audio>
 <audio #swepAudio src="assets/audios/catfish/swep.mp3"></audio>
 
-<div class="sw-root">
-   <app-catfish-header></app-catfish-header>
-  <div class="sw-mstrip">
-    <div class="sw-mscroll" #multiplierScroll>
-      <span *ngFor="let m of multiplierDisplay; let i = index" class="sw-mchip"
-        [class.sw-mchip-active]="gameState === 'playing' && i <= (safeSwipes - 1)">
-        {{ m }}
-      </span>
-    </div>
-  </div>
+<div class="catfish">
+  <div class="catfish__container">
 
-  <!-- ── Arena ─────────────────────────────────────────────── -->
-  <div class="sw-arena">
-    <div class="sw-idle" *ngIf="gameState === 'idle'">
-      <div class="sw-game-start-image"></div>
+    <!-- Header -->
+    <div class="catfish__header">
+      <app-catfish-header></app-catfish-header>
     </div>
 
-    <div class="sw-loading-screen" *ngIf="gameState === 'loading'">
-      <div class="sw-loading-inner">
-        <div class="sw-loading-icon">
-          <div class="sw-loading-ring"></div>
-          <div class="sw-loading-ring sw-loading-ring-2"></div>
-          <div class="sw-loading-heart">♥</div>
-        </div>
-        <p class="sw-loading-message">{{ loadingMessage }}</p>
-        <div class="sw-progress-track">
-          <div class="sw-progress-fill" [style.width.%]="loadingProgress">
-            <div class="sw-progress-shine"></div>
+    <!-- Multiplier Strip -->
+    <div class="catfish__mstrip">
+      <div class="catfish__mscroll" #multiplierScroll>
+        <span *ngFor="let m of multiplierDisplay; let i = index" class="catfish__mchip"
+          [class.catfish__mchip--active]="gameState === 'playing' && i <= (safeSwipes - 1)">
+          {{ m }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Main Game Layout -->
+    <div class="catfish__layout">
+
+      <!-- LEFT: Arena + CTA -->
+      <div class="catfish__left">
+
+        <!-- Arena -->
+        <div class="catfish__arena">
+
+          <!-- Idle -->
+          <div class="catfish__idle" *ngIf="gameState === 'idle'">
+            <div class="catfish__idle-image"></div>
+          </div>
+
+          <!-- Loading -->
+        <div class="catfish__loading" *ngIf="gameState === 'loading'">
+        
+          <!-- Ambient particles -->
+          <div class="catfish__loading-particles">
+            <span class="catfish__loading-particle"></span>
+            <span class="catfish__loading-particle"></span>
+            <span class="catfish__loading-particle"></span>
+            <span class="catfish__loading-particle"></span>
+            <span class="catfish__loading-particle"></span>
+            <span class="catfish__loading-particle"></span>
+            <span class="catfish__loading-particle"></span>
+            <span class="catfish__loading-particle"></span>
+          </div>
+        
+          <!-- Decorative corner lines -->
+          <div class="catfish__loading-corner catfish__loading-corner--tl"></div>
+          <div class="catfish__loading-corner catfish__loading-corner--tr"></div>
+          <div class="catfish__loading-corner catfish__loading-corner--bl"></div>
+          <div class="catfish__loading-corner catfish__loading-corner--br"></div>
+        
+          <div class="catfish__loading-inner">
+        
+            <!-- Spinner icon -->
+            <div class="catfish__loading-icon">
+              <div class="catfish__loading-orbit catfish__loading-orbit--1"></div>
+              <div class="catfish__loading-orbit catfish__loading-orbit--2"></div>
+              <div class="catfish__loading-orbit catfish__loading-orbit--3"></div>
+              <div class="catfish__loading-heart">♥</div>
+            </div>
+        
+            <!-- Title -->
+            <div class="catfish__loading-title">Finding Matches</div>
+        
+            <!-- Message -->
+            <p class="catfish__loading-message">{{ loadingMessage }}</p>
+        
+            <!-- Progress bar -->
+            <div class="catfish__loading-progress-wrap">
+              <div class="catfish__progress-track">
+                <div class="catfish__progress-fill" [style.width.%]="loadingProgress">
+                  <div class="catfish__progress-shine"></div>
+                </div>
+              </div>
+              <span class="catfish__loading-pct">{{ loadingProgress }}%</span>
+            </div>
+        
+            <!-- Profile silhouette previews -->
+            <div class="catfish__loading-avatars">
+              <div class="catfish__loading-avatar catfish__loading-avatar--1"></div>
+              <div class="catfish__loading-avatar catfish__loading-avatar--2"></div>
+              <div class="catfish__loading-avatar catfish__loading-avatar--3 catfish__loading-avatar--center"></div>
+              <div class="catfish__loading-avatar catfish__loading-avatar--4"></div>
+              <div class="catfish__loading-avatar catfish__loading-avatar--5"></div>
+            </div>
+        
+            <!-- Dots -->
+            <div class="catfish__loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+        
           </div>
         </div>
-        <span class="sw-loading-pct">{{ loadingProgress }}%</span>
-        <div class="sw-loading-dots">
-          <span></span><span></span><span></span>
-        </div>
-      </div>
-    </div>
 
-    <div class="sw-card sw-card-next" *ngIf="nextCard && gameState === 'playing'" [ngStyle]="{
-           transform: 'scale(' + nextScale + ')',
-           opacity: nextOpacity,
-           transition: 'transform 0.3s ease, opacity 0.3s ease'
-         }">
-      <img [src]="nextCard.image" [alt]="nextCard.name" draggable="false" />
-      <div class="sw-card-overlay"></div>
-      <div class="sw-card-info">
-        <span class="sw-card-name">{{ nextCard.name }}, {{ nextCard.age }}</span>
-        <span class="sw-card-brand"><span class="sw-brand-dot"></span>Swindler</span>
-      </div>
-    </div>
-
-    <div class="sw-card sw-card-top" #topCardRef *ngIf="topCard && gameState === 'playing'" [ngStyle]="{
-           transform: 'translateX(' + cardTx + 'px) translateY(' + cardTy + 'px) rotate(' + cardRot + 'deg)',
-           opacity: cardOpacity,
-           transition: cardTransition
-         }" (pointerdown)="onPointerDown($event)">
-      <img [src]="topCard.image" [alt]="topCard.name" draggable="false" />
-      <div class="sw-card-overlay"></div>
-      <div class="sw-stamp sw-stamp-nope" [ngStyle]="{ opacity: nopeOpacity }"><span>Nope</span></div>
-      <div class="sw-stamp sw-stamp-like" [ngStyle]="{ opacity: likeOpacity }"><span>Like</span></div>
-      <div class="sw-card-info">
-        <span class="sw-card-name">{{ topCard.name }}, {{ topCard.age }}</span>
-        <span class="sw-card-brand"><span class="sw-brand-dot"></span>Swindler</span>
-      </div>
-    </div>
-
-    <div class="sw-actions" *ngIf="gameState === 'playing'">
-      <button class="sw-btn sw-btn-nope" (click)="onNope()" [disabled]="animating">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-          stroke-linecap="round">
-          <line x1="18" y1="6" x2="6" y2="18" />
-          <line x1="6" y1="6" x2="18" y2="18" />
-        </svg>
-      </button>
-      <button class="sw-btn sw-btn-like" (click)="onLike()" [disabled]="animating">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
-          <path
-            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-        </svg>
-      </button>
-    </div>
-
-
-    <!-- <div class="sw-result-header" [class.sw-result-win]="resultType === 'cashout'" [class.sw-result-lose]="resultType === 'gameover'">
-        <div class="sw-result-icon">
-          <span *ngIf="resultType === 'cashout'">💰</span>
-          <span *ngIf="resultType === 'gameover'">🎣</span>
-        </div>
-        <p class="sw-result-title" *ngIf="resultType === 'cashout'">You Cashed Out!</p>
-        <p class="sw-result-title" *ngIf="resultType === 'gameover'">Caught a Catfish!</p>
-        <p class="sw-result-amount" *ngIf="resultType === 'cashout'">+{{ resultAmount | number:'1.2-2' }}</p>
-        <p class="sw-result-amount sw-result-loss" *ngIf="resultType === 'gameover'">-{{ betAmount | number:'1.2-2' }}</p>
-      </div>
-      <p class="sw-result-label">Round Profiles — {{ catfishCount }} catfish hidden</p> -->
-
-    <div class="sw-result-screen" *ngIf="gameState === 'result'">
-      <div class="sw-game-over-box" *ngIf="resultType === 'catfish'">
-        <div class="sw-game-over-heading">Catfished !</div>
-        <div class="sw-game-over-subheading">You have been catfished</div>
-      </div>
-      <div class="sw-game-over-box" *ngIf="resultType === 'gameover'">
-        <div class="sw-game-over-heading">Game Over !</div>
-        <div class="sw-game-over-subheading">Your Swipe Limit is Crossed </div>
-      </div>
-      <div class="sw-game-win-box" *ngIf="resultType === 'cashout'">
-        <div class="sw-game-win-header">You Won</div>
-        <div class="sw-game-win-amount">+{{ resultAmount | number:'1.2-2' }}</div>
-      </div>
-      <div class="sw-result-grid">
-        <div class="sw-result-card" *ngFor="let p of roundProfiles" [class.sw-result-card-catfish]="p.isCatfish"
-          [class.sw-result-card-safe]="!p.isCatfish">
-          <img [src]="p.image" [alt]="p.name" draggable="false" />
-          <div class="sw-result-card-badge" *ngIf="p.isCatfish">
-            <span>🎣</span>
+          <!-- Next Card (behind) -->
+          <div class="catfish__card catfish__card--next" *ngIf="nextCard && gameState === 'playing'" [ngStyle]="{
+              transform: 'scale(' + nextScale + ')',
+              opacity: nextOpacity,
+              transition: 'transform 0.3s ease, opacity 0.3s ease'
+            }">
+            <img [src]="nextCard.image" [alt]="nextCard.name" draggable="false" />
+            <div class="catfish__card-overlay"></div>
+            <div class="catfish__card-info">
+              <span class="catfish__card-name">{{ nextCard.name }}, {{ nextCard.age }}</span>
+              <span class="catfish__card-brand">
+                <span class="catfish__card-dot"></span>Swindler
+              </span>
+            </div>
           </div>
-          <div class="sw-result-card-name">{{ p.name }}</div>
+
+          <!-- Top Card (draggable) -->
+          <div class="catfish__card catfish__card--top" #topCardRef *ngIf="topCard && gameState === 'playing'"
+            [ngStyle]="{
+              transform: 'translateX(' + cardTx + 'px) translateY(' + cardTy + 'px) rotate(' + cardRot + 'deg)',
+              opacity: cardOpacity,
+              transition: cardTransition
+            }" (pointerdown)="onPointerDown($event)">
+            <img [src]="topCard.image" [alt]="topCard.name" draggable="false" />
+            <div class="catfish__card-overlay"></div>
+            <div class="catfish__stamp catfish__stamp--nope" [ngStyle]="{ opacity: nopeOpacity }">
+              <span>Nope</span>
+            </div>
+            <div class="catfish__stamp catfish__stamp--like" [ngStyle]="{ opacity: likeOpacity }">
+              <span>Like</span>
+            </div>
+            <div class="catfish__card-info">
+              <span class="catfish__card-name">{{ topCard.name }}, {{ topCard.age }}</span>
+              <span class="catfish__card-brand">
+                <span class="catfish__card-dot"></span>Swindler
+              </span>
+            </div>
+          </div>
+
+          <!-- Swipe Action Buttons -->
+          <div class="catfish__actions" *ngIf="gameState === 'playing'">
+            <button class="catfish__btn catfish__btn--nope" (click)="onNope()" [disabled]="animating">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+            <button class="catfish__btn catfish__btn--like" (click)="onLike()" [disabled]="animating">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+              </svg>
+            </button>
+          </div>
+
+          <!-- Result Screen -->
+          <div class="catfish__result" *ngIf="gameState === 'result'">
+            <div class="catfish__result-gameover" *ngIf="resultType === 'catfish'">
+              <div class="catfish__result-gameover-heading">Catfished !</div>
+              <div class="catfish__result-gameover-subheading">You have been catfished</div>
+            </div>
+            <div class="catfish__result-gameover" *ngIf="resultType === 'gameover'">
+              <div class="catfish__result-gameover-heading">Game Over !</div>
+              <div class="catfish__result-gameover-subheading">Your Swipe Limit is Crossed</div>
+            </div>
+            <div class="catfish__result-win" *ngIf="resultType === 'cashout'">
+              <div class="catfish__result-win-header">You Won</div>
+              <div class="catfish__result-win-amount">+{{ resultAmount | number:'1.2-2' }}</div>
+            </div>
+            <div class="catfish__result-grid">
+              <div class="catfish__result-card" *ngFor="let p of roundProfiles"
+                [class.catfish__result-card--catfish]="p.isCatfish" [class.catfish__result-card--safe]="!p.isCatfish">
+                <img [src]="p.image" [alt]="p.name" draggable="false" />
+                <div class="catfish__result-badge" *ngIf="p.isCatfish"><span>🎣</span></div>
+                <div class="catfish__result-name">{{ p.name }}</div>
+              </div>
+            </div>
+          </div>
+
         </div>
+        <!-- /catfish__arena -->
+
+        <!-- CTA Button — always below arena -->
+        <div class="catfish__cta">
+          <button class="catfish__cta-btn" *ngIf="gameState === 'idle'" (click)="startGame()">
+            <span>GAME START</span>
+          </button>
+          <button class="catfish__cta-btn catfish__cta-btn--loading" *ngIf="gameState === 'loading'" disabled>
+            <span>LOADING...</span>
+          </button>
+          <button class="catfish__cta-btn catfish__cta-btn--cashout" *ngIf="gameState === 'playing'"
+            (click)="onCashout()" [disabled]="animating">
+            <span class="catfish__cta-btn-label">CASH OUT</span>
+            <span class="catfish__cta-btn-amount">{{ currentCashoutAmount | number:'1.2-2' }}</span>
+          </button>
+          <button class="catfish__cta-btn" *ngIf="gameState === 'result'" (click)="playAgain()">
+            <span>PLAY AGAIN</span>
+          </button>
+        </div>
+
       </div>
-    </div>
+      <!-- /catfish__left -->
 
-  </div>
-  <!-- /sw-arena -->
+      <!-- RIGHT: Controls -->
+      <div class="catfish__controls">
 
-  <!-- ── Controls ──────────────────────────────────────────── -->
-  <div class="sw-controls">
+        <!-- Bet Amount -->
+        <div class="catfish__control-card">
+          <div class="catfish__control-label">BET AMOUNT</div>
+          <div class="catfish__row catfish__row--bet" [class.catfish__row--locked]="gameState !== 'idle'">
+            <button class="catfish__pill"
+              [class.catfish__pill--active]="betAmount === stakeOptions[stakeOptions.length - 1]" (click)="setMax()"
+              [disabled]="gameState !== 'idle'">Max</button>
+            <button class="catfish__pill catfish__pill--icon" (click)="decreaseBet()"
+              [disabled]="gameState !== 'idle'">−</button>
+            <div class="catfish__display">
+              <span class="catfish__display-value catfish__display-value--large">{{ betAmount }}</span>
+            </div>
+            <button class="catfish__pill catfish__pill--icon" (click)="increaseBet()"
+              [disabled]="gameState !== 'idle'">+</button>
+            <button class="catfish__pill" [class.catfish__pill--active]="betAmount === stakeOptions[0]"
+              (click)="setMin()" [disabled]="gameState !== 'idle'">Min</button>
+          </div>
+          <div class="catfish__row catfish__row--chips" [class.catfish__row--locked]="gameState !== 'idle'">
+            <button *ngFor="let s of stakeOptions" class="catfish__chip" [class.catfish__chip--active]="betAmount === s"
+              [disabled]="gameState !== 'idle'" (click)="setBet(s)">{{ s }}</button>
+          </div>
+        </div>
 
-    <!-- IDLE -->
-    <button class="sw-start-btn" *ngIf="gameState === 'idle'" (click)="startGame()">
-      GAME START
-    </button>
+        <!-- Catfish -->
+        <div class="catfish__control-card">
+          <div class="catfish__control-label">CATFISH</div>
+          <div class="catfish__row catfish__row--catfish" [class.catfish__row--locked]="gameState !== 'idle'">
+            <span *ngFor="let c of [3,5]" class="catfish__pill catfish__pill--icon"
+              [class.catfish__pill--active]="catfishCount === c" (click)="setCatfish(c)">{{ c }}</span>
+            <button class="catfish__pill catfish__pill--icon" (click)="decreaseCatfish()"
+              [disabled]="gameState !== 'idle'">−</button>
+            <div class="catfish__display">
+              <span class="catfish__display-value catfish__display-value--large">{{ catfishCount }}</span>
+            </div>
+            <button class="catfish__pill catfish__pill--icon " (click)="increaseCatfish()"
+              [disabled]="gameState !== 'idle'">+</button>
+            <span *ngFor="let c of [10,24]" class="catfish__pill catfish__pill--icon"
+              [class.catfish__pill--active]="catfishCount === c" (click)="setCatfish(c)">{{ c }}</span>
+          </div>
+        </div>
 
-    <!-- LOADING -->
-    <button class="sw-start-btn sw-start-btn-loading" *ngIf="gameState === 'loading'" disabled>
-      <span class="sw-btn-spinner"></span> LOADING...
-    </button>
+        <!-- Bet History -->
+        <div class="catfish__control-card catfish__control-card--history">
+          <div class="catfish__history-header">
+            <span class="catfish__history-title">BET HISTORY</span>
+            <span class="catfish__history-viewall">View All</span>
+          </div>
+          <div class="catfish__history-table">
+            <div class="catfish__history-thead">
+              <span>TIME</span>
+              <span>BET AMOUNT</span>
+              <span>CATFISH</span>
+              <span>RESULT</span>
+              <span>PAYOUT</span>
+            </div>
+            <div class="catfish__history-body">
+              <div class="catfish__history-row" *ngFor="let h of betHistory">
+                <span class="catfish__history-cell catfish__history-cell--time">{{ h.time }}</span>
+                <span class="catfish__history-cell catfish__history-cell--amount">{{ h.betAmount }}</span>
+                <span class="catfish__history-cell catfish__history-cell--fish">{{ h.catfish }}</span>
+                <span class="catfish__history-cell catfish__history-cell--result"
+                  [class.catfish__history-cell--win]="h.result === 'CASHED OUT'"
+                  [class.catfish__history-cell--lose]="h.result === 'CRASHED'">{{ h.result }}</span>
+                <span class="catfish__history-cell catfish__history-cell--payout"
+                  [class.catfish__history-cell--win]="h.result === 'CASHED OUT'"
+                  [class.catfish__history-cell--lose]="h.result === 'CRASHED'">{{ h.payout }}</span>
+              </div>
+              <div class="catfish__history-empty" *ngIf="!betHistory || betHistory.length === 0">
+                No history yet
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <!-- PLAYING: Cashout + live amount -->
-    <button class="sw-start-btn sw-cashout-btn" *ngIf="gameState === 'playing'" (click)="onCashout()"
-      [disabled]="animating">
-      <span class="sw-cashout-label">CASH OUT</span>
-      <span class="sw-cashout-amount">{{ currentCashoutAmount | number:'1.2-2' }}</span>
-    </button>
-
-    <!-- RESULT: Play Again -->
-    <button class="sw-start-btn" *ngIf="gameState === 'result'" (click)="playAgain()">
-      🔄 PLAY AGAIN
-    </button>
-
-    <!-- Bet Amount Row -->
-    <div class="sw-row" [class.sw-row-locked]="gameState !== 'idle'">
-      <button class="sw-pill" (click)="setMax()" [disabled]="gameState !== 'idle'">Max</button>
-      <button class="sw-pill" (click)="decreaseBet()" [disabled]="gameState !== 'idle'">−</button>
-      <div class="sw-center-display">
-        <span class="sw-display-label">Bet Amount</span>
-        <span class="sw-display-value">{{ betAmount }}</span>
       </div>
-      <button class="sw-pill" (click)="increaseBet()" [disabled]="gameState !== 'idle'">+</button>
-      <button class="sw-pill" (click)="setMin()" [disabled]="gameState !== 'idle'">Min</button>
-    </div>
+      <!-- /catfish__controls -->
 
-    <!-- Stake Chips -->
-    <div class="sw-row sw-row-chips" [class.sw-row-locked]="gameState !== 'idle'">
-      <button *ngFor="let s of stakeOptions" class="sw-chip" [class.sw-chip-active]="betAmount === s"
-        [disabled]="gameState !== 'idle'" (click)="setBet(s)">{{ s }}</button>
     </div>
-
-    <!-- Catfish Count -->
-    <div class="sw-row" [class.sw-row-locked]="gameState !== 'idle'">
-      <span *ngFor="let c of [3,5]" class="sw-pill sw-pill-num" [class.sw-pill-active]="catfishCount === c"
-        (click)="setCatfish(c)">{{ c }}</span>
-      <button class="sw-pill" (click)="decreaseCatfish()" [disabled]="gameState !== 'idle'">−</button>
-      <div class="sw-center-display">
-        <span class="sw-display-label">Catfish</span>
-        <span class="sw-display-value">{{ catfishCount }}</span>
-      </div>
-      <button class="sw-pill sw-pill-active-pink" (click)="increaseCatfish()"
-        [disabled]="gameState !== 'idle'">+</button>
-      <span *ngFor="let c of [10,24]" class="sw-pill sw-pill-num" [class.sw-pill-active]="catfishCount === c"
-        (click)="setCatfish(c)">{{ c }}</span>
-    </div>
+    <!-- /catfish__layout -->
 
   </div>
 </div>

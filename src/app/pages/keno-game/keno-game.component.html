@@ -7,7 +7,6 @@
         <div class="keno__gameviewport">
             <div class="keno__game">
 
-                <!-- Decorative bg arrows -->
                 <img class="keno__bgimg-left" src="assets/keno/bg-img-left.svg" />
                 <img class="keno__bgimg-right" src="assets/keno/bg-img-right.svg" />
 
@@ -31,8 +30,6 @@
                         </div>
                         <div class="keno__menublock" (click)="toggleMenu()">&#9776;</div>
 
-                        <!-- Dropdown Menu -->
-
                         <div class="game-menu" *ngIf="showMenu">
                             <div class="game-menu__card">
                                 <div class="game-menu__header">
@@ -49,12 +46,12 @@
                                             <span class="game-menu__slider"></span>
                                         </label>
                                     </div>
-                                    <div class="game-menu__item" >
+                                    <div class="game-menu__item">
                                         <span class="game-menu__icon"><i
                                                 class="fa-solid fa-clock-rotate-left"></i></span>
                                         Bet History
                                     </div>
-                                    <div class="game-menu__item" >
+                                    <div class="game-menu__item">
                                         <span class="game-menu__icon"><i class="fa-solid fa-money-bill"></i></span>
                                         Game Limits
                                     </div>
@@ -63,7 +60,7 @@
                                                 class="fa-regular fa-circle-question"></i></span>
                                         How to Play
                                     </div>
-                                    <div class="game-menu__item" >
+                                    <div class="game-menu__item">
                                         <span class="game-menu__icon"><i class="fa-solid fa-scroll"></i></span>
                                         Game Rules
                                     </div>
@@ -82,7 +79,6 @@
                     </div>
                 </div>
 
-                <!-- Instruction badge -->
                 <div class="keno__instruction-badge" [style.color]="instructionColor">
                     {{ instructionText }}
                 </div>
@@ -92,7 +88,6 @@
                     <div class="keno__game-container">
                         <div class="keno__keno-wrapper">
 
-                            <!-- Numbers grid -->
                             <div class="keno__game-canvas">
                                 <div class="keno__numbers">
                                     @for (item of numbers; track item) {

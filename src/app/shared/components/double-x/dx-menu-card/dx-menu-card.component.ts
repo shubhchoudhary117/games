@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener
+} from '@angular/core';
+
 import { DoubleXMenuService } from '../../../../pages/double-x-game/services/dx-menu.service';
 import { AsyncPipe } from '@angular/common';
 
@@ -11,31 +16,42 @@ import { AsyncPipe } from '@angular/common';
 })
 export class DxMenuCardComponent {
 
-
   constructor(
-      public dxMenuService: DoubleXMenuService
-    ) {}
-  
-    openGameRulesModal(): void {
+    public dxMenuService: DoubleXMenuService,
+    private elementRef: ElementRef
+  ) { }
+
+  @HostListener('document:click', ['$event'])
+  onOutsideClick(event: MouseEvent): void {
+
+    const clickedInside =
+      this.elementRef.nativeElement.contains(event.target);
+
+    if (!clickedInside) {
       this.dxMenuService.closeAllModals();
-      this.dxMenuService.openGameRulesModal();
     }
-  
-    openBetHistoryModal(): void {
-      this.dxMenuService.closeAllModals();
-      this.dxMenuService.openBetHistoryModal();
-    }
-  
-    openHowToPlayModal(): void {
-      this.dxMenuService.closeAllModals();
-      this.dxMenuService.openHowToPlayModal();
-    }
-  
-    toggleSound(): void {
-      this.dxMenuService.toggleSound();
-    }
-  
-    toggleMusic(): void {
-      this.dxMenuService.toggleMusic();
-    }
+  }
+
+  openGameRulesModal(): void {
+    this.dxMenuService.closeAllModals();
+    this.dxMenuService.openGameRulesModal();
+  }
+
+  openBetHistoryModal(): void {
+    this.dxMenuService.closeAllModals();
+    this.dxMenuService.openBetHistoryModal();
+  }
+
+  openHowToPlayModal(): void {
+    this.dxMenuService.closeAllModals();
+    this.dxMenuService.openHowToPlayModal();
+  }
+
+  toggleSound(): void {
+    this.dxMenuService.toggleSound();
+  }
+
+  toggleMusic(): void {
+    this.dxMenuService.toggleMusic();
+  }
 }

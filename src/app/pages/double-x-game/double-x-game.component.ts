@@ -17,6 +17,7 @@ import { DxHtpModalComponent } from "../../shared/components/double-x/dx-htp-mod
 import { DxGameRulesModalComponent } from "../../shared/components/double-x/dx-game-rules-modal/dx-game-rules-modal.component";
 import { DxBetHistoryComponent } from "../../shared/components/double-x/dx-bet-history/dx-bet-history.component";
 import { NavigationStart, Router } from '@angular/router';
+import { DxSoundService } from './services/dx.sound.service';
 
 
 
@@ -209,15 +210,31 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
     public dxMenuService: DoubleXMenuService,
     private ngZone: NgZone,
     private cdr: ChangeDetectorRef,
-    private router:Router
+    private router: Router,
+    private dxSoundService: DxSoundService
   ) {
-    this.dxMenuService.musicEnabled$.subscribe(() => {
-      if (this.bgMusic) this.updateMusicState();
+
+    this.dxMenuService.soundEnabled$.subscribe((enabled) => {
+
+      this.dxSoundService.setSoundState(enabled);
+
+      if (!enabled) {
+
+        this.dxSoundService.stopAll([
+          this.timerSound,
+          this.cardsSound
+        ]);
+
+      }
+
     });
 
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationStart) {
-        this.stopAllSounds();
+    this.dxMenuService.musicEnabled$.subscribe((enabled) => {
+      this.dxSoundService.setMusicState(enabled);
+      if (!enabled) {
+        this.dxSoundService.stop(this.bgMusic);
+      } else {
+        this.playBgMusic();
       }
     });
   }
@@ -446,7 +463,6 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
       const t = Math.min(elapsed / duration, 1);
-      // ease-out: fast start, slow end
       const eased = 1 - Math.pow(1 - t, 3);
       this.applyOffset(startOffset + totalPixels * eased);
       if (t < 1) {
@@ -489,37 +505,26 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
   // ================================================================
 
   checkWin(): void {
-
     if (!this.selectedBets.length) return;
-
     const isWinner =
       this.selectedBets.includes(this.winnerCard.type);
-
     if (!isWinner) return;
-
     const config =
       this.betConfigs[this.winnerCard.type];
-
     const totalWin =
       this.betAmount * config.winMultiplier;
-
     this.balance += totalWin;
-
     this.winAmount = totalWin;
-
     this.showWinPopup = true;
   }
 
   // =================================BET
 
   placeBet(type: BetType): void {
-
     if (this.spinning || this.countdown <= 0) return;
-
     if (this.selectedBets.includes(type)) {
       this.selectedBets =
         this.selectedBets.filter(b => b !== type);
-
       this.balance += this.betAmount;
       this.removeBetHistory(type);
       return;
@@ -533,7 +538,6 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   isDisabled(type: 'red' | 'green' | 'gray'): boolean {
-
     const isSelected =
       this.selectedBets.includes(type);
     if (isSelected) {
@@ -546,12 +550,12 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       return true;
     }
-
-
     return this.selectedBets.length >= 2;
   }
 
-  toggleMenuCard(): void { this.showMenuCard = !this.showMenuCard; }
+  toggleMenuCard(): void { 
+    this.dxMenuService.openMenuCard();
+   }
 
   @HostListener('window:resize')
   onResize(): void { this.clearAllTimers(); this.initGame(); }
@@ -582,36 +586,28 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // ================================== SOUND
   playTimerSound(): void {
-    if (!this.dxMenuService.soundEnabled || !this.timerSound?.nativeElement) return;
-    const a = this.timerSound.nativeElement;
-    a.pause(); a.currentTime = 0; a.volume = 0.4;
-    a.play().catch(e => console.log('Timer sound blocked:', e));
+    if (!this.dxMenuService.soundEnabled) return;
+    this.dxSoundService.play(this.timerSound, 0.4);
   }
 
   stopTimerSound(): void {
-    if (!this.timerSound?.nativeElement) return;
-    const a = this.timerSound.nativeElement;
-    a.pause(); a.currentTime = 0;
+    this.dxSoundService.stop(this.timerSound);
   }
 
   playCardsSound(): void {
-    if (!this.dxMenuService.soundEnabled || !this.cardsSound?.nativeElement) return;
-    const a = this.cardsSound.nativeElement;
-    a.pause(); a.currentTime = 0; a.volume = 0.5;
-    a.play().catch(e => console.log('Card sound blocked:', e));
+    if (!this.dxMenuService.soundEnabled) return;
+    this.dxSoundService.play(this.cardsSound, 0.5);
   }
-
   stopCardsSound(): void {
-    if (!this.cardsSound?.nativeElement) return;
-    const a = this.cardsSound.nativeElement;
-    a.pause(); a.currentTime = 0;
+    this.dxSoundService.stop(this.cardsSound);
   }
 
   updateMusicState(): void {
-    const a = this.bgMusic.nativeElement;
-    if (!this.dxMenuService.musicEnabled) { a.pause(); a.currentTime = 0; return; }
-    a.volume = 0.03;
-    a.play().catch(() => { });
+    if (!this.dxMenuService.musicEnabled) {
+      this.dxSoundService.stop(this.bgMusic);
+      return;
+    }
+    this.dxSoundService.loop(this.bgMusic, 0.03);
   }
 
   @HostListener('document:visibilitychange')
@@ -623,11 +619,12 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  pauseBgMusic(): void { this.bgMusic?.nativeElement?.pause(); }
-
+  pauseBgMusic(): void {
+    this.dxSoundService.stop(this.bgMusic);
+  }
   playBgMusic(): void {
-    if (!this.bgMusic?.nativeElement || !this.dxMenuService.musicEnabled) return;
-    this.bgMusic.nativeElement.play().catch(() => { });
+    if (!this.dxMenuService.musicEnabled) return;
+    this.dxSoundService.loop(this.bgMusic, 0.03);
   }
 
 
@@ -651,21 +648,16 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   doubleAmount(): void {
-
     const doubled = this.betAmount * 2;
-
     if (doubled > this.balance) {
       this.betAmount = this.balance;
       return;
     }
-
     this.betAmount = doubled;
   }
 
   halfAmount(): void {
-
     const halved = Math.floor(this.betAmount / 2);
-
     this.betAmount =
       halved < this.minBetAmount
         ? this.minBetAmount
@@ -695,38 +687,27 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
     };
 
     historyCard.histories.unshift(historyItem);
-
-    // max 10 history rows
     historyCard.histories =
       historyCard.histories.slice(0, 10);
-
     historyCard.totalBets += 1;
-
     historyCard.totalAmount += this.betAmount;
   }
 
 
   removeBetHistory(type: BetType): void {
-
     const historyCard =
       this.betHistoryCards.find(card => card.type === type);
 
     if (!historyCard) return;
-
     const index =
       historyCard.histories.findIndex(
         h => h.userName === 'You'
       );
-
     if (index > -1) {
-
       const removedAmount =
         historyCard.histories[index].amount;
-
       historyCard.histories.splice(index, 1);
-
       historyCard.totalBets -= 1;
-
       historyCard.totalAmount -= removedAmount;
     }
   }
@@ -734,9 +715,7 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
   updateMultiplierHistory(): void {
     const latestResult =
       this.winnerCard.type as BetType;
-
     this.multipliers.unshift(latestResult);
-
     this.multipliers = this.multipliers.slice(0, 20);
   }
 
@@ -755,19 +734,11 @@ export class DoubleXGameComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   stopAllSounds(): void {
-    const audios = [
-      this.bgMusic?.nativeElement,
-      this.timerSound?.nativeElement,
-      this.cardsSound?.nativeElement
-    ];
-
-    audios.forEach(audio => {
-      if (!audio) return;
-      audio.pause();
-      audio.currentTime = 0;
-      audio.src = audio.src;
-      audio.load();
-    });
+    this.dxSoundService.stopAll([
+      this.bgMusic,
+      this.timerSound,
+      this.cardsSound
+    ]);
   }
 
 }

@@ -1,28 +1,32 @@
-
 @mixin flex-center {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
-
-
-@mixin linier-gradient-main{
-    background: radial-gradient(58.03% 100% at 50% 0, #f0096b 0%, rgba(40, 45, 49, .11) 100%), linear-gradient(315.81deg, #17191c -42.75%, #32383e 123.05%);
 }
 
-@mixin border-of-linier-gradient-main{
+@mixin linier-gradient-main {
+    background: radial-gradient(58.03% 100% at 50% 0,
+            #1c0d7d 0%,
+            #1c0d7d 100%),
+        linear-gradient(315.81deg,
+            #17191c -42.75%,
+            #32383e 123.05%);
+}
+
+@mixin border-of-linier-gradient-main {
     border: 2px solid #f0096b;
 }
 
 .game-header {
-    width: 100vw;
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 8px 0px;
 }
 
 .game-header-nav {
-    width: 95%;
+    width: 97%;
     margin: auto;
     display: flex;
     align-items: center;
@@ -33,19 +37,27 @@
 .gamename-with-logo {
     display: flex;
     align-items: center;
-    
 }
 
 .gamelogo-img {
-    width: 55px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
 }
 
 .gamename {
-    font-size: 32px;
-    font-weight: bold;
-    color: #cb1060;
-    margin-top: 12px;
+    font-size: 28px;
+        font-weight: bold;
+        margin-top: 12px;
+        background: linear-gradient(90deg,
+                #ff9d2f 0%,
+                #ff5b85 50%,
+                #9b4dff 100%);
+    
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        color: transparent;
+        margin-left: 10px;
 }
 
 .wallet-and-settings {
@@ -81,7 +93,6 @@
     border-radius: 50%;
     margin: 0px 0px 0px 15px;
     @include linier-gradient-main;
-    border: 2px solid #f0096b;
     border: none;
     outline: none;
     cursor: pointer;
@@ -96,35 +107,36 @@
     font-size: 18px !important;
 }
 
-
-
 .profile-modal {
     width: 300px;
     margin: auto;
     z-index: 7777;
     position: absolute;
-    top: -100%; 
+    top: -100%;
     right: 10px;
     opacity: 0;
-    transition: top 0.6s ease, opacity 0.6s ease; 
+    transition: top 0.6s ease, opacity 0.6s ease;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 .profile-modal.active {
-    top: 55px; 
+    top: 55px;
     opacity: 1;
 }
 
 .profile-modal.close {
-    top: -100%; 
-    opacity: 0; 
+    top: -100%;
+    opacity: 0;
 }
+
 .profile-header {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     @include linier-gradient-main;
-    padding: 5px 6px 5px 6px;
+    padding: 5px 6px;
     box-sizing: border-box;
 }
 
@@ -153,22 +165,18 @@
     cursor: pointer;
 }
 
-.profile-settings-list{
+.profile-settings-list {
     width: 100%;
-    padding: 0px 0px 10px 0px;
+    padding: 0 0 10px;
     background-color: #1b1c1d;
     box-sizing: border-box;
 }
-.profile-settings-list.LIGHT{
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    
-}
-.profile-setting{
+
+.profile-setting {
     width: 100%;
     margin: auto;
-    padding: 10px 10px 15px 10px;
-    background-color:#101112 ;
+    padding: 10px 10px 15px;
+    background-color: #101112;
     margin-bottom: 5px;
     box-sizing: border-box;
     display: flex;
@@ -176,43 +184,25 @@
     justify-content: space-between;
     cursor: pointer;
 }
-.profile-setting.LIGHT{
-    background-color: #fff;
-    border-bottom: 1px solid #000;
-    border-left: 0px;
-    border-right: 0px;
-}
-.profile-setting.LIGHT > .setting-name{
-    color: #000 !important;
-    font-weight: 600;
-}
 
-.setting-name{
+.setting-name {
     font-size: 15px;
     font-weight: 500;
     color: #fff;
 }
 
-.profile-setting-icon{
+.profile-setting-icon {
     font-size: 22px !important;
     color: #fff;
     margin-right: 5px;
 }
 
-
-.profile-setting.LIGHT> .profile-setting-icon{
-    color: #000 !important;
-}
-
-
-
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
     .game-header-nav {
         width: 93%;
         margin: auto;
         padding: 4px 0px;
     }
-    
 
     .gamelogo-img {
         width: 45px;
@@ -222,10 +212,9 @@
 
     .gamename {
         font-size: 22px;
-        margin-top: 0px;
+        margin-top: 0;
         margin-left: 5px;
     }
-
 
     .wallet-balance-box {
         height: 35px;
@@ -235,7 +224,7 @@
     .settings {
         width: 30px;
         height: 30px;
-        margin: 0px 5px 0px 7px;
+        margin: 0 5px 0 7px;
     }
 
     .setting-icon {
@@ -250,17 +239,12 @@
         left: 50%;
         transform: translateX(-50%);
     }
-
-
 }
 
-
-@media screen and (min-width:768px) and (max-width:800) {
-
+@media screen and (min-width: 768px) and (max-width: 800px) {
     .game-header-nav {
         width: 90%;
         margin: auto;
         padding: 4px 0px;
     }
-
 }

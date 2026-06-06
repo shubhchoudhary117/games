@@ -3,8 +3,8 @@ $primary-color: #ffd54a;
 .bc-game {
     width: 100%;
     position: relative;
-    height: 100vh;
-    overflow: hidden;
+    height: max-content;
+    padding-bottom: 20px;
 
     background:
         radial-gradient(circle at top center,
@@ -553,6 +553,9 @@ $primary-color: #ffd54a;
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+    &__mcontrollers{
+        display: none;
     }
 
     &__controllers-left {

@@ -166,6 +166,7 @@
         background: rgb(18, 21, 30);
         border: none;
         outline: none;
+        cursor: pointer;
 
         i {
             font-size: 14px;
@@ -869,6 +870,7 @@
         &__menu-btn {
             width: 30px;
             height: 30px;
+           
 
             i {
                 font-size: 18px;

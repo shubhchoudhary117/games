@@ -3,6 +3,7 @@ import { DecimalPipe, NgClass, NgFor, NgIf, NgStyle } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { dummyCatfishes } from '../../data/catfish/DummyData';
 import { CatfishHeaderComponent } from "../../shared/components/catfish/catfish-header/catfish-header.component";
+import { CatfishSoundService } from './catfish.sound.service';
 
 export interface SwipeProfile {
   id: number;
@@ -11,6 +12,7 @@ export interface SwipeProfile {
   image: string;
   isCatfish: boolean;
 }
+
 
 @Component({
   selector: 'app-catfish',
@@ -63,6 +65,9 @@ export class CatfishComponent {
     1.94, 2.18, 2.48, 2.83, 3.26, 3.81
   ];
 
+  betHistory: { time: string; betAmount: number; catfish: number; result: string; payout: string; }[] = [];
+
+
   get multiplierDisplay(): string[] {
     return this.multiplierLadder.map(m => 'x' + m.toFixed(2));
   }
@@ -84,9 +89,26 @@ export class CatfishComponent {
   get topCard(): SwipeProfile | null { return this.stack[0] ?? null; }
   get nextCard(): SwipeProfile | null { return this.stack[1] ?? null; }
 
-  constructor(private cdr: ChangeDetectorRef, private zone: NgZone) { }
+  constructor(private cdr: ChangeDetectorRef, private zone: NgZone, private catfishSoundService: CatfishSoundService) { }
   ngOnInit() { }
-  ngOnDestroy() { cancelAnimationFrame(this.rafId); }
+
+  ngAfterViewInit() {
+    const soundOn =
+      localStorage.getItem('soundOn') !== 'false';
+
+    this.catfishSoundService.setSoundState(soundOn);
+    this.catfishSoundService.setMusicState(soundOn);
+  }
+
+  ngOnDestroy() {
+    cancelAnimationFrame(this.rafId);
+    this.catfishSoundService.stopAll([
+      this.backgroundAudioRef,
+      this.cashoutAudioRef,
+      this.catfishedAudioRef,
+      this.swepAudioRef
+    ]);
+  }
 
   // ── Build round: shuffle + assign catfish ─────────────────
   private buildRound(): SwipeProfile[] {
@@ -101,29 +123,39 @@ export class CatfishComponent {
   }
 
   playSound(type: 'cashout' | 'catfished' | 'swep' | 'background') {
+    // localStorage se check karo sound on hai ya nahi
+    const soundOn = localStorage.getItem('soundOn') !== 'false';
+    if (!soundOn) return;
+
     let audio!: HTMLAudioElement;
 
     if (type === 'cashout') {
-      audio = this.cashoutAudioRef.nativeElement;
+      audio = this.cashoutAudioRef?.nativeElement;
     } else if (type === 'catfished') {
-      audio = this.catfishedAudioRef.nativeElement;
+      audio = this.catfishedAudioRef?.nativeElement;
     } else if (type === 'swep') {
-      audio = this.swepAudioRef.nativeElement;
+      audio = this.swepAudioRef?.nativeElement;
     } else {
-      audio = this.backgroundAudioRef.nativeElement;
+      audio = this.backgroundAudioRef?.nativeElement;
     }
 
     if (!audio) return;
 
-    audio.currentTime = 0;
-
-    const playPromise = audio.play();
-
-    if (playPromise !== undefined) {
-      playPromise.catch(err => {
-        console.log('Audio play blocked:', err);
-      });
+    if (type === 'background') {
+      // Background loop — position reset karo sirf agar pehle se band tha
+      audio.loop = true;
+      if (audio.paused) {
+        audio.currentTime = 0;
+        audio.play().catch(() => { });
+      }
+      return;
     }
+
+    // SFX — hamesha fresh play karo
+    audio.pause();
+    audio.currentTime = 0;
+    audio.loop = false;
+    audio.play().catch(() => { });
   }
 
   // ── Start Game ────────────────────────────────────────────
@@ -206,10 +238,16 @@ export class CatfishComponent {
     this.resetCard(false);
     this.gameState = 'result';
     this.cdr.detectChanges();
+    this.addToHistory(); 
   }
 
   // ── Play Again ────────────────────────────────────────────
   playAgain() {
+    const bgAudio = this.backgroundAudioRef?.nativeElement;
+    if (bgAudio) {
+      bgAudio.pause();
+      bgAudio.currentTime = 0;
+    }
     this.gameState = 'idle';
     this.swipedProfiles = [];
     this.safeSwipes = 0;
@@ -369,6 +407,50 @@ export class CatfishComponent {
       left: scrollPosition,
       behavior: 'smooth'
     });
+  }
+
+
+  @HostListener('window:catfish-sound-change', ['$event'])
+  onSoundChanged(event: any) {
+
+    const enabled = event.detail;
+
+    this.catfishSoundService.setSoundState(enabled);
+    this.catfishSoundService.setMusicState(enabled);
+
+    if (!enabled) {
+
+      this.catfishSoundService.stopAll([
+        this.backgroundAudioRef,
+        this.cashoutAudioRef,
+        this.catfishedAudioRef,
+        this.swepAudioRef
+      ]);
+
+    } else {
+
+      this.catfishSoundService.loop(
+        this.backgroundAudioRef,
+      1
+      );
+    }
+  }
+
+  private addToHistory() {
+    const now = new Date();
+    const time = now.toTimeString().slice(0, 8);
+    const result = this.resultType === 'cashout' ? 'CASHED OUT' : 'CRASHED';
+    const multiplier = this.resultType === 'cashout'
+      ? (this.resultAmount / this.betAmount).toFixed(2)
+      : '0.00';
+    this.betHistory.unshift({
+      time,
+      betAmount: this.betAmount,
+      catfish: this.catfishCount,
+      result,
+      payout: 'x' + multiplier
+    });
+    if (this.betHistory.length > 10) this.betHistory.pop();
   }
 
   // ── Bet helpers (locked during play) ─────────────────────

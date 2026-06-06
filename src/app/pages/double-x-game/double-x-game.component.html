@@ -192,7 +192,7 @@
 
     </main>
 
-    <app-dx-menu-card *ngIf="showMenuCard" />
+    <app-dx-menu-card *ngIf="dxMenuService.menuCard$| async" />
     <app-dx-htp-modal *ngIf="dxMenuService.howToPlayModal$ | async" />
     <app-dx-game-rules-modal *ngIf="dxMenuService.gameRulesModal$ | async" />
     <app-dx-bet-history *ngIf="dxMenuService.betHistoryModal$ | async" />

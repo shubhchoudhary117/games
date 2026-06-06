@@ -1,5 +1,3 @@
-// chicken-banana-menu.service.ts
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
@@ -8,7 +6,37 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class DoubleXMenuService {
 
- 
+  /* =========================
+     MENU CARD
+  ========================= */
+
+  private menuCardSubject =
+    new BehaviorSubject<boolean>(false);
+
+  menuCard$ =
+    this.menuCardSubject.asObservable();
+
+  get menuCard(): boolean {
+    return this.menuCardSubject.value;
+  }
+
+  openMenuCard(): void {
+    this.menuCardSubject.next(true);
+  }
+
+  closeMenuCard(): void {
+    this.menuCardSubject.next(false);
+  }
+
+  toggleMenuCard(): void {
+    this.menuCardSubject.next(
+      !this.menuCardSubject.value
+    );
+  }
+
+  /* =========================
+     HOW TO PLAY MODAL
+  ========================= */
 
   private howToPlayModalSubject =
     new BehaviorSubject<boolean>(false);
@@ -105,8 +133,13 @@ export class DoubleXMenuService {
   ========================= */
 
   closeAllModals(): void {
+
+    this.closeMenuCard();
+
     this.howToPlayModalSubject.next(false);
+
     this.gameRulesModalSubject.next(false);
+
     this.betHistoryModalSubject.next(false);
   }
 }

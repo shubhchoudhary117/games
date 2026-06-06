@@ -40,16 +40,16 @@ export class CatfishHeaderComponent {
 
   handleSoundSetting() {
     this.volumeIsOn = !this.volumeIsOn;
-
-    this.User = {
-      ...this.User,
-      Settings: {
-        ...this.User.Settings,
-        Sound_On: this.volumeIsOn
-      }
-    };
-
-    localStorage.setItem('soundOn', String(this.volumeIsOn));
+    this.User.Settings.Sound_On = this.volumeIsOn;
+    localStorage.setItem(
+      'soundOn',
+      String(this.volumeIsOn)
+    );
+    window.dispatchEvent(
+      new CustomEvent('catfish-sound-change', {
+        detail: this.volumeIsOn
+      })
+    );
   }
 
   handleMode(mode: string) {
