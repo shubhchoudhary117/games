@@ -5,12 +5,8 @@
 }
 
 @mixin linier-gradient-main {
-    background: radial-gradient(58.03% 100% at 50% 0,
-            #1c0d7d 0%,
-            #1c0d7d 100%),
-        linear-gradient(315.81deg,
-            #17191c -42.75%,
-            #32383e 123.05%);
+background:
+        linear-gradient(90deg, #ff9d2f 0%, #ff5b85 50%, #9b4dff 100%) border-box;
 }
 
 @mixin border-of-linier-gradient-main {

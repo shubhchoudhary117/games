@@ -21,7 +21,6 @@ $card-border: rgba(226, 0, 106, 0.22);
 
 @mixin gradient-border-btn {
   background:
-    linear-gradient(#0e0624, #0e0624) padding-box,
     linear-gradient(90deg, #ff9d2f 0%, #ff5b85 50%, #9b4dff 100%) border-box;
 }
 
@@ -308,20 +307,65 @@ $card-border: rgba(226, 0, 106, 0.22);
   }
 
   // ── Loading Screen — Swindler Brand Style ─────────────────
-  &__loading {
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    background: #01051a;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    z-index: 50;
-    overflow: hidden;
-    padding: 24px 20px;
-  }
+    &__loading {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      overflow: hidden;
+      z-index: 50;
+  
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+  
+      // Dark neon background
+      background:
+        radial-gradient(circle at top center,
+          rgba(89, 0, 255, 0.25) 0%,
+          rgba(20, 8, 60, 0.9) 35%,
+          #05051a 100%);
+  
+      // Outer neon glow
+      border: 2px solid transparent;
+      background-clip: padding-box;
+  
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        padding: 2px;
+        border-radius: 24px;
+  
+        background: linear-gradient(135deg,
+            #ff7b2d 0%,
+            #ff3c82 40%,
+            #8f4dff 100%);
+  
+        -webkit-mask:
+          linear-gradient(#fff 0 0) content-box,
+          linear-gradient(#fff 0 0);
+  
+        -webkit-mask-composite: xor;
+        mask-composite: exclude;
+  
+        pointer-events: none;
+      }
+  
+      // Inner glow
+      &::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 24px;
+        box-shadow:
+          0 0 25px rgba(255, 80, 180, 0.25),
+          0 0 50px rgba(126, 63, 255, 0.2),
+          inset 0 0 40px rgba(88, 50, 255, 0.15);
+  
+        pointer-events: none;
+      }
+    }
 
   // Logo icon placeholder (replace background-image with your actual logo)
   &__loading-logo {
@@ -330,6 +374,7 @@ $card-border: rgba(226, 0, 106, 0.22);
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 20px;
   }
 
   &__loading-logo-icon {
@@ -363,7 +408,7 @@ $card-border: rgba(226, 0, 106, 0.22);
     letter-spacing: 4px;
     color: rgba(255, 255, 255, 0.35);
     text-transform: uppercase;
-    margin-top: -2px;
+    margin-top:10px;
   }
 
   // ── Spinning ring ─────────────────────────────────────────
@@ -424,6 +469,7 @@ $card-border: rgba(226, 0, 106, 0.22);
     color: rgba(255, 255, 255, 0.65);
     text-transform: uppercase;
     text-align: center;
+    margin-top: 10px;
   }
 
   // ── Bouncing dots ──────────────────────────────────────────
@@ -432,7 +478,8 @@ $card-border: rgba(226, 0, 106, 0.22);
     gap: 8px;
     align-items: center;
     justify-content: center;
-    margin: 2px 0;
+    margin: 12px 0;
+
 
     span {
       width: 6px;
@@ -592,6 +639,7 @@ $card-border: rgba(226, 0, 106, 0.22);
     transform: translate(-50%, -50%);
     z-index: 200;
     width: 200px;
+    height: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -605,11 +653,15 @@ $card-border: rgba(226, 0, 106, 0.22);
 
     &--win {
       background: transparent;
-      padding: 0;
+      padding: 0px !important;
       overflow: hidden;
       border-radius: 10px;
       width: 210px;
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(226, 0, 106, 0.3);
+      height: 150px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
     }
   }
 
@@ -633,7 +685,7 @@ $card-border: rgba(226, 0, 106, 0.22);
   &__result-win-header {
     width: 100%;
     height: 46px;
-    @include gradient-pink;
+    @include gradient-border-btn();
     display: flex;
     align-items: center;
     justify-content: center;
@@ -647,7 +699,7 @@ $card-border: rgba(226, 0, 106, 0.22);
 
   &__result-win-amount {
     width: 100%;
-    height: 64px;
+    height: 80px;
     background: rgba(255, 255, 255, 0.96);
     display: flex;
     align-items: center;
@@ -828,10 +880,14 @@ $card-border: rgba(226, 0, 106, 0.22);
 
     // PLEASE CHOOSE OUTCOME — shown before first swipe, no action
     &--choose {
-      border: 2px dashed rgba(226, 0, 106, 0.4);
-      background: rgba(226, 0, 106, 0.04);
+      @include gradient-border-btn;
+
+      &::before {
+        background: linear-gradient(135deg, rgba(255, 143, 43, 0.3) 0%, rgba(232, 68, 110, 0.3) 50%, rgba(197, 52, 255, 0.3) 100%);
+      }
+
       cursor: not-allowed;
-      font-size: 0.82rem;
+      font-size: 0.9rem;
       letter-spacing: 1.5px;
       color: rgba(255, 255, 255, 0.4);
 

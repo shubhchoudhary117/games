@@ -31,27 +31,15 @@
 
         <!-- Arena -->
         <div class="catfish__arena">
-
-          <!-- Idle -->
           <div class="catfish__idle" *ngIf="gameState === 'idle'">
             <div class="catfish__idle-image"></div>
           </div>
 
-          <!-- Loading Screen — Swindler Brand Style (matches screenshot) -->
           <div class="catfish__loading" *ngIf="gameState === 'loading'">
-
-            <!-- Logo icon -->
             <div class="catfish__loading-logo">
               <div class="catfish__loading-logo-icon"></div>
             </div>
-
-            <!-- Brand name -->
             <div class="catfish__loading-brand">Swindler</div>
-
-            <!-- Tagline -->
-            <div class="catfish__loading-tagline">PLAY &bull; RISK &bull; WIN</div>
-
-            <!-- Spinning ring loader -->
             <div class="catfish__loading-ring-wrap">
               <div class="catfish__loading-ring-track"></div>
               <div class="catfish__loading-ring-spin"></div>
@@ -59,23 +47,16 @@
                 <div class="catfish__loading-ring-icon"></div>
               </div>
             </div>
-
-            <!-- Loading label -->
             <div class="catfish__loading-label">LOADING GAME</div>
-
-            <!-- Bouncing dots -->
             <div class="catfish__loading-dots">
               <span></span><span></span><span></span>
             </div>
-
-            <!-- Progress bar row -->
             <div class="catfish__loading-bar-wrap">
               <div class="catfish__loading-bar-track">
                 <div class="catfish__loading-bar-fill" [style.width.%]="loadingProgress"></div>
               </div>
               <span class="catfish__loading-pct">{{ loadingProgress }}%</span>
             </div>
-
           </div>
 
           <!-- Next Card (behind) -->
