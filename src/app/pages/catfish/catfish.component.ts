@@ -28,6 +28,7 @@ export class CatfishComponent {
   @ViewChild('catfishedAudio') catfishedAudioRef!: ElementRef<HTMLAudioElement>;
   @ViewChild('swepAudio') swepAudioRef!: ElementRef<HTMLAudioElement>;
   @ViewChild('multiplierScroll') multiplierScrollRef!: ElementRef<HTMLDivElement>;
+
   readonly baseProfiles = dummyCatfishes.slice(0, 25).map((p: any, i: number) => ({
     id: i,
     name: p.name,
@@ -38,8 +39,8 @@ export class CatfishComponent {
 
   // ── Game state ────────────────────────────────────────────
   stack: SwipeProfile[] = [];
-  roundProfiles: SwipeProfile[] = [];   // all 25 for this round
-  swipedProfiles: SwipeProfile[] = [];  // profiles swiped so far
+  roundProfiles: SwipeProfile[] = [];
+  swipedProfiles: SwipeProfile[] = [];
 
   gameActive = false;
   gameState: 'idle' | 'loading' | 'playing' | 'result' = 'idle';
@@ -55,10 +56,19 @@ export class CatfishComponent {
   currentCashoutAmount = 0;
 
   balance = 0.00;
+
+  // FIX 1 & 2: betAmount now works independently, chips ADD to amount
   betAmount = 10;
+  readonly MIN_BET = 1;
+  readonly MAX_BET = 10000;
+
+  // FIX 3: catfish min 1 max 24, increments by 1
   catfishCount = 2;
+  readonly MIN_CATFISH = 1;
+  readonly MAX_CATFISH = 24;
+
   stakeOptions = [10, 50, 100, 200];
-  catfishOptions = [3, 5, 10, 24];
+  catfishPresets = [3, 5, 10, 24];
 
   readonly multiplierLadder = [
     1.08, 1.17, 1.29, 1.41, 1.56, 1.74,
@@ -67,9 +77,17 @@ export class CatfishComponent {
 
   betHistory: { time: string; betAmount: number; catfish: number; result: string; payout: string; }[] = [];
 
-
   get multiplierDisplay(): string[] {
     return this.multiplierLadder.map(m => 'x' + m.toFixed(2));
+  }
+
+  // FIX 4: multiplier chip state helper
+  getChipState(index: number): 'past' | 'current' | 'future' {
+    if (this.gameState !== 'playing') return 'future';
+    const currentIndex = this.safeSwipes - 1;
+    if (index < currentIndex) return 'past';
+    if (index === currentIndex) return 'current';
+    return 'future';
   }
 
   // ── Drag state ────────────────────────────────────────────
@@ -90,12 +108,11 @@ export class CatfishComponent {
   get nextCard(): SwipeProfile | null { return this.stack[1] ?? null; }
 
   constructor(private cdr: ChangeDetectorRef, private zone: NgZone, private catfishSoundService: CatfishSoundService) { }
+
   ngOnInit() { }
 
   ngAfterViewInit() {
-    const soundOn =
-      localStorage.getItem('soundOn') !== 'false';
-
+    const soundOn = localStorage.getItem('soundOn') !== 'false';
     this.catfishSoundService.setSoundState(soundOn);
     this.catfishSoundService.setMusicState(soundOn);
   }
@@ -123,7 +140,6 @@ export class CatfishComponent {
   }
 
   playSound(type: 'cashout' | 'catfished' | 'swep' | 'background') {
-    // localStorage se check karo sound on hai ya nahi
     const soundOn = localStorage.getItem('soundOn') !== 'false';
     if (!soundOn) return;
 
@@ -142,7 +158,6 @@ export class CatfishComponent {
     if (!audio) return;
 
     if (type === 'background') {
-      // Background loop — position reset karo sirf agar pehle se band tha
       audio.loop = true;
       if (audio.paused) {
         audio.currentTime = 0;
@@ -151,7 +166,6 @@ export class CatfishComponent {
       return;
     }
 
-    // SFX — hamesha fresh play karo
     audio.pause();
     audio.currentTime = 0;
     audio.loop = false;
@@ -238,7 +252,7 @@ export class CatfishComponent {
     this.resetCard(false);
     this.gameState = 'result';
     this.cdr.detectChanges();
-    this.addToHistory(); 
+    this.addToHistory();
   }
 
   // ── Play Again ────────────────────────────────────────────
@@ -309,16 +323,15 @@ export class CatfishComponent {
   }
 
   onNope() {
-    if (!this.gameActive || this.animating || !this.topCard) return; {
-      this.flyOut('left');
-      this.playSound('swep');
-    }
+    if (!this.gameActive || this.animating || !this.topCard) return;
+    this.flyOut('left');
+    this.playSound('swep');
   }
+
   onLike() {
-    if (!this.gameActive || this.animating || !this.topCard) return; {
-      this.flyOut('right');
-      this.playSound('swep');
-    }
+    if (!this.gameActive || this.animating || !this.topCard) return;
+    this.flyOut('right');
+    this.playSound('swep');
   }
 
   // ── Core fly-out + game logic ─────────────────────────────
@@ -344,6 +357,7 @@ export class CatfishComponent {
     setTimeout(() => {
       this.swipedProfiles.push(card);
       this.stack = this.stack.slice(1);
+
       if (isLike && card.isCatfish) {
         this.resultType = 'catfish';
         this.playSound('catfished');
@@ -409,30 +423,21 @@ export class CatfishComponent {
     });
   }
 
-
   @HostListener('window:catfish-sound-change', ['$event'])
   onSoundChanged(event: any) {
-
     const enabled = event.detail;
-
     this.catfishSoundService.setSoundState(enabled);
     this.catfishSoundService.setMusicState(enabled);
 
     if (!enabled) {
-
       this.catfishSoundService.stopAll([
         this.backgroundAudioRef,
         this.cashoutAudioRef,
         this.catfishedAudioRef,
         this.swepAudioRef
       ]);
-
     } else {
-
-      this.catfishSoundService.loop(
-        this.backgroundAudioRef,
-      1
-      );
+      this.catfishSoundService.loop(this.backgroundAudioRef, 1);
     }
   }
 
@@ -453,13 +458,54 @@ export class CatfishComponent {
     if (this.betHistory.length > 10) this.betHistory.pop();
   }
 
-  // ── Bet helpers (locked during play) ─────────────────────
-  setBet(v: number) { if (this.gameState === 'idle') this.betAmount = v; }
-  increaseBet() { if (this.gameState !== 'idle') return; const i = this.stakeOptions.indexOf(this.betAmount); if (i < this.stakeOptions.length - 1) this.betAmount = this.stakeOptions[i + 1]; }
-  decreaseBet() { if (this.gameState !== 'idle') return; const i = this.stakeOptions.indexOf(this.betAmount); if (i > 0) this.betAmount = this.stakeOptions[i - 1]; }
-  setMax() { if (this.gameState === 'idle') this.betAmount = this.stakeOptions[this.stakeOptions.length - 1]; }
-  setMin() { if (this.gameState === 'idle') this.betAmount = this.stakeOptions[0]; }
-  setCatfish(v: number) { if (this.gameState === 'idle') this.catfishCount = v; }
-  increaseCatfish() { if (this.gameState !== 'idle') return; const i = this.catfishOptions.indexOf(this.catfishCount); if (i < this.catfishOptions.length - 1) this.catfishCount = this.catfishOptions[i + 1]; }
-  decreaseCatfish() { if (this.gameState !== 'idle') return; const i = this.catfishOptions.indexOf(this.catfishCount); if (i > 0) this.catfishCount = this.catfishOptions[i - 1]; }
+  // ── Bet helpers ───────────────────────────────────────────
+  // FIX 1: +/- increases/decreases by exactly 1
+  increaseBet() {
+    if (this.gameState !== 'idle') return;
+    this.betAmount = Math.min(this.betAmount + 1, this.MAX_BET);
+  }
+
+  decreaseBet() {
+    if (this.gameState !== 'idle') return;
+    this.betAmount = Math.max(this.betAmount - 1, this.MIN_BET);
+  }
+
+  // FIX 2: chip buttons ADD to existing bet amount
+  addBet(v: number) {
+    if (this.gameState !== 'idle') return;
+    this.betAmount = Math.min(this.betAmount + v, this.MAX_BET);
+  }
+
+  // FIX 2: subtract bet amount chip
+  subtractBet(v: number) {
+    if (this.gameState !== 'idle') return;
+    this.betAmount = Math.max(this.betAmount - v, this.MIN_BET);
+  }
+
+  setBet(v: number) {
+    if (this.gameState === 'idle') this.betAmount = v;
+  }
+
+  setMax() {
+    if (this.gameState === 'idle') this.betAmount = this.MAX_BET;
+  }
+
+  setMin() {
+    if (this.gameState === 'idle') this.betAmount = this.MIN_BET;
+  }
+
+  // FIX 3: catfish increments by 1, max 24
+  setCatfish(v: number) {
+    if (this.gameState === 'idle') this.catfishCount = Math.min(Math.max(v, this.MIN_CATFISH), this.MAX_CATFISH);
+  }
+
+  increaseCatfish() {
+    if (this.gameState !== 'idle') return;
+    this.catfishCount = Math.min(this.catfishCount + 1, this.MAX_CATFISH);
+  }
+
+  decreaseCatfish() {
+    if (this.gameState !== 'idle') return;
+    this.catfishCount = Math.max(this.catfishCount - 1, this.MIN_CATFISH);
+  }
 }
