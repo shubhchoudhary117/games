@@ -55,14 +55,15 @@ export class CatfishComponent {
   safeSwipes = 0;
   currentCashoutAmount = 0;
 
+  // ── NEW: tracks whether player has swiped at least once ──
+  hasSwipedOnce = false;
+
   balance = 0.00;
 
-  // FIX 1 & 2: betAmount now works independently, chips ADD to amount
   betAmount = 10;
   readonly MIN_BET = 1;
   readonly MAX_BET = 10000;
 
-  // FIX 3: catfish min 1 max 24, increments by 1
   catfishCount = 2;
   readonly MIN_CATFISH = 1;
   readonly MAX_CATFISH = 24;
@@ -81,7 +82,6 @@ export class CatfishComponent {
     return this.multiplierLadder.map(m => 'x' + m.toFixed(2));
   }
 
-  // FIX 4: multiplier chip state helper
   getChipState(index: number): 'past' | 'current' | 'future' {
     if (this.gameState !== 'playing') return 'future';
     const currentIndex = this.safeSwipes - 1;
@@ -183,6 +183,8 @@ export class CatfishComponent {
     this.swipedProfiles = [];
     this.safeSwipes = 0;
     this.currentCashoutAmount = this.betAmount;
+    // Reset swipe flag on new game
+    this.hasSwipedOnce = false;
     this.cdr.detectChanges();
 
     this.roundProfiles = this.buildRound();
@@ -268,6 +270,8 @@ export class CatfishComponent {
     this.currentCashoutAmount = this.betAmount;
     this.stack = [];
     this.roundProfiles = [];
+    // Reset swipe flag on play again
+    this.hasSwipedOnce = false;
     this.cdr.detectChanges();
   }
 
@@ -339,6 +343,9 @@ export class CatfishComponent {
     if (!this.topCard) return;
     const card = { ...this.topCard };
     const isLike = dir === 'right';
+
+    // Mark that player has swiped at least once — shows Cash Out button
+    this.hasSwipedOnce = true;
 
     this.animating = true;
     this.pointerDown = false;
@@ -459,7 +466,6 @@ export class CatfishComponent {
   }
 
   // ── Bet helpers ───────────────────────────────────────────
-  // FIX 1: +/- increases/decreases by exactly 1
   increaseBet() {
     if (this.gameState !== 'idle') return;
     this.betAmount = Math.min(this.betAmount + 1, this.MAX_BET);
@@ -470,13 +476,11 @@ export class CatfishComponent {
     this.betAmount = Math.max(this.betAmount - 1, this.MIN_BET);
   }
 
-  // FIX 2: chip buttons ADD to existing bet amount
   addBet(v: number) {
     if (this.gameState !== 'idle') return;
     this.betAmount = Math.min(this.betAmount + v, this.MAX_BET);
   }
 
-  // FIX 2: subtract bet amount chip
   subtractBet(v: number) {
     if (this.gameState !== 'idle') return;
     this.betAmount = Math.max(this.betAmount - v, this.MIN_BET);
@@ -494,7 +498,6 @@ export class CatfishComponent {
     if (this.gameState === 'idle') this.betAmount = this.MIN_BET;
   }
 
-  // FIX 3: catfish increments by 1, max 24
   setCatfish(v: number) {
     if (this.gameState === 'idle') this.catfishCount = Math.min(Math.max(v, this.MIN_CATFISH), this.MAX_CATFISH);
   }

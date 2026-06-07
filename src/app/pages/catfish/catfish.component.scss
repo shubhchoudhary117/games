@@ -11,7 +11,7 @@ $text: #ffffff;
 $dim: rgba(255, 255, 255, 0.5);
 $border: rgba(226, 0, 106, 0.3);
 $surface: rgba(255, 255, 255, 0.04);
-$card-border: rgba(109, 71, 255, 0.35);
+$card-border: rgba(226, 0, 106, 0.22);
 
 // ── Unified Pink Gradient — used everywhere for brand consistency
 @mixin gradient-pink {
@@ -62,11 +62,11 @@ $card-border: rgba(109, 71, 255, 0.35);
     display: flex;
     align-items: center;
     background: rgba(7, 10, 35, 0.95);
-    border: 1px solid rgba(109, 71, 255, 0.6);
+    border: 1px solid rgba(226, 0, 106, 0.45);
     border-radius: 20px;
     box-shadow:
-      inset 0 0 15px rgba(62, 82, 255, 0.15),
-      0 0 15px rgba(109, 71, 255, 0.25);
+      inset 0 0 15px rgba(226, 0, 106, 0.08),
+      0 0 15px rgba(226, 0, 106, 0.18);
     overflow-x: auto;
     scrollbar-width: none;
 
@@ -307,240 +307,136 @@ $card-border: rgba(109, 71, 255, 0.35);
     border-radius: 18px;
   }
 
-  // ── Loading Screen — Gaming Tinder Style ──────────────────
+  // ── Loading Screen — Swindler Brand Style ─────────────────
   &__loading {
     position: absolute;
     inset: 0;
     border-radius: 20px;
-    background: rgba(20, 22, 60, 0.5);
-    border: 1px solid rgba(100, 70, 200, 0.18);
+    background: #01051a;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     z-index: 50;
     overflow: hidden;
+    padding: 24px 20px;
   }
 
-  // Ambient blobs
-  &__loading-bg-orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(50px);
-    pointer-events: none;
-
-    &--1 {
-      width: 260px;
-      height: 260px;
-      background: radial-gradient(circle, rgba(226, 0, 106, 0.14) 0%, transparent 70%);
-      top: -80px;
-      left: 50%;
-      transform: translateX(-50%);
-      animation: catfish-orb-drift 7s ease-in-out infinite;
-    }
-
-    &--2 {
-      width: 180px;
-      height: 180px;
-      background: radial-gradient(circle, rgba(109, 71, 255, 0.12) 0%, transparent 70%);
-      bottom: -50px;
-      left: 15%;
-      animation: catfish-orb-drift 9s ease-in-out infinite reverse;
-      animation-delay: -4s;
-    }
-
-    &--3 {
-      width: 140px;
-      height: 140px;
-      background: radial-gradient(circle, rgba(226, 0, 106, 0.1) 0%, transparent 70%);
-      bottom: -30px;
-      right: 10%;
-      animation: catfish-orb-drift 6s ease-in-out infinite;
-      animation-delay: -2s;
-    }
-  }
-
-  &__loading-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 22px;
-    width: 65%;
-    position: relative;
-    z-index: 1;
-  }
-
-  // ── Tinder-style swipe icon animation ─────────────────────
-  &__loading-icon {
-    position: relative;
-    width: 80px;
-    height: 80px;
+  // Logo icon placeholder (replace background-image with your actual logo)
+  &__loading-logo {
+    width: 72px;
+    height: 72px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  &__loading-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 2px solid transparent;
-
-    &--1 {
-      inset: 0;
-      border-top-color: $pink;
-      border-right-color: rgba(226, 0, 106, 0.12);
-      animation: catfish-spin 1.2s linear infinite;
-    }
-
-    &--2 {
-      inset: 11px;
-      border-top-color: rgba(168, 85, 247, 0.9);
-      border-left-color: rgba(168, 85, 247, 0.1);
-      animation: catfish-spin 0.85s linear infinite reverse;
-    }
-
-    &--3 {
-      inset: 21px;
-      border-top-color: $pink-l;
-      border-bottom-color: rgba(255, 79, 160, 0.1);
-      animation: catfish-spin 1.6s linear infinite;
-    }
+  &__loading-logo-icon {
+    width: 72px;
+    height: 72px;
+    background-image: url("../../../../public/assets/catfish/catfish-logo.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
   }
 
-  &__loading-heart {
-    font-size: 22px;
-    color: $pink;
-    animation: catfish-heartbeat 1.2s ease-in-out infinite;
-    line-height: 1;
-    filter: drop-shadow(0 0 10px rgba(226, 0, 106, 1)) drop-shadow(0 0 20px rgba(226, 0, 106, 0.5));
-    position: relative;
-    z-index: 2;
-  }
-
-  // ── Loading title ─────────────────────────────────────────
-  &__loading-title {
+  // Brand name — orange-pink-purple gradient text
+  &__loading-brand {
     font-family: 'Syne', sans-serif;
-    font-size: 1.1rem;
+    font-size: 3rem;
     font-weight: 800;
-    color: #fff;
-    letter-spacing: 0.5px;
-    text-align: center;
+    background: linear-gradient(90deg, #ff6a00 0%, #e2006a 45%, #9b4dff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -1px;
     line-height: 1;
+    margin-top: -4px;
   }
 
-  &__loading-message {
+  // Tagline below brand name
+  &__loading-tagline {
     font-family: 'DM Sans', sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 400;
-    color: rgba(255, 150, 200, 0.65);
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
-    text-align: center;
-    margin: -10px 0 0;
-    min-height: 16px;
-  }
-
-  // ── Progress bar ──────────────────────────────────────────
-  &__loading-progress-wrap {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  &__loading-progress-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__loading-progress-label {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 0.65rem;
+    letter-spacing: 4px;
     color: rgba(255, 255, 255, 0.35);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    margin-top: -2px;
   }
 
-  &__loading-pct {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 0.9rem;
-    color: $pink-l;
-    letter-spacing: -0.5px;
-    line-height: 1;
-  }
-
-  &__progress-track {
-    width: 100%;
-    height: 7px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 99px;
-    border: 1px solid rgba(226, 0, 106, 0.12);
-    overflow: hidden;
+  // ── Spinning ring ─────────────────────────────────────────
+  &__loading-ring-wrap {
     position: relative;
+    width: 128px;
+    height: 128px;
+    margin: 8px 0 4px;
+    flex-shrink: 0;
   }
 
-  &__progress-fill {
-    height: 100%;
-    border-radius: 99px;
-    background: linear-gradient(90deg,
-        $pink-d 0%,
-        $pink 40%,
-        #b84dff 72%,
-        $pink-l 100%);
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    min-width: 7px;
-  }
-
-  &__progress-shine {
-    position: absolute;
-    top: 0;
-    left: -50px;
-    width: 50px;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
-    animation: catfish-shine-slide 1.8s ease-in-out infinite;
-  }
-
-  &__progress-glow {
-    position: absolute;
-    top: -2px;
-    right: -1px;
-    width: 10px;
-    height: calc(100% + 4px);
-    background: rgba(255, 100, 200, 0.9);
-    border-radius: 50%;
-    filter: blur(3px);
-    animation: catfish-progress-dot-pulse 1s ease-in-out infinite;
-  }
-
-  &__progress-segments {
+  &__loading-ring-track {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2px;
-    pointer-events: none;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.05);
   }
 
-  &__progress-seg {
-    width: 1px;
-    height: 55%;
-    background: rgba(255, 255, 255, 0.07);
-    border-radius: 1px;
+  &__loading-ring-spin {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: #d946ef;
+    border-right-color: #9b4dff;
+    border-bottom-color: rgba(217, 70, 239, 0.15);
+    animation: catfish-ring-spin 1.1s linear infinite;
   }
 
-  &__loading-dots {
+  &__loading-ring-inner {
+    position: absolute;
+    inset: 18px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
     display: flex;
-    gap: 7px;
     align-items: center;
     justify-content: center;
+  }
+
+  // Small logo icon inside the ring
+  &__loading-ring-icon {
+    width: 44px;
+    height: 44px;
+    background-image: url("../../../../public/assets/catfish/catfish-logo.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+  }
+
+  // "LOADING GAME" label
+  &__loading-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 5px;
+    color: rgba(255, 255, 255, 0.65);
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  // ── Bouncing dots ──────────────────────────────────────────
+  &__loading-dots {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    margin: 2px 0;
 
     span {
-      width: 5px;
-      height: 5px;
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
       animation: catfish-dot-bounce 1.4s ease-in-out infinite;
 
@@ -559,6 +455,57 @@ $card-border: rgba(109, 71, 255, 0.35);
         animation-delay: 0.4s;
       }
     }
+  }
+
+  // ── Progress bar row ──────────────────────────────────────
+  &__loading-bar-wrap {
+    width: 85%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  &__loading-bar-track {
+    flex: 1;
+    height: 7px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+    position: relative;
+  }
+
+  &__loading-bar-fill {
+    height: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, #ff6a00 0%, #e2006a 45%, #9b4dff 80%, $pink-l 100%);
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    min-width: 6px;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      width: 10px;
+      height: calc(100% + 2px);
+      background: rgba(255, 150, 220, 0.85);
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: catfish-progress-dot-pulse 1s ease-in-out infinite;
+    }
+  }
+
+  &__loading-pct {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    color: #ffffff;
+    min-width: 38px;
+    text-align: right;
+    letter-spacing: -0.3px;
+    flex-shrink: 0;
   }
 
   // ── Swipe Action Buttons ───────────────────────────────────
@@ -683,7 +630,6 @@ $card-border: rgba(109, 71, 255, 0.35);
     opacity: 0.75;
   }
 
-  // Win popup — same pink theme as cashout button
   &__result-win-header {
     width: 100%;
     height: 46px;
@@ -880,7 +826,30 @@ $card-border: rgba(109, 71, 255, 0.35);
       }
     }
 
-    // CASHOUT state — solid pink brand gradient, NO orange
+    // PLEASE CHOOSE OUTCOME — shown before first swipe, no action
+    &--choose {
+      border: 2px dashed rgba(226, 0, 106, 0.4);
+      background: rgba(226, 0, 106, 0.04);
+      cursor: not-allowed;
+      font-size: 0.82rem;
+      letter-spacing: 1.5px;
+      color: rgba(255, 255, 255, 0.4);
+
+      &::before {
+        display: none;
+      }
+
+      &::after {
+        display: none;
+      }
+
+      &:hover {
+        transform: none !important;
+        box-shadow: none !important;
+      }
+    }
+
+    // CASHOUT state — solid pink brand gradient
     &--cashout {
       border: 1px solid rgba(226, 0, 106, 0.6);
       @include gradient-pink;
@@ -943,7 +912,7 @@ $card-border: rgba(109, 71, 255, 0.35);
 
   // ── Control Card ───────────────────────────────────────────
   &__control-card {
-    background: rgba(7, 10, 35, 0.55);
+    background: rgba(5, 5, 28, 0.7);
     border: 1px solid $card-border;
     border-radius: 14px;
     padding: 14px 14px 12px;
@@ -951,8 +920,8 @@ $card-border: rgba(109, 71, 255, 0.35);
     flex-direction: column;
     gap: 10px;
     box-shadow:
-      inset 0 0 20px rgba(62, 82, 255, 0.05),
-      0 0 12px rgba(109, 71, 255, 0.08);
+      inset 0 0 20px rgba(226, 0, 106, 0.03),
+      0 0 12px rgba(226, 0, 106, 0.06);
 
     &--history {
       flex: 1;
@@ -1292,6 +1261,12 @@ $card-border: rgba(109, 71, 255, 0.35);
 }
 
 // ── Keyframes ─────────────────────────────────────────────────
+@keyframes catfish-ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes catfish-mchip-pulse {
 
   0%,
@@ -1334,20 +1309,6 @@ $card-border: rgba(109, 71, 255, 0.35);
   }
 }
 
-@keyframes catfish-orb-drift {
-
-  0%,
-  100% {
-    transform: translateX(-50%) scale(1);
-    opacity: 0.8;
-  }
-
-  50% {
-    transform: translateX(-50%) scale(1.2);
-    opacity: 1;
-  }
-}
-
 @keyframes catfish-progress-dot-pulse {
 
   0%,
@@ -1359,44 +1320,6 @@ $card-border: rgba(109, 71, 255, 0.35);
   50% {
     opacity: 1;
     transform: scaleY(1.3);
-  }
-}
-
-@keyframes catfish-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes catfish-heartbeat {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  30% {
-    transform: scale(1.28);
-  }
-
-  60% {
-    transform: scale(0.88);
-  }
-}
-
-@keyframes catfish-shine-slide {
-  0% {
-    left: -50px;
-    opacity: 0;
-  }
-
-  30% {
-    opacity: 1;
-  }
-
-  100% {
-    left: 110%;
-    opacity: 0;
   }
 }
 
@@ -1478,16 +1401,31 @@ $card-border: rgba(109, 71, 255, 0.35);
       border-radius: 14px;
     }
 
-    &__loading-inner {
-      width: 76%;
+    &__loading-brand {
+      font-size: 2.2rem;
+    }
+
+    &__loading-ring-wrap {
+      width: 100px;
+      height: 100px;
+    }
+
+    &__loading-ring-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    &__loading-bar-wrap {
+      width: 88%;
     }
 
     &__loading-pct {
       font-size: 0.85rem;
     }
 
-    &__loading-title {
-      font-size: 1rem;
+    &__loading-label {
+      font-size: 0.65rem;
+      letter-spacing: 3px;
     }
 
     &__result-grid {
@@ -1513,6 +1451,10 @@ $card-border: rgba(109, 71, 255, 0.35);
     &__cta-btn {
       height: 60px;
       font-size: 1rem;
+
+      &--choose {
+        font-size: 0.72rem;
+      }
     }
 
     &__cta-btn-label {
